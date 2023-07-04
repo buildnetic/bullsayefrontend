@@ -8,6 +8,9 @@ export default {
         "c-green-dark": "#2a7c5d",
       },
     },
+    fontFamily: {
+      poppins: ["Poppins", "sans-serif"],
+    },
   },
   plugins: [],
 };

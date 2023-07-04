@@ -1,7 +1,7 @@
 const Hero = () => {
   return (
     <>
-      <div className="bg-[url('../../../images/home/hero.png')] bg-cover bg-center h-[80vh]">
+      <div className="bg-[url('../../../images/home/hero.png')] bg-cover bg-center h-[80vh] mt-12">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[4rem] md:leading-[5rem] lg:leading-[6rem]">
             <span className=" text-green-500">Buying</span> and{" "}

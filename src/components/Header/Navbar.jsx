@@ -7,10 +7,10 @@ import {
 
 const Navbar = () => {
   let Links = [
-    { name: "How It Works", link: "#" },
-    { name: "Performers", link: "#" },
-    { name: "Testimonials", link: "#" },
-    { name: "Help", link: "#" },
+    { name: "How It Works", link: "#howItWorks" },
+    { name: "Performers", link: "#topPerformers" },
+    { name: "Testimonials", link: "#testimonials" },
+    { name: "Help", link: "#help" },
   ];
 
   let [open, setOpen] = useState(false);
@@ -19,10 +19,13 @@ const Navbar = () => {
     <div className="shadow-md w-full fixed top-0 left-0 bg-white">
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
         {/* logo section */}
-        <div className="font-bold text-2xl cursor-pointer flex items-center gap-1">
+        <a
+          href="/"
+          className="font-bold text-2xl cursor-pointer flex items-center gap-1"
+        >
           <ChartBarIcon className="w-7 h-7 text-c-green" />
           <span>VIPANA</span>
-        </div>
+        </a>
         {/* Menu icon */}
         <div
           onClick={() => setOpen(!open)}
