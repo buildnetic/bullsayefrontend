@@ -12,5 +12,5 @@ export default {
       poppins: ["Poppins", "sans-serif"],
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

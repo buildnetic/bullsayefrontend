@@ -11,7 +11,7 @@ const HowItWorks = () => {
         id="howItWorks"
         className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full flex flex-col justify-center"
       >
-        <h2 className="text-4xl font-bold text-center text-c-green">
+        <h2 className="text-4xl mt-5 font-bold text-center text-c-green">
           How It Works
         </h2>
         <p className="mt-3 text-xl text-center">

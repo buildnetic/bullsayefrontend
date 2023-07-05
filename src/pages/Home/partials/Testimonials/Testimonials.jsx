@@ -1,4 +1,4 @@
-import { Pagination, Navigation } from "swiper/modules";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -11,7 +11,7 @@ const Testimonials = () => {
         id="testimonials"
         className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full flex flex-col justify-center"
       >
-        <h2 className="text-4xl font-bold text-center text-c-green">
+        <h2 className="text-4xl mt-5 font-bold text-center text-c-green">
           Testimonials
         </h2>
         <p className="mt-3 text-xl text-center">
@@ -24,12 +24,16 @@ const Testimonials = () => {
           pagination={{
             clickable: true,
           }}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
           navigation={false}
-          modules={[Pagination, Navigation]}
+          modules={[Autoplay, Pagination, Navigation]}
           className="mySwiper mt-9"
         >
-          <SwiperSlide>
-            <div className="w-3/4 p-5 py-8 mx-auto">
+          <SwiperSlide className="bg-[url('../../../images/home/testimonial-bg.png')] bg-cover bg-top">
+            <div className="w-3/4 p-5 py-10 mx-auto">
               <img
                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
                 alt="Profile Icon"
@@ -50,8 +54,8 @@ const Testimonials = () => {
               </p>
             </div>
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-3/4 p-5 py-8 mx-auto">
+          <SwiperSlide className="bg-[url('../../../images/home/testimonial-bg.png')] bg-cover bg-top">
+            <div className="w-3/4 p-5 py-10 mx-auto">
               <img
                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
                 alt="Profile Icon"
@@ -72,8 +76,8 @@ const Testimonials = () => {
               </p>
             </div>
           </SwiperSlide>
-          <SwiperSlide>
-            <div className="w-3/4 p-5 py-8 mx-auto">
+          <SwiperSlide className="bg-[url('../../../images/home/testimonial-bg.png')] bg-cover bg-top">
+            <div className="w-3/4 p-5 py-10 mx-auto">
               <img
                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
                 alt="Profile Icon"

@@ -4,6 +4,7 @@ import {
   XMarkIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/solid";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   let Links = [
@@ -16,24 +17,26 @@ const Navbar = () => {
   let [open, setOpen] = useState(false);
 
   return (
-    <div className="shadow-md w-full fixed top-0 left-0 bg-white">
+    <div className="shadow-md w-full fixed top-0 left-0 bg-white z-50">
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
         {/* logo section */}
-        <a
-          href="/"
+        <NavLink
+          to="/"
+          onClick={() => window.scrollTo(0, 0)}
           className="font-bold text-2xl cursor-pointer flex items-center gap-1"
         >
           <ChartBarIcon className="w-7 h-7 text-c-green" />
           <span>VIPANA</span>
-        </a>
-        {/* Menu icon */}
+        </NavLink>
+        {/* Menu button */}
         <div
           onClick={() => setOpen(!open)}
           className="absolute right-8 top-6 cursor-pointer md:hidden w-7 h-7"
         >
           {open ? <XMarkIcon /> : <Bars3BottomRightIcon />}
         </div>
-        {/* linke items */}
+
+        {/* menu links and signin and signup */}
         <ul
           className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
             open ? "top-12" : "top-[-490px]"
@@ -49,20 +52,20 @@ const Navbar = () => {
               </a>
             </li>
           ))}
-          <a
-            href="#"
+
+          <NavLink
+            to="/signup"
             className="md:ml-8 rounded-md border-c-green border-2 p-2 px-3 text-black hover:text-white hover:bg-c-green duration-75 text-sm font-medium"
           >
             Sign Up
-          </a>
-          <a
-            href="#"
+          </NavLink>
+          <NavLink
+            to="/signin"
             className="rounded-md border-c-green border-2 bg-c-green p-2 px-3 shadow-md hover:shadow-none ml-4 text-white duration-75 text-sm font-medium"
           >
             Sign In
-          </a>
+          </NavLink>
         </ul>
-        {/* button */}
       </div>
     </div>
   );
