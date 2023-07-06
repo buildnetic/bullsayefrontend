@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 
-const Navbar = () => {
+const HomeHeader = () => {
   let Links = [
     { name: "How It Works", link: "#howItWorks" },
     { name: "Performers", link: "#topPerformers" },
@@ -71,4 +71,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default HomeHeader;
