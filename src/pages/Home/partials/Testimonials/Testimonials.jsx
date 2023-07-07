@@ -30,7 +30,7 @@ const Testimonials = () => {
           }}
           navigation={false}
           modules={[Autoplay, Pagination, Navigation]}
-          className="mySwiper mt-9"
+          className="mySwiper home-testimonial mt-9"
         >
           <SwiperSlide className="bg-[url('../../../images/home/testimonial-bg.png')] bg-cover bg-top">
             <div className="w-3/4 p-5 py-10 mx-auto">

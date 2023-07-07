@@ -1,0 +1,18 @@
+.main-top-performers
+  .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+  /* bottom: 0px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-top-performers .swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+}
+
+.main-top-performers .swiper-pagination-bullet-active {
+  background: #319b72;
+  width: 9px;
+  height: 9px;
+}

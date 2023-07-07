@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 const TopPerformers = () => {
   return (
     <>
@@ -17,7 +19,12 @@ const TopPerformers = () => {
                 alt="Profile Icon"
                 className="w-20 rounded-full mx-auto"
               />
-              <h3 className="text-md font-bold text-center">John Dev</h3>
+              <NavLink
+                to="/main/1"
+                className="block mt-1 text-md font-bold text-center"
+              >
+                John Dev
+              </NavLink>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
                 Accuracy Index:{" "}
                 <span className="text-c-green font-bold">
@@ -60,7 +67,12 @@ const TopPerformers = () => {
                 alt="Profile Icon"
                 className="w-20 rounded-full mx-auto"
               />
-              <h3 className="text-md font-bold text-center">John Dev</h3>
+              <NavLink
+                to="/main/1"
+                className="block mt-1 text-md font-bold text-center"
+              >
+                John Dev
+              </NavLink>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
                 Accuracy Index:{" "}
                 <span className="text-c-green font-bold">
@@ -103,7 +115,12 @@ const TopPerformers = () => {
                 alt="Profile Icon"
                 className="w-20 rounded-full mx-auto"
               />
-              <h3 className="text-md font-bold text-center">John Dev</h3>
+              <NavLink
+                to="/main/1"
+                className="block mt-1 text-md font-bold text-center"
+              >
+                John Dev
+              </NavLink>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
                 Accuracy Index:{" "}
                 <span className="text-c-green font-bold">
@@ -146,7 +163,12 @@ const TopPerformers = () => {
                 alt="Profile Icon"
                 className="w-20 rounded-full mx-auto"
               />
-              <h3 className="text-md font-bold text-center">John Dev</h3>
+              <NavLink
+                to="/main/1"
+                className="block mt-1 text-md font-bold text-center"
+              >
+                John Dev
+              </NavLink>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
                 Accuracy Index:{" "}
                 <span className="text-c-green font-bold">
@@ -189,7 +211,12 @@ const TopPerformers = () => {
                 alt="Profile Icon"
                 className="w-20 rounded-full mx-auto"
               />
-              <h3 className="text-md font-bold text-center">John Dev</h3>
+              <NavLink
+                to="/main/1"
+                className="block mt-1 text-md font-bold text-center"
+              >
+                John Dev
+              </NavLink>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
                 Accuracy Index:{" "}
                 <span className="text-c-green font-bold">
@@ -232,7 +259,12 @@ const TopPerformers = () => {
                 alt="Profile Icon"
                 className="w-20 rounded-full mx-auto"
               />
-              <h3 className="text-md font-bold text-center">John Dev</h3>
+              <NavLink
+                to="/main/1"
+                className="block mt-1 text-md font-bold text-center"
+              >
+                John Dev
+              </NavLink>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
                 Accuracy Index:{" "}
                 <span className="text-c-green font-bold">

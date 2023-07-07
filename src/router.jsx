@@ -14,6 +14,7 @@ import CreatePost from "./pages/AuthenticatedUser/Post/CreatePost";
 import Profile from "./pages/AuthenticatedUser/Profile/Profile";
 import Setting from "./pages/AuthenticatedUser/Setting/Setting";
 import Notifications from "./pages/AuthenticatedUser/Notifications/Notifications";
+import Edit from "./pages/AuthenticatedUser/Setting/Edit/Edit";
 
 const router = createBrowserRouter([
   {
@@ -65,8 +66,16 @@ const router = createBrowserRouter([
         element: <Setting />,
       },
       {
+        path: "/setting/edit",
+        element: <Edit />,
+      },
+      {
         path: "/notifications",
         element: <Notifications />,
+      },
+      {
+        path: "/user/:id",
+        element: <Profile />,
       },
     ],
   },
