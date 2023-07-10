@@ -1,7 +1,7 @@
-import { RiStockLine } from "react-icons/ri";
-import { BiCommentDetail, BiShareAlt, BiTimer } from "react-icons/bi";
+import { BiCommentDetail, BiShareAlt } from "react-icons/bi";
 import TopPerformers from "./Partials/TopPerformers/TopPerformers";
 import { AiOutlineLike } from "react-icons/ai";
+import CreatePost from "./Partials/CreatePost/CreatePost";
 
 const Main = () => {
   return (
@@ -11,46 +11,7 @@ const Main = () => {
           <div className="col-span-12 lg:col-span-8">
             {/* left side start */}
             <div className=" border-2 p-4 rounded-lg shadow-sm">
-              {/* create post start */}
-              <div className="flex flex-row gap-4">
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt="Profile Image"
-                  className="w-14 h-14 md:w-16 md:h-16 rounded-full"
-                />
-                <div className="w-full">
-                  <textarea
-                    id="message"
-                    rows="4"
-                    className="resize-none block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-c-green focus:border-c-green dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-c-green dark:focus:border-c-green"
-                    placeholder="Your message..."
-                  ></textarea>
-                  <div className="flex flex-row justify-between mt-4">
-                    <div className="">
-                      <button
-                        type="button"
-                        className="rounded-md border-c-green border-2 bg-c-green p-2 px-3 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-                      >
-                        <RiStockLine className="text-xl inline-block mr-1" />
-                        Stock
-                      </button>
-                      <button
-                        type="button"
-                        className="rounded-md border-c-green border-2 bg-c-green p-2 px-3 shadow-md hover:shadow-none ml-4 text-white duration-75 text-sm font-medium"
-                      >
-                        <BiTimer className="text-xl inline-block mr-1" />
-                        Validity
-                      </button>
-                    </div>
-                    <button
-                      type="button"
-                      className="rounded-md border-c-green border-2 bg-c-green p-2 px-3 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-                    >
-                      Post
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <CreatePost />
             </div>
 
             <div className="my-5 w-full h-[1px] bg-[#D3DAE2] shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px]"></div>
