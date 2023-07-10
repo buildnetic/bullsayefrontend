@@ -1,6 +1,5 @@
 import SelectSearch from "react-select-search";
 import "react-select-search/style.css";
-import "./style.css";
 
 const CreatePost = () => {
   const options = [
