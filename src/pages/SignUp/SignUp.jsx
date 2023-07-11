@@ -1,12 +1,19 @@
 import { ChartBarIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import { FaTwitter, FaTiktok } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const SignUp = () => {
+  const { loggedUser } = useSelector((state) => state.user);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  if (loggedUser) {
+    return <Navigate to="/main" />;
+  }
 
   return (
     <>

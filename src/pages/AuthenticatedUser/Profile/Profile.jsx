@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import Comments from "../../../components/AuthenticatedUser/Comments/Comments";
 import PostCard from "../../../components/AuthenticatedUser/PostCard/PostCard";
 import { useState } from "react";
+import ProfileLocked from "./ProfileLocked/ProfileLocked";
 
 const Profile = () => {
   const currentPathname = window.location.pathname;
@@ -159,6 +160,9 @@ const Profile = () => {
             </div>
           </div>
         </div>
+
+        {/* profile locked */}
+        <ProfileLocked />
       </div>
     </>
   );

@@ -10,7 +10,8 @@ const Help = () => {
               </h2>
               <h3 className="text-md mt-1">Get our email for info</h3>
               <input
-                className="mt-5 p-2 px-3 w-60 text-md outline-none"
+                // className="mt-5 p-2 px-3 w-60 text-md"
+                className="w-60 mt-5 p-2 px-3 rounded-s-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
                 type="text"
                 placeholder="Enter your Email address"
               />
@@ -23,7 +24,7 @@ const Help = () => {
               </p>
             </div>
             <div>
-              <h2 className="text-3xl">Need Help? (+1) 100000</h2>
+              <h2 className="text-3xl">Need Help? (+61) 7596286</h2>
               <p className="text-md mt-4">
                 <span className="font-bold">Working Days / Hours:</span> Mon -
                 Sat / 09:00 - 18:00

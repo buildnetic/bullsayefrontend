@@ -6,7 +6,7 @@ const MainLayout = () => {
   const { loggedUser } = useSelector((state) => state.user);
 
   if (!loggedUser) {
-    return <Navigate to="/signin" />;
+    return <Navigate to="/" />;
   }
 
   return (

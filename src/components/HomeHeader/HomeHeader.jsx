@@ -12,7 +12,6 @@ import { logout } from "../../redux/userSlice";
 
 const HomeHeader = () => {
   const Dispatch = useDispatch();
-
   const { loggedUser } = useSelector((state) => state.user);
 
   const logoutHandler = () => {

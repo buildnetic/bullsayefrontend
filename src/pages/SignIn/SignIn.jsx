@@ -1,11 +1,12 @@
 import { ChartBarIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
-import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
-import { loggedUser } from "../../redux/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { login } from "../../redux/userSlice";
 
 const SignIn = () => {
+  const { loggedUser } = useSelector((state) => state.user);
   const Dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -14,14 +15,18 @@ const SignIn = () => {
   const signinHandler = (e) => {
     e.preventDefault();
     Dispatch(
-      loggedUser({
+      login({
         id: 1,
         name: "John Dev",
         img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
       })
     );
-    navigate("/");
+    navigate("/main");
   };
+
+  if (loggedUser) {
+    return <Navigate to="/main" />;
+  }
 
   return (
     <>
