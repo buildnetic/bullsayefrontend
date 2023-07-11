@@ -1,10 +1,27 @@
 import { ChartBarIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
-import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import { loggedUser } from "../../redux/userSlice";
 
 const SignIn = () => {
+  const Dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const signinHandler = (e) => {
+    e.preventDefault();
+    Dispatch(
+      loggedUser({
+        id: 1,
+        name: "John Dev",
+        img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+      })
+    );
+    navigate("/");
+  };
 
   return (
     <>
@@ -24,7 +41,12 @@ const SignIn = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            onSubmit={signinHandler}
+            className="space-y-6"
+            action="#"
+            method="POST"
+          >
             <div>
               <label
                 htmlFor="email"

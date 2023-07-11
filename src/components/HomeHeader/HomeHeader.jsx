@@ -1,12 +1,24 @@
 import { useState } from "react";
+import { Fragment } from "react";
 import {
   Bars3BottomRightIcon,
   XMarkIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Menu, Transition } from "@headlessui/react";
+import { logout } from "../../redux/userSlice";
 
 const HomeHeader = () => {
+  const Dispatch = useDispatch();
+
+  const { loggedUser } = useSelector((state) => state.user);
+
+  const logoutHandler = () => {
+    Dispatch(logout());
+  };
+
   let Links = [
     { name: "How It Works", link: "#howItWorks" },
     { name: "Performers", link: "#topPerformers" },
@@ -53,18 +65,63 @@ const HomeHeader = () => {
             </li>
           ))}
 
-          <NavLink
-            to="/signup"
-            className="md:ml-8 rounded-md border-c-green border-2 p-2 px-3 text-black hover:text-white hover:bg-c-green duration-75 text-sm font-medium"
-          >
-            Sign Up
-          </NavLink>
-          <NavLink
-            to="/signin"
-            className="rounded-md border-c-green border-2 bg-c-green p-2 px-3 shadow-md hover:shadow-none ml-4 text-white duration-75 text-sm font-medium"
-          >
-            Sign In
-          </NavLink>
+          {loggedUser ? (
+            <Menu as="div" className="relative ml-5">
+              <div>
+                <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <span className="sr-only">Open user menu</span>
+                  <img
+                    className="h-8 w-8 rounded-full"
+                    src={loggedUser.img}
+                    alt="User Profile Image"
+                  />
+                </Menu.Button>
+              </div>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <Menu.Item>
+                    <NavLink
+                      to="/main"
+                      className="cursor-pointer block px-4 py-2 text-sm text-gray-700"
+                    >
+                      Main Page
+                    </NavLink>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <div
+                      onClick={logoutHandler}
+                      className="cursor-pointer block px-4 py-2 text-sm text-gray-700"
+                    >
+                      Sign out
+                    </div>
+                  </Menu.Item>
+                </Menu.Items>
+              </Transition>
+            </Menu>
+          ) : (
+            <>
+              <NavLink
+                to="/signup"
+                className="md:ml-8 rounded-md border-c-green border-2 p-2 px-3 text-black hover:text-white hover:bg-c-green duration-75 text-sm font-medium"
+              >
+                Sign Up
+              </NavLink>
+              <NavLink
+                to="/signin"
+                className="rounded-md border-c-green border-2 bg-c-green p-2 px-3 shadow-md hover:shadow-none ml-4 text-white duration-75 text-sm font-medium"
+              >
+                Sign In
+              </NavLink>
+            </>
+          )}
         </ul>
       </div>
     </div>
