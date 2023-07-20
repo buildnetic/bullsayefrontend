@@ -9,13 +9,32 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
 import { logout } from "../../redux/userSlice";
+import axiosInstance from "../../AxiosInstance";
+import { ToastError, ToastSuccess } from "../../ToastNotification";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const HomeHeader = () => {
   const Dispatch = useDispatch();
   const { loggedUser } = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const logoutHandler = () => {
-    Dispatch(logout());
+  const logoutHandler = async () => {
+    setIsLoading(true);
+
+    try {
+      const res = await axiosInstance.get("/logout", {
+        headers: {
+          Authorization: `Bearer ${loggedUser.token}`,
+        },
+      });
+      ToastSuccess(res?.data?.message);
+      Dispatch(logout());
+      setIsLoading(false);
+    } catch (error) {
+      ToastError(error?.response?.data?.message);
+      setIsLoading(false);
+      console.log(error);
+    }
   };
 
   let Links = [
@@ -97,9 +116,12 @@ const HomeHeader = () => {
                   <Menu.Item>
                     <div
                       onClick={logoutHandler}
-                      className="cursor-pointer block px-4 py-2 text-sm text-gray-700"
+                      className="cursor-pointer flex items-center gap-3 px-4 py-2 text-sm text-gray-700"
                     >
                       Sign out
+                      {isLoading && (
+                        <AiOutlineLoading3Quarters className="animate-spin" />
+                      )}
                     </div>
                   </Menu.Item>
                 </Menu.Items>

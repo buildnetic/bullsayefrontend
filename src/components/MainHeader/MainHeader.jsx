@@ -177,7 +177,7 @@ const MainHeader = () => {
                               Sign out
                               {isLoading && (
                                 <AiOutlineLoading3Quarters className="animate-spin" />
-                              )}{" "}
+                              )}
                             </div>
                           )}
                         </Menu.Item>

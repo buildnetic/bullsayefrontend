@@ -2,7 +2,7 @@ import { ChartBarIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { NavLink, Navigate } from "react-router-dom";
-import { FaTwitter, FaTiktok } from "react-icons/fa";
+import { FaTiktok, FaYoutube, FaInstagram } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../AxiosInstance";
 import { login } from "../../redux/userSlice";
@@ -58,6 +58,30 @@ const SignUp = () => {
     "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6";
   const inputErrorStyle =
     "block w-full rounded-md border-2 border-red-600 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6";
+
+  const socialMediaButtons = [
+    {
+      id: 1,
+      platform: "Youtube",
+      icon: <FaYoutube className="text-lg" />,
+      backgroundColor: "bg-[#FF0000]",
+      hoverColor: "hover:bg-[#ff1919]",
+    },
+    {
+      id: 2,
+      platform: "TikTok",
+      icon: <FaTiktok className="text-lg" />,
+      backgroundColor: "bg-[#010101]",
+      hoverColor: "hover:bg-[#1f1c1c]",
+    },
+    {
+      id: 3,
+      platform: "Instagram",
+      icon: <FaInstagram className="text-lg" />,
+      backgroundColor: "bg-[#ee2a7b]",
+      hoverColor: "hover:bg-[#ff4894]",
+    },
+  ];
 
   return (
     <>
@@ -302,20 +326,16 @@ const SignUp = () => {
             <p className="mt-10 text-center text-md text-gray-500">
               Or continue with
             </p>
-            <button
-              type="button"
-              className="flex w-full justify-center items-center gap-2 rounded-md bg-sky-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green"
-            >
-              <FaTwitter className="text-lg" />
-              Twitter
-            </button>
-            <button
-              type="button"
-              className="flex w-full justify-center items-center gap-2 rounded-md bg-[#010101] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#1f1c1c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green"
-            >
-              <FaTiktok className="text-lg" />
-              TikTok
-            </button>
+            {socialMediaButtons.map((button) => (
+              <button
+                key={button.id}
+                type="button"
+                className={`flex w-full justify-center items-center gap-2 rounded-md ${button.backgroundColor} px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm ${button.hoverColor} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green`}
+              >
+                {button.icon}
+                {button.platform}
+              </button>
+            ))}
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
