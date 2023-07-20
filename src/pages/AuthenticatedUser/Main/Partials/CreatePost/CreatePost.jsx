@@ -1,16 +1,7 @@
-import SelectSearch from "react-select-search";
 import "react-select-search/style.css";
+import SelectWithSearch from "../../../../../components/AuthenticatedUser/SelectWithSearch/SelectWithSearch";
 
 const CreatePost = () => {
-  const options = [
-    { name: "Tata", value: "Tata" },
-    { name: "Apple", value: "Apple" },
-    { name: "LG", value: "LG" },
-    { name: "Nifty", value: "Nifty" },
-    { name: "Bank Nifty", value: "Bank Nifty" },
-    { name: "Fin Nifty", value: "Fin Nifty" },
-  ];
-
   return (
     <>
       <div className="flex flex-row gap-4">
@@ -60,18 +51,12 @@ const CreatePost = () => {
             ></textarea>
             <div className="flex flex-row justify-between mt-4">
               <div className="flex flex-row gap-5 items-center">
-                <SelectSearch
-                  placeholder="Choose your Stock"
-                  name="language"
-                  options={options}
-                  search={true}
-                  emptyMessage="Not Found"
-                />
+                <SelectWithSearch />
                 <input
                   type="number"
                   required
                   placeholder="Enter Validity"
-                  className="block rounded-md text-md h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
+                  className="block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
                 />
                 <button
                   type="button"

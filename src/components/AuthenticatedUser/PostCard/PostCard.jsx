@@ -39,7 +39,7 @@ const PostCard = ({ data, handleCommentClick }) => {
       </div>
       <div className="my-5 w-full h-[1px] bg-[#D3DAE2]"></div>
       <div className="mt-3 flex flex-row justify-between items-center">
-        <p className="text-md flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all">
+        <p className="text-sm flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all">
           <AiOutlineLike className="text-lg" />
           98 Likes
         </p>
@@ -47,12 +47,12 @@ const PostCard = ({ data, handleCommentClick }) => {
           onClick={() => {
             handleCommentClick(data.id);
           }}
-          className="text-md flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all"
+          className="text-sm flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all"
         >
           <BiCommentDetail className="text-lg" />
           24 Comments
         </p>
-        <p className="text-md flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all">
+        <p className="text-sm flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all">
           <BiShareAlt className="text-lg" />
           Share
         </p>
