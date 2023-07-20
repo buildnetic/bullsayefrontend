@@ -1,4 +1,3 @@
-import "react-select-search/style.css";
 import SelectWithSearch from "../../../../../components/AuthenticatedUser/SelectWithSearch/SelectWithSearch";
 
 const CreatePost = () => {

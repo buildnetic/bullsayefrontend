@@ -1,27 +1,48 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 import {
   AiFillHome,
   AiFillPlusSquare,
+  AiOutlineLoading3Quarters,
   AiOutlineSearch,
   AiOutlineUser,
   AiTwotoneSetting,
 } from "react-icons/ai";
 import { MdNotifications } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/userSlice";
+import axiosInstance from "../../AxiosInstance";
+import { ToastError, ToastSuccess } from "../../ToastNotification";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const MainHeader = () => {
-  const Dispatch = useDispatch();
+  const { loggedUser } = useSelector((state) => state.user);
 
-  const logoutHandler = () => {
-    Dispatch(logout());
+  const Dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const logoutHandler = async () => {
+    setIsLoading(true);
+
+    try {
+      const res = await axiosInstance.get("/logout", {
+        headers: {
+          Authorization: `Bearer ${loggedUser.token}`,
+        },
+      });
+      ToastSuccess(res?.data?.message);
+      Dispatch(logout());
+      setIsLoading(false);
+    } catch (error) {
+      ToastError(error?.response?.data?.message);
+      setIsLoading(false);
+      console.log(error);
+    }
   };
 
   return (
@@ -150,10 +171,13 @@ const MainHeader = () => {
                               onClick={logoutHandler}
                               className={classNames(
                                 active ? "bg-gray-100 cursor-pointer" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "px-4 py-2 text-sm text-gray-700 flex items-center gap-3"
                               )}
                             >
                               Sign out
+                              {isLoading && (
+                                <AiOutlineLoading3Quarters className="animate-spin" />
+                              )}{" "}
                             </div>
                           )}
                         </Menu.Item>

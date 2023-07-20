@@ -3,10 +3,27 @@ import { useState } from "react";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { NavLink, Navigate } from "react-router-dom";
 import { FaTwitter, FaTiktok } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axiosInstance from "../../AxiosInstance";
+import { login } from "../../redux/userSlice";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { ToastError, ToastSuccess } from "../../ToastNotification";
 
 const SignUp = () => {
+  const Dispatch = useDispatch();
   const { loggedUser } = useSelector((state) => state.user);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setError] = useState(null);
+  const [signUpData, setSignUpData] = useState({
+    name: null,
+    email: null,
+    password: null,
+    password_confirmation: null,
+    youtube_id: null,
+    tiktok_id: null,
+    instagram_id: null,
+  });
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -14,6 +31,33 @@ const SignUp = () => {
   if (loggedUser) {
     return <Navigate to="/main" />;
   }
+
+  const onChangeHandler = (e) => {
+    setSignUpData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const signUpHandler = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const res = await axiosInstance.post("/register", signUpData);
+      Dispatch(login(res?.data?.user));
+      ToastSuccess(res?.data?.message);
+      setIsLoading(false);
+      console.log(res);
+    } catch (error) {
+      setError(error?.response?.data?.errors);
+      ToastError("Error has been occured...");
+      setIsLoading(false);
+      console.log("Error", error?.response?.data?.errors);
+    }
+  };
+
+  const inputNormalStyle =
+    "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6";
+  const inputErrorStyle =
+    "block w-full rounded-md border-2 border-red-600 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6";
 
   return (
     <>
@@ -33,7 +77,12 @@ const SignUp = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            onSubmit={signUpHandler}
+            className="space-y-6"
+            action="#"
+            method="POST"
+          >
             <div>
               <label
                 htmlFor="name"
@@ -43,13 +92,17 @@ const SignUp = () => {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={onChangeHandler}
                   id="name"
                   name="name"
                   type="text"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                  className={isError?.name ? inputErrorStyle : inputNormalStyle}
                 />
               </div>
+              {isError?.name && (
+                <span className="text-sm text-red-600">{isError?.name}</span>
+              )}
             </div>
 
             <div>
@@ -61,14 +114,20 @@ const SignUp = () => {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={onChangeHandler}
                   id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                  className={
+                    isError?.email ? inputErrorStyle : inputNormalStyle
+                  }
                 />
               </div>
+              {isError?.email && (
+                <span className="text-sm text-red-600">{isError?.email}</span>
+              )}
             </div>
 
             <div>
@@ -82,11 +141,14 @@ const SignUp = () => {
               </div>
               <div className="mt-2 relative">
                 <input
+                  onChange={onChangeHandler}
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                  className={
+                    isError?.password ? inputErrorStyle : inputNormalStyle
+                  }
                 />
                 {showPassword ? (
                   <PiEyeBold
@@ -100,6 +162,11 @@ const SignUp = () => {
                   />
                 )}
               </div>
+              {isError?.password && (
+                <span className="text-sm text-red-600">
+                  {isError?.password}
+                </span>
+              )}
             </div>
 
             <div>
@@ -113,11 +180,14 @@ const SignUp = () => {
               </div>
               <div className="mt-2 relative">
                 <input
+                  onChange={onChangeHandler}
                   id="confirmPassword"
-                  name="confirm_password"
+                  name="password_confirmation"
                   type={showConfirmPassword ? "text" : "password"}
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                  className={
+                    isError?.password ? inputErrorStyle : inputNormalStyle
+                  }
                 />
                 {showConfirmPassword ? (
                   <PiEyeBold
@@ -131,6 +201,11 @@ const SignUp = () => {
                   />
                 )}
               </div>
+              {isError?.password && (
+                <span className="text-sm text-red-600">
+                  {isError?.password}
+                </span>
+              )}
             </div>
 
             <div>
@@ -142,13 +217,20 @@ const SignUp = () => {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={onChangeHandler}
                   id="youtube"
                   name="youtube"
                   type="text"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                  className={
+                    isError?.youtube_id ? inputErrorStyle : inputNormalStyle
+                  }
                 />
               </div>
+              {isError?.youtube_id && (
+                <span className="text-sm text-red-600">
+                  {isError?.youtube_id}
+                </span>
+              )}
             </div>
 
             <div>
@@ -160,13 +242,20 @@ const SignUp = () => {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={onChangeHandler}
                   id="tiktok"
                   name="tiktok"
                   type="text"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                  className={
+                    isError?.tiktok_id ? inputErrorStyle : inputNormalStyle
+                  }
                 />
               </div>
+              {isError?.tiktok_id && (
+                <span className="text-sm text-red-600">
+                  {isError?.tiktok_id}
+                </span>
+              )}
             </div>
 
             <div>
@@ -178,21 +267,35 @@ const SignUp = () => {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={onChangeHandler}
                   id="instagram"
                   name="instagram"
                   type="text"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                  className={
+                    isError?.instagram_id ? inputErrorStyle : inputNormalStyle
+                  }
                 />
               </div>
+              {isError?.instagram_id && (
+                <span className="text-sm text-red-600">
+                  {isError?.instagram_id}
+                </span>
+              )}
             </div>
 
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-c-green px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-c-green-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green"
+                className={
+                  isLoading
+                    ? "cursor-not-allowed flex w-full justify-center items-center gap-3 rounded-md bg-c-green px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-c-green-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green"
+                    : "flex w-full justify-center items-center gap-3 rounded-md bg-c-green px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-c-green-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green"
+                }
               >
                 Sign Up
+                {isLoading && (
+                  <AiOutlineLoading3Quarters className="animate-spin" />
+                )}
               </button>
             </div>
 

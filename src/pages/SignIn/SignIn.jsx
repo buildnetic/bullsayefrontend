@@ -4,6 +4,9 @@ import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { login } from "../../redux/userSlice";
+import axiosInstance from "../../AxiosInstance";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { ToastError, ToastSuccess } from "../../ToastNotification";
 
 const SignIn = () => {
   const { loggedUser } = useSelector((state) => state.user);
@@ -11,18 +14,38 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setError] = useState(null);
+  const [signInData, setSignInData] = useState({
+    email: null,
+    password: null,
+  });
 
-  const signinHandler = (e) => {
-    e.preventDefault();
-    Dispatch(
-      login({
-        id: 1,
-        name: "John Dev",
-        img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-      })
-    );
-    navigate("/main");
+  const onChangeHandler = (e) => {
+    setSignInData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  const signinHandler = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const res = await axiosInstance.post("/login", signInData);
+      Dispatch(login(res?.data?.user));
+      ToastSuccess(res?.data?.message);
+      setIsLoading(false);
+      navigate("/main");
+    } catch (error) {
+      setError(error?.response?.data?.message);
+      ToastError(error?.response?.data?.message);
+      setIsLoading(false);
+    }
+  };
+
+  const inputNormalStyle =
+    "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6";
+  const inputErrorStyle =
+    "block w-full rounded-md border-2 border-red-600 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6";
 
   if (loggedUser) {
     return <Navigate to="/main" />;
@@ -61,12 +84,13 @@ const SignIn = () => {
               </label>
               <div className="mt-2">
                 <input
+                  onChange={onChangeHandler}
                   id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                  className={isError ? inputErrorStyle : inputNormalStyle}
                 />
               </div>
             </div>
@@ -90,11 +114,12 @@ const SignIn = () => {
               </div>
               <div className="mt-2 relative">
                 <input
+                  onChange={onChangeHandler}
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                  className={isError ? inputErrorStyle : inputNormalStyle}
                 />
                 {showPassword ? (
                   <PiEyeBold
@@ -113,9 +138,16 @@ const SignIn = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-c-green px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-c-green-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green"
+                className={
+                  isLoading
+                    ? "cursor-not-allowed flex w-full justify-center items-center gap-3 rounded-md bg-c-green px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-c-green-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green"
+                    : "flex w-full justify-center items-center gap-3 rounded-md bg-c-green px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-c-green-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green"
+                }
               >
                 Sign In
+                {isLoading && (
+                  <AiOutlineLoading3Quarters className="animate-spin" />
+                )}
               </button>
             </div>
           </form>
