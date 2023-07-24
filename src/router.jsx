@@ -15,6 +15,8 @@ import Profile from "./pages/AuthenticatedUser/Profile/Profile";
 import Setting from "./pages/AuthenticatedUser/Setting/Setting";
 import Notifications from "./pages/AuthenticatedUser/Notifications/Notifications";
 import Edit from "./pages/AuthenticatedUser/Setting/Edit/Edit";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
       {
         path: "verify",
         element: <Otp />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword />,
       },
     ],
   },
