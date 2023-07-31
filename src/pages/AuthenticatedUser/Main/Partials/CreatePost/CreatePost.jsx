@@ -1,12 +1,16 @@
-// import SelectWithSearch from "../../../../../components/AuthenticatedUser/SelectWithSearch/SelectWithSearch";
-
+import SelectWithSearch from "../../../../../components/AuthenticatedUser/SelectWithSearch/SelectWithSearch";
+import { stockExchangeList } from "../../../../../data/stockExchangeList";
 import { useState } from "react";
 import axios from "axios";
+import { useMutation } from "react-query";
+import axiosInstance from "../../../../../AxiosInstance";
 
 const CreatePost = () => {
   const [currentPrice, setCurrentPrice] = useState("");
   const [isFetchingCurrentPrice, setIsFetchingCurrentPrice] = useState(false);
-
+  const [selectedExchange, setSelectedExchange] = useState(
+    stockExchangeList[0]
+  );
   const [formData, setFormData] = useState({
     type: null,
     exchange: null,
@@ -25,7 +29,7 @@ const CreatePost = () => {
       const res = await axios.get(
         `/api/search.json?engine=google_finance&api_key=${
           import.meta.env.VITE_APP_GOOGLE_FIN_TOKEN
-        }&q=${formData.stock}:${formData.exchange}`
+        }&q=${formData.stock}:${selectedExchange.code}`
       );
       if (res?.data?.summary) {
         setCurrentPrice(res?.data?.summary?.price);
@@ -45,9 +49,22 @@ const CreatePost = () => {
     getCurrentPrice();
   };
 
+  const createPost = async () => {
+    try {
+      const res = await axiosInstance.post("/create/vips");
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createPostMutation = useMutation({
+    mutationFn: createPost,
+  });
+
   const formHandler = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    createPostMutation.mutate(formData);
   };
 
   return (
@@ -103,15 +120,11 @@ const CreatePost = () => {
             ></textarea>
             <div className="flex flex-row justify-between mt-4">
               <div className="grid grid-cols-12 gap-5">
-                {/* <SelectWithSearch /> */}
-                <input
-                  type="text"
-                  name="exchange"
-                  required
-                  placeholder="Exchange Code"
-                  className=" col-span-3 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
-                  onChange={onChangeHandler}
-                  title="Exchange Code"
+                <SelectWithSearch
+                  datas={stockExchangeList}
+                  selected={selectedExchange}
+                  setSelected={setSelectedExchange}
+                  classes="col-span-6"
                 />
                 <input
                   type="text"

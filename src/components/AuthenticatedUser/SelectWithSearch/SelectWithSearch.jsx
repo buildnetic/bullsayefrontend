@@ -2,22 +2,18 @@ import { Fragment, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
-const stocks = [
-  { id: 1, name: "Tata Motors" },
-  { id: 2, name: "Mahindra" },
-  { id: 3, name: "Apple" },
-  { id: 4, name: "Google" },
-  { id: 5, name: "Tesla" },
-];
-
-export default function SelectWithSearch() {
-  const [selected, setSelected] = useState(stocks[0]);
+export default function SelectWithSearch({
+  datas,
+  classes,
+  selected,
+  setSelected,
+}) {
   const [query, setQuery] = useState("");
 
   const filteredStocks =
     query === ""
-      ? stocks
-      : stocks.filter((stock) =>
+      ? datas
+      : datas.filter((stock) =>
           stock.name
             .toLowerCase()
             .replace(/\s+/g, "")
@@ -26,7 +22,7 @@ export default function SelectWithSearch() {
 
   return (
     <>
-      <Combobox value={selected} onChange={setSelected}>
+      <Combobox value={selected} onChange={setSelected} className={classes}>
         <div className="relative mt-1">
           <div className="relative w-full cursor-default overflow-hidden rounded-md bg-white text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6">
             <Combobox.Input
@@ -56,7 +52,7 @@ export default function SelectWithSearch() {
               ) : (
                 filteredStocks.map((stock) => (
                   <Combobox.Option
-                    key={stock.id}
+                    key={stock.code}
                     className={({ active }) =>
                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
                         active ? "bg-c-green text-white" : "text-gray-900"
