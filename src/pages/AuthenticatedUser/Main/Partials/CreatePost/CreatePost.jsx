@@ -4,19 +4,22 @@ import { useState } from "react";
 import axios from "axios";
 import { useMutation } from "react-query";
 import axiosInstance from "../../../../../AxiosInstance";
+import { ToastError } from "../../../../../ToastNotification";
 
 const CreatePost = () => {
-  const [currentPrice, setCurrentPrice] = useState("");
   const [isFetchingCurrentPrice, setIsFetchingCurrentPrice] = useState(false);
   const [selectedExchange, setSelectedExchange] = useState(
     stockExchangeList[0]
   );
   const [formData, setFormData] = useState({
     type: null,
-    exchange: null,
-    stock: null,
+    description: null,
+    exchange_code: null,
+    stock_code: null,
+    stock_name: null,
     current_price: null,
     target_price: null,
+    hashtags: null,
   });
 
   const onChangeHandler = (e) => {
@@ -29,12 +32,23 @@ const CreatePost = () => {
       const res = await axios.get(
         `/api/search.json?engine=google_finance&api_key=${
           import.meta.env.VITE_APP_GOOGLE_FIN_TOKEN
-        }&q=${formData.stock}:${selectedExchange.code}`
+        }&q=${formData.stock_code}:${selectedExchange.code}`
       );
       if (res?.data?.summary) {
-        setCurrentPrice(res?.data?.summary?.price);
+        setFormData((prev) => ({
+          ...prev,
+          stock_name: res?.data?.summary?.title,
+        }));
+        setFormData((prev) => ({
+          ...prev,
+          current_price: res?.data?.summary?.price,
+        }));
       } else {
-        setCurrentPrice("NONE");
+        setFormData((prev) => ({ ...prev, stock_name: null }));
+        setFormData((prev) => ({
+          ...prev,
+          current_price: null,
+        }));
       }
       setIsFetchingCurrentPrice(false);
       console.log(res);
@@ -50,21 +64,24 @@ const CreatePost = () => {
   };
 
   const createPost = async () => {
-    try {
-      const res = await axiosInstance.post("/create/vips");
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+    const res = await axiosInstance.post("/create/vips");
+    return res;
   };
 
-  const createPostMutation = useMutation({
-    mutationFn: createPost,
+  const createPostMutation = useMutation(createPost, {
+    onSuccess: () => {
+      console.log("sucess");
+    },
+    onError: (error) => {
+      ToastError(error?.response?.data?.message);
+      console.log("error", error);
+    },
   });
 
   const formHandler = async (e) => {
     e.preventDefault();
     createPostMutation.mutate(formData);
+    console.log(formData);
   };
 
   return (
@@ -113,6 +130,7 @@ const CreatePost = () => {
           </div>
           <div className="w-full">
             <textarea
+              name="description"
               id="message"
               rows="4"
               className="resize-none block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-c-green focus:border-c-green dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-c-green dark:focus:border-c-green"
@@ -128,7 +146,7 @@ const CreatePost = () => {
                 />
                 <input
                   type="text"
-                  name="stock"
+                  name="stock_code"
                   required
                   placeholder="Stock Code"
                   className=" col-span-3 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
@@ -144,7 +162,9 @@ const CreatePost = () => {
                 </button>
                 <span className=" px-3 cursor-not-allowed col-span-3 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6">
                   Current:{" "}
-                  {isFetchingCurrentPrice ? "Fetching..." : currentPrice}
+                  {isFetchingCurrentPrice
+                    ? "Fetching..."
+                    : formData.current_price}
                 </span>
                 <input
                   type="number"
