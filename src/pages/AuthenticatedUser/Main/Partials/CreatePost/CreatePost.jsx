@@ -2,12 +2,11 @@ import SelectWithSearch from "../../../../../components/AuthenticatedUser/Select
 import { stockExchangeList } from "../../../../../data/stockExchangeList";
 import { useState } from "react";
 import axios from "axios";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../../../../../AxiosInstance";
 import { ToastError } from "../../../../../ToastNotification";
 
 const CreatePost = () => {
-  const [isFetchingCurrentPrice, setIsFetchingCurrentPrice] = useState(false);
   const [selectedExchange, setSelectedExchange] = useState(
     stockExchangeList[0]
   );
@@ -27,13 +26,22 @@ const CreatePost = () => {
   };
 
   const getCurrentPrice = async () => {
-    setIsFetchingCurrentPrice(true);
-    try {
-      const res = await axios.get(
-        `/api/search.json?engine=google_finance&api_key=${
-          import.meta.env.VITE_APP_GOOGLE_FIN_TOKEN
-        }&q=${formData.stock_code}:${selectedExchange.code}`
-      );
+    const res = await axios.get(
+      `/api/search.json?engine=google_finance&api_key=${
+        import.meta.env.VITE_APP_GOOGLE_FIN_TOKEN
+      }&q=${formData.stock_code}:${selectedExchange.code}`
+    );
+    return res;
+  };
+
+  const createPost = async () => {
+    const res = await axiosInstance.post("/create/vips");
+    return res;
+  };
+
+  const getCurrentPriceQuery = useQuery("currentPrice", getCurrentPrice, {
+    enabled: false,
+    onSuccess: (res) => {
       if (res?.data?.summary) {
         setFormData((prev) => ({
           ...prev,
@@ -49,23 +57,17 @@ const CreatePost = () => {
           ...prev,
           current_price: null,
         }));
+        ToastError("Invalid Exchange or Stock code");
       }
-      setIsFetchingCurrentPrice(false);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-      setIsFetchingCurrentPrice(false);
-    }
-  };
+    },
+    onError: () => {
+      ToastError("Error");
+    },
+  });
 
   const currentPriceHandler = async (e) => {
     e.preventDefault();
-    getCurrentPrice();
-  };
-
-  const createPost = async () => {
-    const res = await axiosInstance.post("/create/vips");
-    return res;
+    getCurrentPriceQuery.refetch();
   };
 
   const createPostMutation = useMutation(createPost, {
@@ -81,7 +83,6 @@ const CreatePost = () => {
   const formHandler = async (e) => {
     e.preventDefault();
     createPostMutation.mutate(formData);
-    console.log(formData);
   };
 
   return (
@@ -155,14 +156,22 @@ const CreatePost = () => {
                 />
                 <button
                   type="button"
+                  disabled={
+                    getCurrentPriceQuery.isLoading ||
+                    getCurrentPriceQuery.isRefetching
+                  }
                   onClick={currentPriceHandler}
                   className=" col-span-3 rounded-md h-full w-full border-c-green border-2 bg-c-green p-2 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
                 >
-                  Get Current Price
+                  {getCurrentPriceQuery.isLoading ||
+                  getCurrentPriceQuery.isRefetching
+                    ? "Getting Price..."
+                    : "Get Current Price"}
                 </button>
-                <span className=" px-3 cursor-not-allowed col-span-3 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6">
+                <span className=" px-3 cursor-not-allowed col-span-3 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6 bg-gray-100">
                   Current:{" "}
-                  {isFetchingCurrentPrice
+                  {getCurrentPriceQuery.isLoading ||
+                  getCurrentPriceQuery.isRefetching
                     ? "Fetching..."
                     : formData.current_price}
                 </span>
