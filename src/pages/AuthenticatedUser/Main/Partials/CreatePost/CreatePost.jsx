@@ -2,7 +2,7 @@ import SelectWithSearch from "../../../../../components/AuthenticatedUser/Select
 import { stockExchangeList } from "../../../../../data/stockExchangeList";
 import { useState } from "react";
 import axios from "axios";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../../../../AxiosInstance";
 import { ToastError } from "../../../../../ToastNotification";
 import { useSelector } from "react-redux";
@@ -47,31 +47,37 @@ const CreatePost = () => {
     return res;
   };
 
-  const getCurrentPriceQuery = useQuery("currentPrice", getCurrentPrice, {
+  // const getCurrentPriceQuery = useQuery("currentPrice", getCurrentPrice, {
+  //   enabled: false,
+  //   onSuccess: (res) => {
+  //     if (res?.data?.summary) {
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         stock_name: res?.data?.summary?.title,
+  //       }));
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         current_price: res?.data?.summary?.price,
+  //       }));
+  //       setStockCodeError(false);
+  //     } else {
+  //       setFormData((prev) => ({ ...prev, stock_name: null }));
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         current_price: null,
+  //       }));
+  //       ToastError("Invalid Exchange or Stock code");
+  //     }
+  //   },
+  //   onError: () => {
+  //     ToastError("Error");
+  //   },
+  // });
+
+  const getCurrentPriceQuery = useQuery({
+    queryKey: ["currentPrice"],
+    queryFn: getCurrentPrice,
     enabled: false,
-    onSuccess: (res) => {
-      if (res?.data?.summary) {
-        setFormData((prev) => ({
-          ...prev,
-          stock_name: res?.data?.summary?.title,
-        }));
-        setFormData((prev) => ({
-          ...prev,
-          current_price: res?.data?.summary?.price,
-        }));
-        setStockCodeError(false);
-      } else {
-        setFormData((prev) => ({ ...prev, stock_name: null }));
-        setFormData((prev) => ({
-          ...prev,
-          current_price: null,
-        }));
-        ToastError("Invalid Exchange or Stock code");
-      }
-    },
-    onError: () => {
-      ToastError("Error");
-    },
   });
 
   const createPostMutation = useMutation(createPost, {
