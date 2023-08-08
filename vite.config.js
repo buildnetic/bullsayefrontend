@@ -6,7 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // Proxy the "/api" path to your target API
       "/api": {
         target: "https://serpapi.com",
         changeOrigin: true,
