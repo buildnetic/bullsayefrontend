@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "swiper/css";
+import "react-loading-skeleton/dist/skeleton.css";
 import { RouterProvider } from "react-router-dom";
 import router from "./router.jsx";
 import { Provider } from "react-redux";

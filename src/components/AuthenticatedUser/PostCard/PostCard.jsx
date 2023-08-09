@@ -15,13 +15,7 @@ const PostCard = ({ data, handleCommentClick }) => {
           <p className="text-sm text-[#8E8E8E] mt-1">1 day ago</p>
         </div>
       </div>
-      <p className="mt-2 text-md">
-        Start Trading with one of the leading brokers you choose, easy
-        comparison! Start Trading with one of the leading brokers you choose,
-        easy comparison! Start Trading with one of the leading brokers you
-        choose, easy comparison!Start Trading with one of the leading brokers
-        you choose, easy comparison!
-      </p>
+      <p className="mt-2 text-md">{data.description}</p>
       <div className="mt-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(255,_0,_0,_0.24)_0px_2px_5px] bg-[#ffd4d4] transition-shadow duration-300 ease-in-out">
         <div className="flex flex-row justify-between items-center">
           <h3 className="text-red-600 font-semibold text-lg">Selling Call</h3>

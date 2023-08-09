@@ -5,8 +5,14 @@ import CreatePost from "./Partials/CreatePost/CreatePost";
 import Comments from "../../../components/AuthenticatedUser/Comments/Comments";
 import PostCard from "../../../components/AuthenticatedUser/PostCard/PostCard";
 import { useState } from "react";
+import axiosInstance from "../../../AxiosInstance";
+import { useSelector } from "react-redux";
+import { useQuery } from "react-query";
+import LoadingPostCard from "../../../components/AuthenticatedUser/PostCard/LoadingPostCard";
 
 const Main = () => {
+  const { loggedUser } = useSelector((state) => state.user);
+
   const [selectedShowCommentIds, setShowCommentSelectedIds] = useState([]);
 
   const handleCommentClick = (id) => {
@@ -19,20 +25,22 @@ const Main = () => {
     }
   };
 
-  const data = [
-    {
-      id: 1,
-      name: "Post 1",
+  const getAllPostFn = async () => {
+    axiosInstance.defaults.headers[
+      "Authorization"
+    ] = `Bearer ${loggedUser.token}`;
+    const res = await axiosInstance.get("/get/vips");
+    delete axiosInstance.defaults.headers["Authorization"];
+    return res?.data;
+  };
+
+  const getAllPostQuery = useQuery("getAllPost", getAllPostFn, {
+    onSuccess: (res) => {
+      console.log("sucess res", res);
     },
-    {
-      id: 2,
-      name: "Post 2",
-    },
-    {
-      id: 3,
-      name: "Post 3",
-    },
-  ];
+  });
+
+  console.log("getAllPostQuery", getAllPostQuery);
 
   return (
     <>
@@ -46,16 +54,36 @@ const Main = () => {
 
             <div className="my-5 w-full h-[1px] bg-[#D3DAE2] shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px]"></div>
 
-            {data.map((elem) => (
-              <div
-                key={elem.id}
-                className="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out"
-              >
-                <PostCard data={elem} handleCommentClick={handleCommentClick} />
+            {getAllPostQuery.isLoading ? (
+              Array(4)
+                .fill()
+                .map((elem, id) => (
+                  <div
+                    key={id}
+                    className="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out"
+                  >
+                    <LoadingPostCard />
+                  </div>
+                ))
+            ) : getAllPostQuery.isError ? (
+              <p className="text-center text-red-600">
+                Failed to fetch all posts
+              </p>
+            ) : (
+              getAllPostQuery?.data?.data?.map((elem) => (
+                <div
+                  key={elem.id}
+                  className="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out"
+                >
+                  <PostCard
+                    data={elem}
+                    handleCommentClick={handleCommentClick}
+                  />
 
-                {selectedShowCommentIds.includes(elem.id) && <Comments />}
-              </div>
-            ))}
+                  {selectedShowCommentIds.includes(elem.id) && <Comments />}
+                </div>
+              ))
+            )}
 
             <div className="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out">
               <div className="flex flex-row items-center gap-5">
