@@ -1,6 +1,6 @@
 import SelectWithSearch from "../../../../../components/AuthenticatedUser/SelectWithSearch/SelectWithSearch";
 import { stockExchangeList } from "../../../../../data/stockExchangeList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../../../../../AxiosInstance";
@@ -13,16 +13,22 @@ const CreatePost = () => {
   const [selectedExchange, setSelectedExchange] = useState(
     stockExchangeList[0]
   );
+
   const [formData, setFormData] = useState({
-    type: null,
-    description: null,
-    exchange_code: null,
-    stock_code: null,
-    stock_name: null,
-    current_price: null,
-    target_price: null,
-    hashtags: null,
+    type: "",
+    description: "",
+    exchange_code: selectedExchange.code || "",
+    stock_code: "",
+    stock_name: "",
+    current_price: "",
+    target_price: "",
+    hashtags: "",
   });
+
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, exchange_code: selectedExchange.code }));
+  }, [selectedExchange]);
+
   const [stockCodeError, setStockCodeError] = useState(false);
 
   const onChangeHandler = (e) => {
@@ -42,7 +48,7 @@ const CreatePost = () => {
     axiosInstance.defaults.headers[
       "Authorization"
     ] = `Bearer ${loggedUser.token}`;
-    const res = await axiosInstance.post("/create/vips");
+    const res = await axiosInstance.post("/create/vips", formData);
     delete axiosInstance.defaults.headers["Authorization"];
     return res;
   };
@@ -61,10 +67,10 @@ const CreatePost = () => {
         }));
         setStockCodeError(false);
       } else {
-        setFormData((prev) => ({ ...prev, stock_name: null }));
+        setFormData((prev) => ({ ...prev, stock_name: "" }));
         setFormData((prev) => ({
           ...prev,
-          current_price: null,
+          current_price: "",
         }));
         ToastError("Invalid Exchange or Stock code");
       }
@@ -93,9 +99,10 @@ const CreatePost = () => {
     }
   };
 
-  const formHandler = async (e) => {
+  const formHandler = (e) => {
     e.preventDefault();
     createPostMutation.mutate(formData);
+    console.log("formData", formData);
   };
 
   return (
@@ -115,15 +122,15 @@ const CreatePost = () => {
                     type="radio"
                     name="type"
                     className="shrink-0 cursor-pointer mt-0.5 border-gray-400 rounded-full text-c-green pointer-events-none focus:ring-c-green"
-                    id="call"
-                    value="call"
+                    id="buy"
+                    value="buy"
                     onChange={onChangeHandler}
                   />
                   <label
-                    htmlFor="call"
+                    htmlFor="buy"
                     className="text-sm text-gray-500 ml-2 cursor-pointer"
                   >
-                    Call
+                    Buy
                   </label>
                 </div>
 
@@ -178,7 +185,10 @@ const CreatePost = () => {
                   : "Get Current Price"}
               </button>
               <div className="col-span-5">
-                <span className=" px-3 cursor-not-allowed flex items-center rounded-md text-sm h-full border-0  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6 bg-gray-100">
+                <span
+                  className=" px-3 cursor-not-allowed flex items-center rounded-md text-sm h-full border-0  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6 bg-gray-100"
+                  title={formData.stock_name}
+                >
                   Current Price:{" "}
                   {getCurrentPriceQuery.isLoading ||
                   getCurrentPriceQuery.isRefetching
@@ -199,6 +209,7 @@ const CreatePost = () => {
                 name="hashtags"
                 placeholder="#hashtags"
                 className="col-span-8 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
+                onChange={onChangeHandler}
               />
               <textarea
                 name="description"
@@ -206,6 +217,7 @@ const CreatePost = () => {
                 rows="4"
                 className="col-span-12 resize-y block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-c-green focus:border-c-green dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-c-green dark:focus:border-c-green"
                 placeholder="Your message..."
+                onChange={onChangeHandler}
               ></textarea>
 
               <button
