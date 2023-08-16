@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/userSlice";
 import axiosInstance from "../../AxiosInstance";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
+import ProfileImg from "../../../public/images/profile-icon.jpg";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -89,7 +90,7 @@ const MainHeader = () => {
                         <AiFillPlusSquare className="text-2xl" />
                       </NavLink>
                       <NavLink
-                        to="/profile"
+                        to={`/profile/${loggedUser.id}`}
                         className={({ isActive }) =>
                           isActive
                             ? "bg-c-green text-white rounded-md px-3 py-2 font-medium transition-all"
@@ -142,8 +143,12 @@ const MainHeader = () => {
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-8 w-8 rounded-full"
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
+                          src={
+                            !loggedUser.user_profile_image
+                              ? ProfileImg
+                              : loggedUser.user_profile_image
+                          }
+                          alt="Profile Image"
                         />
                       </Menu.Button>
                     </div>

@@ -2,13 +2,15 @@ import SelectWithSearch from "../../../../../components/AuthenticatedUser/Select
 import { stockExchangeList } from "../../../../../data/stockExchangeList";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import axiosInstance from "../../../../../AxiosInstance";
-import { ToastError } from "../../../../../ToastNotification";
+import { ToastError, ToastSuccess } from "../../../../../ToastNotification";
 import { useSelector } from "react-redux";
+import ProfileImg from "../../../../../../public/images/profile-icon.jpg";
 
 const CreatePost = () => {
   const { loggedUser } = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
 
   const [selectedExchange, setSelectedExchange] = useState(
     stockExchangeList[0]
@@ -63,7 +65,7 @@ const CreatePost = () => {
         }));
         setFormData((prev) => ({
           ...prev,
-          current_price: res?.data?.summary?.price,
+          current_price: res?.data?.summary?.extracted_price,
         }));
         setStockCodeError(false);
       } else {
@@ -81,8 +83,20 @@ const CreatePost = () => {
   });
 
   const createPostMutation = useMutation(createPost, {
-    onSuccess: () => {
-      console.log("sucess");
+    onSuccess: (res) => {
+      ToastSuccess(res?.data?.message);
+      setFormData({
+        type: "",
+        description: "",
+        exchange_code: selectedExchange.code || "",
+        stock_code: "",
+        stock_name: "",
+        current_price: "",
+        target_price: "",
+        hashtags: "",
+      });
+
+      queryClient.invalidateQueries("getAllPost");
     },
     onError: (error) => {
       ToastError(error?.response?.data?.message);
@@ -109,9 +123,13 @@ const CreatePost = () => {
     <>
       <div className="flex flex-row gap-4">
         <img
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+          src={
+            !loggedUser.user_profile_image
+              ? ProfileImg
+              : loggedUser.user_profile_image
+          }
           alt="Profile Image"
-          className="w-14 h-14 rounded-full"
+          className="w-12 h-12 rounded-full border-2 border-gray-100"
         />
         <div className="w-full">
           <div className="flex flex-row justify-between mt-4">

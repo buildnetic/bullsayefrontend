@@ -1,13 +1,17 @@
-import { AiOutlineLike } from "react-icons/ai";
-import { BiCommentDetail, BiShareAlt } from "react-icons/bi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import Comments from "../../../components/AuthenticatedUser/Comments/Comments";
 import PostCard from "../../../components/AuthenticatedUser/PostCard/PostCard";
 import { useState } from "react";
 import ProfileLocked from "./ProfileLocked/ProfileLocked";
+import { useSelector } from "react-redux";
+import axiosInstance from "../../../AxiosInstance";
+import { useQuery } from "react-query";
+import ProfileImg from "../../../../public/images/profile-icon.jpg";
+import LoadingPostCard from "../../../components/AuthenticatedUser/PostCard/LoadingPostCard";
 
 const Profile = () => {
-  const currentPathname = window.location.pathname;
+  const { loggedUser } = useSelector((state) => state.user);
+  const { id } = useParams();
 
   const [selectedShowCommentIds, setShowCommentSelectedIds] = useState([]);
 
@@ -21,16 +25,25 @@ const Profile = () => {
     }
   };
 
-  const data = [
-    {
-      id: 1,
-      name: "Post 1",
-    },
-    {
-      id: 2,
-      name: "Post 2",
-    },
-  ];
+  const getUserDetailsFn = async () => {
+    return await axiosInstance.get(`/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
+  const getUserPostsFn = async () => {
+    return await axiosInstance.get("/user/vips", {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
+  const getUserDetailsQuery = useQuery("userDetails", getUserDetailsFn);
+
+  const getUserPostsQuery = useQuery("userPosts", getUserPostsFn);
 
   return (
     <>
@@ -38,12 +51,18 @@ const Profile = () => {
         <div className="p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.24)_0px_0px_6px] bg-white transition-shadow duration-300 ease-in-out">
           <div className="flex flex-row items-center gap-5">
             <img
-              src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-              alt="Profile Icon"
-              className="w-20 rounded-full"
+              src={
+                !getUserDetailsQuery?.data?.data?.data?.user_profile_image
+                  ? ProfileImg
+                  : getUserDetailsQuery?.data?.data?.data?.user_profile_image
+              }
+              alt="Profile Image"
+              className="w-20 rounded-full text-xs"
             />
             <div>
-              <h3 className="text-lg font-bold">John Dev</h3>
+              <h3 className="text-lg font-bold">
+                {getUserDetailsQuery?.data?.data?.data?.name}
+              </h3>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
                 Accuracy Index:{" "}
                 <span className="text-c-green font-bold">
@@ -52,18 +71,20 @@ const Profile = () => {
               </p>
             </div>
             <NavLink
-              to="/setting/edit"
+              to="#"
               className="ml-auto text-center mt-4 block rounded-lg border-c-green border-2 p-2 px-4 shadow-md hover:shadow-none text-black hover:text-white hover:bg-c-green transition-all duration-75 text-sm font-medium"
             >
-              {currentPathname.startsWith("/user") ? "Follow" : "Edit Profile"}
+              {loggedUser.id === +id ? "Edit Profile" : "Follow"}
             </NavLink>
           </div>
-          <p className="mt-2 text-md">
-            Start Trading with one of the leading brokers you choose, easy
-            comparison! Start Trading with one of the leading brokers you
-            choose, easy comparison! Start Trading with one of the leading
-            brokers you choose, easy comparison!Start Trading with one of the
-            leading brokers you choose, easy comparison!
+          <p
+            className={`mt-2 text-md ${
+              !getUserDetailsQuery?.data?.data?.data?.about && "text-gray-400"
+            }`}
+          >
+            {getUserDetailsQuery?.data?.data?.data?.about
+              ? getUserDetailsQuery?.data?.data?.data?.about
+              : "You have not added your bio yet..."}
           </p>
           <div className="flex flex-row justify-around mt-2">
             <p className="text-[#8E8E8E]">
@@ -93,72 +114,33 @@ const Profile = () => {
           <h2 className="font-semibold text-gray-400 mb-4 text-2xl">
             My Posts
           </h2>
-          {data.map((elem) => (
-            <div
-              key={elem.id}
-              className="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out"
-            >
-              <PostCard data={elem} handleCommentClick={handleCommentClick} />
-
-              {selectedShowCommentIds.includes(elem.id) && <Comments />}
-            </div>
-          ))}
-
-          <div className="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out">
-            <div className="flex flex-row items-center gap-5">
-              <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                alt="Profile Icon"
-                className="w-14 rounded-full"
-              />
-              <div>
-                <h3 className="text-lg font-bold">John Dev</h3>
-                <p className="text-sm text-[#8E8E8E] mt-1">1 day ago</p>
-              </div>
-            </div>
-            <p className="mt-2 text-md">
-              Start Trading with one of the leading brokers you choose, easy
-              comparison! Start Trading with one of the leading brokers you
-              choose, easy comparison! Start Trading with one of the leading
-              brokers you choose, easy comparison!Start Trading with one of the
-              leading brokers you choose, easy comparison!
+          {getUserPostsQuery?.isLoading ? (
+            Array(4)
+              .fill()
+              .map((elem, id) => (
+                <div
+                  key={id}
+                  className="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out"
+                >
+                  <LoadingPostCard />
+                </div>
+              ))
+          ) : getUserPostsQuery.isError ? (
+            <p className="text-center text-red-600">
+              Failed to fetch all posts
             </p>
-            <div className="mt-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_255,_0,_0.24)_0px_2px_5px] bg-green-200 transition-shadow duration-300 ease-in-out">
-              <div className="flex flex-row justify-between items-center">
-                <h3 className="text-green-600 font-semibold text-lg">
-                  Selling Call
-                </h3>
-                <h3 className=" text-green-600 text-lg font-semibold">
-                  +12.24%
-                </h3>
+          ) : (
+            getUserPostsQuery?.data?.data?.data?.map((elem) => (
+              <div
+                key={elem.id}
+                className="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out"
+              >
+                <PostCard data={elem} handleCommentClick={handleCommentClick} />
+
+                {selectedShowCommentIds.includes(elem.id) && <Comments />}
               </div>
-              <div className="mt-3 flex flex-row justify-between items-center">
-                <h3 className="text-2xl font-bold">Tesla</h3>
-                <h3 className="flex items-center gap-2 text-gray-600 text-2xl font-semibold">
-                  <span className="text-lg font-medium">Current Price: </span>{" "}
-                  $162
-                </h3>
-                <h3 className="flex items-center gap-2 text-gray-600 text-2xl font-semibold">
-                  <span className="text-lg font-medium">Validity: </span> $150
-                </h3>
-              </div>
-            </div>
-            <div className="my-5 w-full h-[1px] bg-[#D3DAE2]"></div>
-            <div className="mt-3 flex flex-row justify-between items-center">
-              <p className="text-md flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all">
-                <AiOutlineLike className="text-lg" />
-                98 Likes
-              </p>
-              <p className="text-md flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all">
-                <BiCommentDetail className="text-lg" />
-                24 Comments
-              </p>
-              <p className="text-md flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all">
-                <BiShareAlt className="text-lg" />
-                Share
-              </p>
-            </div>
-          </div>
+            ))
+          )}
         </div>
 
         {/* profile locked */}

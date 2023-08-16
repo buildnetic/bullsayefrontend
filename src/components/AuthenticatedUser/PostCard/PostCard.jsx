@@ -1,24 +1,62 @@
 /* eslint-disable react/prop-types */
 import moment from "moment";
-import { AiOutlineLike } from "react-icons/ai";
-import { BiCommentDetail, BiShareAlt } from "react-icons/bi";
+import { AiFillDelete, AiOutlineLike } from "react-icons/ai";
+import { BiCommentDetail, BiShareAlt, BiSolidEditAlt } from "react-icons/bi";
 import { BsRepeat } from "react-icons/bs";
+import { NavLink } from "react-router-dom";
+import ProfileImg from "../../../../public/images/profile-icon.jpg";
+import { useSelector } from "react-redux";
+import DeleteConfirmation from "../../Modals/DeleteConfirmation";
+import { useState } from "react";
 
 const PostCard = ({ data, handleCommentClick }) => {
+  const { loggedUser } = useSelector((state) => state.user);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [postId, setPostId] = useState("");
+
+  const deleteModalFn = (id) => {
+    setPostId(id);
+    setOpenDeleteModal(true);
+  };
+
   return (
     <>
       <div className="flex flex-row items-center gap-5">
         <img
-          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-          alt="Profile Icon"
-          className="w-14 rounded-full"
+          src={
+            !data.user.user_profile_image
+              ? ProfileImg
+              : data.user.user_profile_image
+          }
+          alt="Profile Image"
+          className="w-12 rounded-full text-xs border-2 border-gray-100"
         />
         <div className=" w-full">
-          <h3 className="text-lg font-bold">John Dev</h3>
+          <div className="flex flex-row justify-between items-center">
+            <NavLink
+              to={`/profile/${data.user_id}`}
+              className="text-lg font-bold"
+            >
+              {data.user.name}
+            </NavLink>
+            {data.user_id === loggedUser.id && (
+              <div className="flex flex-row items-center gap-2">
+                <BiSolidEditAlt
+                  className=" cursor-pointer text-lg text-gray-500 hover:text-green-500 transition-all"
+                  title="Edit Post"
+                />
+                <AiFillDelete
+                  className=" cursor-pointer text-lg text-gray-500 hover:text-red-500 transition-all"
+                  title="Delete Post"
+                  onClick={() => deleteModalFn(data.id)}
+                />
+              </div>
+            )}
+          </div>
           <div className="flex justify-between items-center gap-3">
-            <p className="text-sm text-[#8E8E8E] mt-1">
+            <p className="text-sm text-[#8E8E8E]">
               Created at:
-              {" " + moment(data.created_at).format("MMMM Do YYYY, h:mm:ss a")}
+              {" " + moment(data.created_at).format("MMMM Do YYYY, h:mm a")}
             </p>
 
             {moment(data.updated_at).isAfter(moment(data.updated_at)) && (
@@ -32,14 +70,16 @@ const PostCard = ({ data, handleCommentClick }) => {
         </div>
       </div>
       <div className="mt-2">
-        {JSON.parse(data.hashtags).map((elem, id) => (
+        {/* {JSON.parse(data.hashtags).map((elem, id) => (
           <span
             key={id}
             className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 me-1.5"
           >
             {"#" + elem}
           </span>
-        ))}
+        ))} */}
+
+        {data.hashtags}
       </div>
 
       <p className="mt-2 text-md">{data.description}</p>
@@ -76,7 +116,7 @@ const PostCard = ({ data, handleCommentClick }) => {
       <div className="mt-3 flex flex-row justify-between items-center">
         <p className="text-sm flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all">
           <AiOutlineLike className="text-lg" />
-          98 Likes
+          {data.likes_count} Likes
         </p>
         <p
           onClick={() => {
@@ -85,7 +125,7 @@ const PostCard = ({ data, handleCommentClick }) => {
           className="text-sm flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all"
         >
           <BiCommentDetail className="text-lg" />
-          24 Comments
+          {data.comments.length} Comments
         </p>
         <p className="text-sm flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-900 font-semibold transition-all">
           <BiShareAlt className="text-lg" />
@@ -96,6 +136,12 @@ const PostCard = ({ data, handleCommentClick }) => {
           Reshare
         </p>
       </div>
+
+      <DeleteConfirmation
+        openDeleteModal={openDeleteModal}
+        setOpenDeleteModal={setOpenDeleteModal}
+        postId={postId}
+      />
     </>
   );
 };
