@@ -12,6 +12,7 @@ import { logout } from "../../redux/userSlice";
 import axiosInstance from "../../AxiosInstance";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import ProfileImg from "../../assets/images/profile-icon.png";
 
 const HomeHeader = () => {
   const Dispatch = useDispatch();
@@ -89,9 +90,15 @@ const HomeHeader = () => {
                 <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span className="sr-only">Open user menu</span>
                   <img
-                    className="h-8 w-8 rounded-full"
-                    src={loggedUser.img}
-                    alt="User Profile Image"
+                    className={`h-8 w-8 rounded-full object-cover ${
+                      !loggedUser.user_profile_image && "p-1.5"
+                    }`}
+                    src={
+                      !loggedUser.user_profile_image
+                        ? ProfileImg
+                        : loggedUser.user_profile_image
+                    }
+                    alt="Profile Image"
                   />
                 </Menu.Button>
               </div>
@@ -108,7 +115,7 @@ const HomeHeader = () => {
                   <Menu.Item>
                     <NavLink
                       to="/main"
-                      className="cursor-pointer block px-4 py-2 text-sm text-gray-700"
+                      className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Main Page
                     </NavLink>
@@ -116,7 +123,7 @@ const HomeHeader = () => {
                   <Menu.Item>
                     <div
                       onClick={logoutHandler}
-                      className="cursor-pointer flex items-center gap-3 px-4 py-2 text-sm text-gray-700"
+                      className="cursor-pointer flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Sign out
                       {isLoading && (

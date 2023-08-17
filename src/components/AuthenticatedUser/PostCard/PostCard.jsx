@@ -3,7 +3,7 @@ import moment from "moment";
 import { AiFillDelete, AiOutlineLike } from "react-icons/ai";
 import { BiCommentDetail, BiShareAlt, BiSolidEditAlt } from "react-icons/bi";
 import { BsRepeat } from "react-icons/bs";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ProfileImg from "../../../assets/images/profile-icon.png";
 import { useSelector } from "react-redux";
 import DeleteConfirmation from "../../Modals/DeleteConfirmation";
@@ -11,6 +11,8 @@ import { useState } from "react";
 
 const PostCard = ({ data, handleCommentClick }) => {
   const { loggedUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [postId, setPostId] = useState("");
 
@@ -46,6 +48,7 @@ const PostCard = ({ data, handleCommentClick }) => {
                 <BiSolidEditAlt
                   className=" cursor-pointer text-lg text-gray-500 hover:text-green-500 transition-all"
                   title="Edit Post"
+                  onClick={() => navigate(`/post/edit/${data.id}`)}
                 />
                 <AiFillDelete
                   className=" cursor-pointer text-lg text-gray-500 hover:text-red-500 transition-all"

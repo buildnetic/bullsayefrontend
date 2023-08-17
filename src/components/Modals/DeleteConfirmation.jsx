@@ -41,8 +41,7 @@ export default function DeleteConfirmation({
       queryClient.invalidateQueries("getAllPost");
       queryClient.invalidateQueries("userPosts");
       queryClient.invalidateQueries("comments");
-
-      console.log("deleteMutation", res);
+      setOpenDeleteModal(false);
     },
     onError: (err) => {
       ToastError(err?.response?.data?.message);
@@ -51,7 +50,6 @@ export default function DeleteConfirmation({
 
   const deleteHandler = async () => {
     deleteMutation.mutate();
-    setOpenDeleteModal(false);
   };
 
   return (

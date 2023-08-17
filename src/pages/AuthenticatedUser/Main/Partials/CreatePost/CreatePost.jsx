@@ -7,10 +7,13 @@ import axiosInstance from "../../../../../AxiosInstance";
 import { ToastError, ToastSuccess } from "../../../../../ToastNotification";
 import { useSelector } from "react-redux";
 import ProfileImg from "../../../../../assets/images/profile-icon.png";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   const { loggedUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [selectedExchange, setSelectedExchange] = useState(
     stockExchangeList[0]
@@ -92,18 +95,8 @@ const CreatePost = () => {
   const createPostMutation = useMutation(createPost, {
     onSuccess: (res) => {
       ToastSuccess(res?.data?.message);
-      setFormData({
-        type: "",
-        description: "",
-        exchange_code: selectedExchange.code || "",
-        stock_code: "",
-        stock_name: "",
-        current_price: "",
-        target_price: "",
-        hashtags: "",
-      });
-
       queryClient.invalidateQueries("getAllPost");
+      navigate("/main");
     },
     onError: (error) => {
       ToastError(error?.response?.data?.message);
@@ -122,8 +115,12 @@ const CreatePost = () => {
 
   const formHandler = (e) => {
     e.preventDefault();
-    createPostMutation.mutate(formData);
-    console.log("formData", formData);
+
+    if (location.pathname.startsWith("/post/edit")) {
+      alert("edit");
+    } else {
+      createPostMutation.mutate(formData);
+    }
   };
 
   return (

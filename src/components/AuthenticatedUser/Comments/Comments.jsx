@@ -122,7 +122,7 @@ const Comments = ({ postId }) => {
                       <p className="text-xs text-[#8E8E8E] mt-0.5">
                         {moment(elem.updated_at).isAfter(
                           moment(elem.created_at)
-                        ) && <span className="text-xs mr-1">edited</span>}
+                        ) && <span className="text-xs mr-1">(edited)</span>}
 
                         {moment(elem.updated_at).isAfter(
                           moment(elem.created_at)

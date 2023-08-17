@@ -4,29 +4,66 @@ import { Dialog, Transition } from "@headlessui/react";
 import { BiSolidEditAlt } from "react-icons/bi";
 import axiosInstance from "../../AxiosInstance";
 import { useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "react-query";
+import { ToastError, ToastSuccess } from "../../ToastNotification";
 
 export default function EditComment({ id, openEditModal, setOpenEditModal }) {
   const { loggedUser } = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
   const cancelButtonRef = useRef(null);
 
   const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const getPostCommentFn = async () => {
-    const res = await axiosInstance.get(`/Comment/vips/${id}`, {
-      headers: {
-        Authorization: `Bearer ${loggedUser.token}`,
-      },
-    });
-
-    setComment(res);
+    setLoading(true);
+    try {
+      const res = await axiosInstance.get(`/Comment/vips/${id}`, {
+        headers: {
+          Authorization: `Bearer ${loggedUser.token}`,
+        },
+      });
+      setLoading(false);
+      setComment(res?.data?.data?.comment);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  const updateCommentFn = async () => {
+    return await axiosInstance.put(
+      `/updateComment/vips/${id}`,
+      { comment },
+      {
+        headers: {
+          Authorization: `Bearer ${loggedUser.token}`,
+        },
+      }
+    );
   };
 
   useEffect(() => {
     if (id) {
       getPostCommentFn();
     }
-    console.log(comment);
   }, [id]);
+
+  const updateCommentMutation = useMutation(updateCommentFn, {
+    onSuccess: (res) => {
+      ToastSuccess(res?.data?.message);
+      queryClient.invalidateQueries("getAllPost");
+      queryClient.invalidateQueries("userPosts");
+      queryClient.invalidateQueries("comments");
+      setOpenEditModal(false);
+    },
+    onError: (err) => {
+      ToastError(err?.response?.data?.message);
+    },
+  });
+
+  const updateCommentHandler = () => {
+    updateCommentMutation.mutate();
+  };
 
   return (
     <Transition.Root show={openEditModal} as={Fragment}>
@@ -73,15 +110,20 @@ export default function EditComment({ id, openEditModal, setOpenEditModal }) {
                         as="h3"
                         className="text-base font-semibold leading-6 text-gray-900"
                       >
-                        Edit Comment {id}
+                        Edit Comment
                       </Dialog.Title>
                       <div className="mt-2">
-                        <input
-                          type="text"
-                          className="w-full rounded-lg border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
-                          placeholder="edit comment..."
-                          onChange={(e) => setComment(e.target.value)}
-                        />
+                        {loading ? (
+                          "loading..."
+                        ) : (
+                          <input
+                            type="text"
+                            className="w-full rounded-lg border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                            placeholder="edit comment..."
+                            onChange={(e) => setComment(e.target.value)}
+                            value={comment}
+                          />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -89,8 +131,13 @@ export default function EditComment({ id, openEditModal, setOpenEditModal }) {
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-c-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-c-green-dark sm:ml-3 sm:w-auto"
-                    onClick={() => setOpenEditModal(false)}
+                    className={`inline-flex w-full justify-center rounded-md  px-3 py-2 text-sm font-semibold text-white shadow-sm  sm:ml-3 sm:w-auto ${
+                      loading || updateCommentMutation.isLoading
+                        ? "cursor-not-allowed bg-green-300"
+                        : "bg-c-green hover:bg-c-green-dark"
+                    }`}
+                    onClick={updateCommentHandler}
+                    disabled={loading || updateCommentMutation.isLoading}
                   >
                     Update
                   </button>
