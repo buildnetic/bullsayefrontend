@@ -4,7 +4,7 @@ import { AiFillDelete, AiOutlineLike } from "react-icons/ai";
 import { BiCommentDetail, BiShareAlt, BiSolidEditAlt } from "react-icons/bi";
 import { BsRepeat } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
-import ProfileImg from "../../../../public/images/profile-icon.jpg";
+import ProfileImg from "../../../assets/images/profile-icon.png";
 import { useSelector } from "react-redux";
 import DeleteConfirmation from "../../Modals/DeleteConfirmation";
 import { useState } from "react";
@@ -29,13 +29,15 @@ const PostCard = ({ data, handleCommentClick }) => {
               : data.user.user_profile_image
           }
           alt="Profile Image"
-          className="w-12 rounded-full text-xs border-2 border-gray-100"
+          className={`w-12 h-12 rounded-full text-xs border-2 border-gray-100 object-cover ${
+            !data.user.user_profile_image && "p-1.5"
+          }`}
         />
         <div className=" w-full">
           <div className="flex flex-row justify-between items-center">
             <NavLink
               to={`/profile/${data.user_id}`}
-              className="text-lg font-bold"
+              className="text-lg font-bold capitalize"
             >
               {data.user.name}
             </NavLink>
@@ -70,16 +72,14 @@ const PostCard = ({ data, handleCommentClick }) => {
         </div>
       </div>
       <div className="mt-2">
-        {/* {JSON.parse(data.hashtags).map((elem, id) => (
+        {JSON.parse(data.hashtags).map((elem, id) => (
           <span
             key={id}
             className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 me-1.5"
           >
-            {"#" + elem}
+            {elem}
           </span>
-        ))} */}
-
-        {data.hashtags}
+        ))}
       </div>
 
       <p className="mt-2 text-md">{data.description}</p>
@@ -138,9 +138,10 @@ const PostCard = ({ data, handleCommentClick }) => {
       </div>
 
       <DeleteConfirmation
+        type="Post"
         openDeleteModal={openDeleteModal}
         setOpenDeleteModal={setOpenDeleteModal}
-        postId={postId}
+        id={postId}
       />
     </>
   );

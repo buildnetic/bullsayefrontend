@@ -6,7 +6,7 @@ import ProfileLocked from "./ProfileLocked/ProfileLocked";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../../AxiosInstance";
 import { useQuery } from "react-query";
-import ProfileImg from "../../../../public/images/profile-icon.jpg";
+import ProfileImg from "../../../assets/images/profile-icon.png";
 import LoadingPostCard from "../../../components/AuthenticatedUser/PostCard/LoadingPostCard";
 
 const Profile = () => {
@@ -34,7 +34,7 @@ const Profile = () => {
   };
 
   const getUserPostsFn = async () => {
-    return await axiosInstance.get("/user/vips", {
+    return await axiosInstance.get(`/user/vips/${id}`, {
       headers: {
         Authorization: `Bearer ${loggedUser.token}`,
       },
@@ -57,7 +57,10 @@ const Profile = () => {
                   : getUserDetailsQuery?.data?.data?.data?.user_profile_image
               }
               alt="Profile Image"
-              className="w-20 rounded-full text-xs"
+              className={`w-20 h-20 rounded-full text-xs border-2 border-gray-100 ${
+                !getUserDetailsQuery?.data?.data?.data?.user_profile_image &&
+                "p-1.5"
+              }`}
             />
             <div>
               <h3 className="text-lg font-bold">
@@ -137,7 +140,9 @@ const Profile = () => {
               >
                 <PostCard data={elem} handleCommentClick={handleCommentClick} />
 
-                {selectedShowCommentIds.includes(elem.id) && <Comments />}
+                {selectedShowCommentIds.includes(elem.id) && (
+                  <Comments postId={elem.id} />
+                )}
               </div>
             ))
           )}

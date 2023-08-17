@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import axiosInstance from "../../../../../AxiosInstance";
 import { ToastError, ToastSuccess } from "../../../../../ToastNotification";
 import { useSelector } from "react-redux";
-import ProfileImg from "../../../../../../public/images/profile-icon.jpg";
+import ProfileImg from "../../../../../assets/images/profile-icon.png";
 
 const CreatePost = () => {
   const { loggedUser } = useSelector((state) => state.user);
@@ -24,7 +24,7 @@ const CreatePost = () => {
     stock_name: "",
     current_price: "",
     target_price: "",
-    hashtags: "",
+    hashtags: [],
   });
 
   useEffect(() => {
@@ -34,7 +34,14 @@ const CreatePost = () => {
   const [stockCodeError, setStockCodeError] = useState(false);
 
   const onChangeHandler = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+
+    if (name === "hashtags") {
+      const hashtagsArray = value.split(" ");
+      setFormData((prev) => ({ ...prev, [name]: hashtagsArray }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const getCurrentPrice = async () => {
@@ -129,7 +136,9 @@ const CreatePost = () => {
               : loggedUser.user_profile_image
           }
           alt="Profile Image"
-          className="w-12 h-12 rounded-full border-2 border-gray-100"
+          className={`w-12 h-12 rounded-full border-2 border-gray-100 object-cover ${
+            !loggedUser.user_profile_image && "p-1.5"
+          }`}
         />
         <div className="w-full">
           <div className="flex flex-row justify-between mt-4">
@@ -225,7 +234,7 @@ const CreatePost = () => {
               <input
                 type="text"
                 name="hashtags"
-                placeholder="#hashtags"
+                placeholder="#hashtags #vipana"
                 className="col-span-8 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
                 onChange={onChangeHandler}
               />

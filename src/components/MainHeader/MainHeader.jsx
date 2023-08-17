@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/userSlice";
 import axiosInstance from "../../AxiosInstance";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
-import ProfileImg from "../../../public/images/profile-icon.jpg";
+import ProfileImg from "../../assets/images/profile-icon.png";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -142,7 +142,9 @@ const MainHeader = () => {
                       <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="sr-only">Open user menu</span>
                         <img
-                          className="h-8 w-8 rounded-full"
+                          className={`h-8 w-8 rounded-full object-cover ${
+                            !loggedUser.user_profile_image && "p-1.5"
+                          }`}
                           src={
                             !loggedUser.user_profile_image
                               ? ProfileImg

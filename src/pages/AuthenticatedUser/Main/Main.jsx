@@ -19,7 +19,7 @@ const Main = () => {
         selectedShowCommentIds.filter((selectedId) => selectedId !== id)
       );
     } else {
-      setShowCommentSelectedIds([...selectedShowCommentIds, id]);
+      setShowCommentSelectedIds([id]);
     }
   };
 
@@ -32,13 +32,7 @@ const Main = () => {
     return res?.data;
   };
 
-  const getAllPostQuery = useQuery("getAllPost", getAllPostFn, {
-    onSuccess: (res) => {
-      console.log("sucess res", res);
-    },
-  });
-
-  console.log("getAllPostQuery", getAllPostQuery);
+  const getAllPostQuery = useQuery("getAllPost", getAllPostFn);
 
   return (
     <>
@@ -78,7 +72,9 @@ const Main = () => {
                     handleCommentClick={handleCommentClick}
                   />
 
-                  {selectedShowCommentIds.includes(elem.id) && <Comments />}
+                  {selectedShowCommentIds.includes(elem.id) && (
+                    <Comments postId={elem.id} />
+                  )}
                 </div>
               ))
             )}

@@ -1,66 +1,40 @@
 /* eslint-disable react/prop-types */
-import { Fragment, useRef } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { BiSolidEditAlt } from "react-icons/bi";
 import axiosInstance from "../../AxiosInstance";
 import { useSelector } from "react-redux";
-import { useMutation, useQueryClient } from "react-query";
-import { ToastError, ToastSuccess } from "../../ToastNotification";
 
-export default function DeleteConfirmation({
-  type,
-  openDeleteModal,
-  setOpenDeleteModal,
-  id,
-}) {
-  const queryClient = useQueryClient();
-
+export default function EditComment({ id, openEditModal, setOpenEditModal }) {
   const { loggedUser } = useSelector((state) => state.user);
-
   const cancelButtonRef = useRef(null);
 
-  const deleteFn = async () => {
-    if (type === "Post") {
-      return await axiosInstance.delete(`/delete/vips/${id}`, {
-        headers: {
-          Authorization: `Bearer ${loggedUser.token}`,
-        },
-      });
-    } else if (type === "Comment") {
-      return await axiosInstance.delete(`/deleteComment/vips/${id}`, {
-        headers: {
-          Authorization: `Bearer ${loggedUser.token}`,
-        },
-      });
+  const [comment, setComment] = useState("");
+
+  const getPostCommentFn = async () => {
+    const res = await axiosInstance.get(`/Comment/vips/${id}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+
+    setComment(res);
+  };
+
+  useEffect(() => {
+    if (id) {
+      getPostCommentFn();
     }
-  };
-
-  const deleteMutation = useMutation(deleteFn, {
-    onSuccess: (res) => {
-      ToastSuccess(res?.data?.message);
-      queryClient.invalidateQueries("getAllPost");
-      queryClient.invalidateQueries("userPosts");
-      queryClient.invalidateQueries("comments");
-
-      console.log("deleteMutation", res);
-    },
-    onError: (err) => {
-      ToastError(err?.response?.data?.message);
-    },
-  });
-
-  const deleteHandler = async () => {
-    deleteMutation.mutate();
-    setOpenDeleteModal(false);
-  };
+    console.log(comment);
+  }, [id]);
 
   return (
-    <Transition.Root show={openDeleteModal} as={Fragment}>
+    <Transition.Root show={openEditModal} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setOpenDeleteModal}
+        onClose={setOpenEditModal}
       >
         <Transition.Child
           as={Fragment}
@@ -88,25 +62,26 @@ export default function DeleteConfirmation({
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationTriangleIcon
-                        className="h-6 w-6 text-red-600"
+                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <BiSolidEditAlt
+                        className="h-6 w-6 text-c-green"
                         aria-hidden="true"
                       />
                     </div>
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
                       <Dialog.Title
                         as="h3"
                         className="text-base font-semibold leading-6 text-gray-900"
                       >
-                        Delete {type}
+                        Edit Comment {id}
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                          Are you sure you want to delete your {type}? All of
-                          your data will be permanently removed. This action
-                          cannot be undone.
-                        </p>
+                        <input
+                          type="text"
+                          className="w-full rounded-lg border-0 py-1.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                          placeholder="edit comment..."
+                          onChange={(e) => setComment(e.target.value)}
+                        />
                       </div>
                     </div>
                   </div>
@@ -114,15 +89,15 @@ export default function DeleteConfirmation({
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={deleteHandler}
+                    className="inline-flex w-full justify-center rounded-md bg-c-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-c-green-dark sm:ml-3 sm:w-auto"
+                    onClick={() => setOpenEditModal(false)}
                   >
-                    Delete
+                    Update
                   </button>
                   <button
                     type="button"
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => setOpenDeleteModal(false)}
+                    onClick={() => setOpenEditModal(false)}
                     ref={cancelButtonRef}
                   >
                     Cancel
