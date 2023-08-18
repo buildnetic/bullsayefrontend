@@ -6,7 +6,7 @@ import SimpleLayout from "./Layouts/Simple/SimpleLayout";
 import Home from "./pages/Home/Home";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
-import Otp from "./pages/OTP/OTP";
+import Otp from "./pages/OTP";
 import Error404 from "./pages/Error404/Error404";
 
 import Main from "./pages/AuthenticatedUser/Main/Main";
