@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import SelectWithSearch from "../../../../../components/AuthenticatedUser/SelectWithSearch/SelectWithSearch";
 import { stockExchangeList } from "../../../../../data/stockExchangeList";
 import { useEffect, useState } from "react";
@@ -7,18 +8,19 @@ import axiosInstance from "../../../../../AxiosInstance";
 import { ToastError, ToastSuccess } from "../../../../../ToastNotification";
 import { useSelector } from "react-redux";
 import ProfileImg from "../../../../../assets/images/profile-icon.png";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import LoadingCreatePost from "./LoadingCreatePost";
 
-const CreatePost = () => {
+const CreatePost = ({ type, postId }) => {
   const { loggedUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [selectedExchange, setSelectedExchange] = useState(
     stockExchangeList[0]
   );
 
+  const [stockCodeError, setStockCodeError] = useState(false);
   const [formData, setFormData] = useState({
     type: "",
     description: "",
@@ -34,8 +36,6 @@ const CreatePost = () => {
     setFormData((prev) => ({ ...prev, exchange_code: selectedExchange.code }));
   }, [selectedExchange]);
 
-  const [stockCodeError, setStockCodeError] = useState(false);
-
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
 
@@ -45,7 +45,20 @@ const CreatePost = () => {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
+
+    // setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  console.log(formData);
+
+  function findStockExchangeIndexByCode(code) {
+    for (let i = 0; i < stockExchangeList.length; i++) {
+      if (stockExchangeList[i].code === code) {
+        return i; // Return the index of the matching element
+      }
+    }
+    return -1; // Code not found
+  }
 
   const getCurrentPrice = async () => {
     const res = await axios.get(
@@ -64,6 +77,50 @@ const CreatePost = () => {
     delete axiosInstance.defaults.headers["Authorization"];
     return res;
   };
+
+  const getPostDetailsFn = async () => {
+    return await axiosInstance.get(`/vips/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
+  const updatePostFn = async () => {
+    return await axiosInstance.put(`/update/vips/${postId}`, formData, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
+  const getPostDetailsQuery = useQuery("getPostDetails", getPostDetailsFn, {
+    enabled: type === "edit" && postId !== !undefined,
+    onSuccess: (res) => {
+      setFormData((prev) => ({
+        ...prev,
+        type: res?.data?.data?.type,
+        description: res?.data?.data?.description,
+        exchange_code: res?.data?.data?.exchange_code,
+        stock_code: res?.data?.data?.stock_code,
+        stock_name: res?.data?.data?.stock_name,
+        current_price: res?.data?.data?.current_price,
+        target_price: res?.data?.data?.target_price,
+        hashtags: JSON.parse(res?.data?.data?.hashtags),
+      }));
+
+      console.log("hastag", res?.data?.data?.hashtags);
+
+      setSelectedExchange(
+        stockExchangeList[
+          findStockExchangeIndexByCode(res?.data?.data?.exchange_code)
+        ]
+      );
+    },
+    onError: (err) => {
+      console.log("err", err);
+    },
+  });
 
   const getCurrentPriceQuery = useQuery("currentPrice", getCurrentPrice, {
     enabled: false,
@@ -95,6 +152,40 @@ const CreatePost = () => {
   const createPostMutation = useMutation(createPost, {
     onSuccess: (res) => {
       ToastSuccess(res?.data?.message);
+      setFormData((prev) => ({
+        ...prev,
+        type: "",
+        description: "",
+        exchange_code: selectedExchange.code || "",
+        stock_code: "",
+        stock_name: "",
+        current_price: "",
+        target_price: "",
+        hashtags: [],
+      }));
+      queryClient.invalidateQueries("getAllPost");
+      navigate("/main");
+    },
+    onError: (error) => {
+      ToastError(error?.response?.data?.message);
+      console.log("error", error);
+    },
+  });
+
+  const updatePostMutation = useMutation(updatePostFn, {
+    onSuccess: (res) => {
+      ToastSuccess(res?.data?.message);
+      setFormData((prev) => ({
+        ...prev,
+        type: "",
+        description: "",
+        exchange_code: selectedExchange.code || "",
+        stock_code: "",
+        stock_name: "",
+        current_price: "",
+        target_price: "",
+        hashtags: [],
+      }));
       queryClient.invalidateQueries("getAllPost");
       navigate("/main");
     },
@@ -116,64 +207,49 @@ const CreatePost = () => {
   const formHandler = (e) => {
     e.preventDefault();
 
-    if (location.pathname.startsWith("/post/edit")) {
-      alert("edit");
+    if (type === "edit") {
+      updatePostMutation.mutate(formData);
+      console.log("formData edit", formData);
     } else {
       createPostMutation.mutate(formData);
+      console.log("formData create", formData);
     }
   };
 
   return (
     <>
-      <div className="flex flex-row gap-4">
-        <img
-          src={
-            !loggedUser.user_profile_image
-              ? ProfileImg
-              : loggedUser.user_profile_image
-          }
-          alt="Profile Image"
-          className={`w-12 h-12 rounded-full border-2 border-gray-100 object-cover ${
-            !loggedUser.user_profile_image && "p-1.5"
-          }`}
-        />
-        <div className="w-full">
-          <div className="flex flex-row justify-between mt-4">
+      {getPostDetailsQuery.isLoading ? (
+        <LoadingCreatePost />
+      ) : getPostDetailsQuery.isError ? (
+        "Error in fetching post..."
+      ) : (
+        <div className="flex flex-row gap-4">
+          <img
+            src={
+              !loggedUser.user_profile_image
+                ? ProfileImg
+                : loggedUser.user_profile_image
+            }
+            alt="Profile Image"
+            className={`w-12 h-12 rounded-full border-2 border-gray-100 object-cover ${
+              !loggedUser.user_profile_image && "p-1.5"
+            }`}
+          />
+          <div className="w-full mt-1">
             <div className="grid grid-cols-12 gap-5">
-              <div className="flex flex-row gap-5 items-center">
-                <div className="flex">
-                  <input
-                    type="radio"
-                    name="type"
-                    className="shrink-0 cursor-pointer mt-0.5 border-gray-400 rounded-full text-c-green pointer-events-none focus:ring-c-green"
-                    id="buy"
-                    value="buy"
-                    onChange={onChangeHandler}
-                  />
-                  <label
-                    htmlFor="buy"
-                    className="text-sm text-gray-500 ml-2 cursor-pointer"
-                  >
-                    Buy
-                  </label>
-                </div>
-
-                <div className="flex">
-                  <input
-                    type="radio"
-                    name="type"
-                    className="shrink-0 cursor-pointer mt-0.5 border-gray-400 rounded-full text-c-green pointer-events-none focus:ring-c-green"
-                    id="sell"
-                    value="sell"
-                    onChange={onChangeHandler}
-                  />
-                  <label
-                    htmlFor="sell"
-                    className="text-sm text-gray-500 ml-2 cursor-pointer"
-                  >
-                    Sell
-                  </label>
-                </div>
+              <div className=" col-span-12">
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={onChangeHandler}
+                  className="w-full rounded-md text-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
+                >
+                  <option value="" disabled>
+                    Select call type
+                  </option>
+                  <option value="buy">Buy</option>
+                  <option value="sell">Sell</option>
+                </select>
               </div>
               <SelectWithSearch
                 datas={stockExchangeList}
@@ -193,6 +269,7 @@ const CreatePost = () => {
                 }
                 onChange={onChangeHandler}
                 title="Stock Code"
+                value={formData.stock_code}
               />
               <button
                 type="button"
@@ -227,6 +304,7 @@ const CreatePost = () => {
                 placeholder="Target Price"
                 className=" col-span-4 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
                 onChange={onChangeHandler}
+                value={formData.target_price}
               />
               <input
                 type="text"
@@ -234,6 +312,7 @@ const CreatePost = () => {
                 placeholder="#hashtags #vipana"
                 className="col-span-8 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
                 onChange={onChangeHandler}
+                value={formData.hashtags.join(" ")}
               />
               <textarea
                 name="description"
@@ -242,6 +321,7 @@ const CreatePost = () => {
                 className="col-span-12 resize-y block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-c-green focus:border-c-green dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-c-green dark:focus:border-c-green"
                 placeholder="Your message..."
                 onChange={onChangeHandler}
+                value={formData.description}
               ></textarea>
 
               <button
@@ -254,7 +334,7 @@ const CreatePost = () => {
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

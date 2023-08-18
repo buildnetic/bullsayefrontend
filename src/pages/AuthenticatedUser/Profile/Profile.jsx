@@ -57,13 +57,13 @@ const Profile = () => {
                   : getUserDetailsQuery?.data?.data?.data?.user_profile_image
               }
               alt="Profile Image"
-              className={`w-20 h-20 rounded-full text-xs border-2 border-gray-100 ${
+              className={`w-16 h-16 rounded-full text-xs border-2 border-gray-100 ${
                 !getUserDetailsQuery?.data?.data?.data?.user_profile_image &&
                 "p-1.5"
               }`}
             />
             <div>
-              <h3 className="text-lg font-bold">
+              <h3 className="text-lg font-bold capitalize">
                 {getUserDetailsQuery?.data?.data?.data?.name}
               </h3>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
@@ -74,7 +74,7 @@ const Profile = () => {
               </p>
             </div>
             <NavLink
-              to="#"
+              to={loggedUser.id === +id && "/setting/edit"}
               className="ml-auto text-center mt-4 block rounded-lg border-c-green border-2 p-2 px-4 shadow-md hover:shadow-none text-black hover:text-white hover:bg-c-green transition-all duration-75 text-sm font-medium"
             >
               {loggedUser.id === +id ? "Edit Profile" : "Follow"}

@@ -6,7 +6,7 @@ import SimpleLayout from "./Layouts/Simple/SimpleLayout";
 import Home from "./pages/Home/Home";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
-import Otp from "./pages/OTP/OTP";
+// import Otp from "./pages/OTP/OTP";
 import Error404 from "./pages/Error404/Error404";
 
 import Main from "./pages/AuthenticatedUser/Main/Main";
@@ -46,10 +46,10 @@ const router = createBrowserRouter([
         path: "signup",
         element: <SignUp />,
       },
-      {
-        path: "verify",
-        element: <Otp />,
-      },
+      // {
+      //   path: "verify",
+      //   element: <Otp />,
+      // },
       {
         path: "forgot-password",
         element: <ForgotPassword />,
@@ -70,10 +70,6 @@ const router = createBrowserRouter([
       },
       {
         path: "/post/create",
-        element: <CreatePost />,
-      },
-      {
-        path: "/post/edit/:id",
         element: <CreatePost />,
       },
       {
