@@ -4,7 +4,7 @@ import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { login } from "../../redux/userSlice";
-import axiosInstance from "../../AxiosInstance";
+import axiosInstance from "../../axiosInstance";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
 
