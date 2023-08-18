@@ -4,7 +4,7 @@ import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { NavLink, Navigate } from "react-router-dom";
 import { FaTiktok, FaYoutube, FaInstagram } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import axiosInstance from "../../AxiosInstance";
+import axiosInstance from "../../axiosInstance";
 import { login } from "../../redux/userSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
