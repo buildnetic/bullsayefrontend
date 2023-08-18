@@ -2,7 +2,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { BiSolidEditAlt } from "react-icons/bi";
-import axiosInstance from "../../AxiosInstance";
+import axiosInstance from "../../axiosInstance";
 import { useSelector } from "react-redux";
 import { useMutation, useQueryClient } from "react-query";
 import { ToastError, ToastSuccess } from "../../ToastNotification";

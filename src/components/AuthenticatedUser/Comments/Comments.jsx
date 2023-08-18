@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { useSelector } from "react-redux";
-import axiosInstance from "../../../AxiosInstance";
+import axiosInstance from "../../../axiosInstance";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import LoadingComment from "./LoadingComment";
 import moment from "moment";

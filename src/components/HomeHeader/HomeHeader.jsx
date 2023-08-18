@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
 import { logout } from "../../redux/userSlice";
-import axiosInstance from "../../AxiosInstance";
+import axiosInstance from "../../axiosInstance";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ProfileImg from "../../assets/images/profile-icon.png";

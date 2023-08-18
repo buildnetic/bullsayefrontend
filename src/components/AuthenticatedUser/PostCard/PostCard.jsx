@@ -8,7 +8,7 @@ import ProfileImg from "../../../assets/images/profile-icon.png";
 import { useSelector } from "react-redux";
 import DeleteConfirmation from "../../Modals/DeleteConfirmation";
 import { useState } from "react";
-import axiosInstance from "../../../AxiosInstance";
+import axiosInstance from "../../../axiosInstance";
 import { useMutation, useQueryClient } from "react-query";
 import { ToastError, ToastSuccess } from "../../../ToastNotification";
 import EditPost from "../../Modals/EditPost";

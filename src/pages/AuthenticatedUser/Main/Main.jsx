@@ -3,7 +3,7 @@ import CreatePost from "./Partials/CreatePost/CreatePost";
 import Comments from "../../../components/AuthenticatedUser/Comments/Comments";
 import PostCard from "../../../components/AuthenticatedUser/PostCard/PostCard";
 import { useState } from "react";
-import axiosInstance from "../../../AxiosInstance";
+import axiosInstance from "../../../axiosInstance";
 import { useSelector } from "react-redux";
 import { useQuery } from "react-query";
 import LoadingPostCard from "../../../components/AuthenticatedUser/PostCard/LoadingPostCard";

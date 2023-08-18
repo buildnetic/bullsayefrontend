@@ -2,7 +2,7 @@
 import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import axiosInstance from "../../AxiosInstance";
+import axiosInstance from "../../axiosInstance";
 import { useSelector } from "react-redux";
 import { useMutation, useQueryClient } from "react-query";
 import { ToastError, ToastSuccess } from "../../ToastNotification";

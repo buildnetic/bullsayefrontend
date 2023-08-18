@@ -4,7 +4,7 @@ import PostCard from "../../../components/AuthenticatedUser/PostCard/PostCard";
 import { useState } from "react";
 import ProfileLocked from "./ProfileLocked/ProfileLocked";
 import { useSelector } from "react-redux";
-import axiosInstance from "../../../AxiosInstance";
+import axiosInstance from "../../../axiosInstance";
 import { useQuery } from "react-query";
 import ProfileImg from "../../../assets/images/profile-icon.png";
 import LoadingPostCard from "../../../components/AuthenticatedUser/PostCard/LoadingPostCard";

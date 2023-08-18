@@ -3,7 +3,7 @@ import { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { NavLink, useNavigate } from "react-router-dom";
-import axiosInstance from "../../AxiosInstance";
+import axiosInstance from "../../axiosInstance";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
 
 const ResetPassword = () => {

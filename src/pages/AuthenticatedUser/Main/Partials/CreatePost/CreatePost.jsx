@@ -4,7 +4,7 @@ import { stockExchangeList } from "../../../../../data/stockExchangeList";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import axiosInstance from "../../../../../AxiosInstance";
+import axiosInstance from "../../../../../axiosInstance";
 import { ToastError, ToastSuccess } from "../../../../../ToastNotification";
 import { useSelector } from "react-redux";
 import ProfileImg from "../../../../../assets/images/profile-icon.png";

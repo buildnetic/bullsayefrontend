@@ -13,7 +13,7 @@ import {
 import { MdNotifications } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/userSlice";
-import axiosInstance from "../../AxiosInstance";
+import axiosInstance from "../../axiosInstance";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
 import ProfileImg from "../../assets/images/profile-icon.png";
 
