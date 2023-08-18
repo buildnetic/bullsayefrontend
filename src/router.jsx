@@ -17,7 +17,6 @@ import Notifications from "./pages/AuthenticatedUser/Notifications/Notifications
 import Edit from "./pages/AuthenticatedUser/Setting/Edit/Edit";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
-import Test from "./Test";
 
 const router = createBrowserRouter([
   {
@@ -27,10 +26,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-      },
-      {
-        path: "/test",
-        element: <Test />,
       },
     ],
   },
