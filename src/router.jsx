@@ -18,6 +18,8 @@ import Edit from "./pages/AuthenticatedUser/Setting/Edit/Edit";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 
+import Test from "./Test";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -52,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "reset-password",
         element: <ResetPassword />,
+      },
+      {
+        path: "/test",
+        element: <Test />,
       },
     ],
   },

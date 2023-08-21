@@ -2,7 +2,6 @@ import { ChartBarIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { NavLink, Navigate } from "react-router-dom";
-import { FaTiktok, FaYoutube, FaInstagram } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../axiosInstance";
 import { login } from "../../redux/userSlice";
@@ -16,13 +15,10 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setError] = useState(null);
   const [signUpData, setSignUpData] = useState({
-    name: null,
-    email: null,
-    password: null,
-    password_confirmation: null,
-    youtube_id: null,
-    tiktok_id: null,
-    instagram_id: null,
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -59,33 +55,9 @@ const SignUp = () => {
   const inputErrorStyle =
     "block w-full rounded-md border-2 border-red-600 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6";
 
-  const socialMediaButtons = [
-    {
-      id: 1,
-      platform: "Youtube",
-      icon: <FaYoutube className="text-lg" />,
-      backgroundColor: "bg-[#FF0000]",
-      hoverColor: "hover:bg-[#ff1919]",
-    },
-    {
-      id: 2,
-      platform: "TikTok",
-      icon: <FaTiktok className="text-lg" />,
-      backgroundColor: "bg-[#010101]",
-      hoverColor: "hover:bg-[#1f1c1c]",
-    },
-    {
-      id: 3,
-      platform: "Instagram",
-      icon: <FaInstagram className="text-lg" />,
-      backgroundColor: "bg-[#ee2a7b]",
-      hoverColor: "hover:bg-[#ff4894]",
-    },
-  ];
-
   return (
     <>
-      <div className="flex flex-1 flex-col justify-center px-6 py-8 md:py-12 lg:px-8">
+      <div className="flex flex-1 flex-col h-screen justify-center px-6 py-8 md:py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <NavLink
             to="/"
@@ -233,81 +205,6 @@ const SignUp = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="youtube"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Youtube Id
-              </label>
-              <div className="mt-2">
-                <input
-                  onChange={onChangeHandler}
-                  id="youtube"
-                  name="youtube"
-                  type="text"
-                  className={
-                    isError?.youtube_id ? inputErrorStyle : inputNormalStyle
-                  }
-                />
-              </div>
-              {isError?.youtube_id && (
-                <span className="text-sm text-red-600">
-                  {isError?.youtube_id}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="tiktok"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Tiktok Id
-              </label>
-              <div className="mt-2">
-                <input
-                  onChange={onChangeHandler}
-                  id="tiktok"
-                  name="tiktok"
-                  type="text"
-                  className={
-                    isError?.tiktok_id ? inputErrorStyle : inputNormalStyle
-                  }
-                />
-              </div>
-              {isError?.tiktok_id && (
-                <span className="text-sm text-red-600">
-                  {isError?.tiktok_id}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="instagram"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Instagram Id
-              </label>
-              <div className="mt-2">
-                <input
-                  onChange={onChangeHandler}
-                  id="instagram"
-                  name="instagram"
-                  type="text"
-                  className={
-                    isError?.instagram_id ? inputErrorStyle : inputNormalStyle
-                  }
-                />
-              </div>
-              {isError?.instagram_id && (
-                <span className="text-sm text-red-600">
-                  {isError?.instagram_id}
-                </span>
-              )}
-            </div>
-
-            <div>
               <button
                 type="submit"
                 className={
@@ -322,20 +219,6 @@ const SignUp = () => {
                 )}
               </button>
             </div>
-
-            <p className="mt-10 text-center text-md text-gray-500">
-              Or continue with
-            </p>
-            {socialMediaButtons.map((button) => (
-              <button
-                key={button.id}
-                type="button"
-                className={`flex w-full justify-center items-center gap-2 rounded-md ${button.backgroundColor} px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm ${button.hoverColor} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-green`}
-              >
-                {button.icon}
-                {button.platform}
-              </button>
-            ))}
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">

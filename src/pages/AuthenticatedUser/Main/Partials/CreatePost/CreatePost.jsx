@@ -45,11 +45,7 @@ const CreatePost = ({ type, postId }) => {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
-
-    // setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
-  console.log(formData);
 
   function findStockExchangeIndexByCode(code) {
     for (let i = 0; i < stockExchangeList.length; i++) {
@@ -94,6 +90,19 @@ const CreatePost = ({ type, postId }) => {
     });
   };
 
+  const getUserDetailsFn = async () => {
+    return await axiosInstance.get(`/users/${loggedUser.id}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
+  const getUserDetailsQuery = useQuery(
+    "getUserDetailsCreatePostComp",
+    getUserDetailsFn
+  );
+
   const getPostDetailsQuery = useQuery("getPostDetails", getPostDetailsFn, {
     enabled: type === "edit" && postId !== !undefined,
     onSuccess: (res) => {
@@ -108,8 +117,6 @@ const CreatePost = ({ type, postId }) => {
         target_price: res?.data?.data?.target_price,
         hashtags: JSON.parse(res?.data?.data?.hashtags),
       }));
-
-      console.log("hastag", res?.data?.data?.hashtags);
 
       setSelectedExchange(
         stockExchangeList[
@@ -226,13 +233,14 @@ const CreatePost = ({ type, postId }) => {
         <div className="flex flex-row gap-4">
           <img
             src={
-              !loggedUser.user_profile_image
+              !getUserDetailsQuery?.data?.data?.data.user_profile_image
                 ? ProfileImg
-                : loggedUser.user_profile_image
+                : getUserDetailsQuery?.data?.data?.data.user_profile_image
             }
             alt="Profile Image"
             className={`w-12 h-12 rounded-full border-2 border-gray-100 object-cover ${
-              !loggedUser.user_profile_image && "p-1.5"
+              !getUserDetailsQuery?.data?.data?.data.user_profile_image &&
+              "p-1.5"
             }`}
           />
           <div className="w-full mt-1">

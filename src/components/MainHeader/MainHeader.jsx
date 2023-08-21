@@ -16,6 +16,7 @@ import { logout } from "../../redux/userSlice";
 import axiosInstance from "../../axiosInstance";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
 import ProfileImg from "../../assets/images/profile-icon.png";
+import { useQuery } from "react-query";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -45,6 +46,19 @@ const MainHeader = () => {
       console.log(error);
     }
   };
+
+  const getUserDetailsFn = async () => {
+    return await axiosInstance.get(`/users/${loggedUser.id}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
+  const getUserDetailsQuery = useQuery(
+    "getUserDetailsHeader",
+    getUserDetailsFn
+  );
 
   return (
     <>
@@ -143,12 +157,15 @@ const MainHeader = () => {
                         <span className="sr-only">Open user menu</span>
                         <img
                           className={`h-8 w-8 rounded-full object-cover ${
-                            !loggedUser.user_profile_image && "p-1.5"
+                            !getUserDetailsQuery?.data?.data?.data
+                              .user_profile_image && "p-1.5"
                           }`}
                           src={
-                            !loggedUser.user_profile_image
+                            !getUserDetailsQuery?.data?.data?.data
+                              .user_profile_image
                               ? ProfileImg
-                              : loggedUser.user_profile_image
+                              : getUserDetailsQuery?.data?.data?.data
+                                  .user_profile_image
                           }
                           alt="Profile Image"
                         />
