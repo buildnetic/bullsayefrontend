@@ -149,6 +149,7 @@ const CreatePost = ({ type, postId }) => {
           current_price: "",
         }));
         ToastError("Invalid Exchange or Stock code");
+        console.log(res);
       }
     },
     onError: () => {
