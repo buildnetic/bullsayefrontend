@@ -19,6 +19,7 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 
 import Test from "./Test";
+import PostCard from "./components/AuthenticatedUser/PostCard/PostCard";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "/post/create",
         element: <CreatePost />,
+      },
+      {
+        path: "/post/:singlePostId",
+        element: <PostCard />,
       },
       {
         path: "/profile/:id",
