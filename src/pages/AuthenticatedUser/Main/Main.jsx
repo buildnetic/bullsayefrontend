@@ -62,6 +62,8 @@ const Main = () => {
               <p className="text-center text-red-600">
                 Failed to fetch all posts
               </p>
+            ) : getAllPostQuery?.data?.data?.length === 0 ? (
+              <p className="text-center text-gray-400">No posts yet...</p>
             ) : (
               getAllPostQuery?.data?.data?.map((elem) => (
                 <div
