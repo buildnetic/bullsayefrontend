@@ -49,6 +49,7 @@ const Edit = () => {
     const formData = new FormData();
     formData.append("name", userData.name);
     formData.append("email", userData.email);
+    formData.append("about", userData.about);
     formData.append("youtube_id", userData.youtube_id);
     formData.append("tiktok_id", userData.tiktok_id);
     formData.append("instagram_id", userData.instagram_id);

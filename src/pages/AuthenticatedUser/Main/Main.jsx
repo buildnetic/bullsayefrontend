@@ -7,6 +7,7 @@ import axiosInstance from "../../../axiosInstance";
 import { useSelector } from "react-redux";
 import { useQuery } from "react-query";
 import LoadingPostCard from "../../../components/AuthenticatedUser/PostCard/LoadingPostCard";
+import MarketOverview from "./Partials/MarketOverview";
 
 const Main = () => {
   const { loggedUser } = useSelector((state) => state.user);
@@ -84,13 +85,12 @@ const Main = () => {
 
           {/* right side start */}
           <div className="col-span-12 lg:col-span-4">
-            {/* Top Trending Stocks start */}
-            <div className=" border-2 p-4 rounded-lg shadow-sm">
-              <h2 className="font-semibold text-gray-400 mb-3 text-xl ">
-                Top Trending Stocks
-              </h2>
-            </div>
-            {/* Top Trending Stocks end */}
+            {/* Market Overview start */}
+            <h2 className="font-semibold text-gray-400 mb-3 text-xl ">
+              Market Overview
+            </h2>
+            <MarketOverview />
+            {/* Market Overview end */}
 
             {/* Top Performers start*/}
             <div className="mt-4 border-2 p-4 rounded-lg shadow-sm">
