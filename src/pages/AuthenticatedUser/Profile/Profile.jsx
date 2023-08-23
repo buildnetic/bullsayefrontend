@@ -1,7 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 import Comments from "../../../components/AuthenticatedUser/Comments/Comments";
 import PostCard from "../../../components/AuthenticatedUser/PostCard/PostCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileLocked from "./ProfileLocked/ProfileLocked";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../../axiosInstance";

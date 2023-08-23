@@ -8,13 +8,17 @@ import axiosInstance from "../../../../../axiosInstance";
 import { ToastError, ToastSuccess } from "../../../../../ToastNotification";
 import { useSelector } from "react-redux";
 import ProfileImg from "../../../../../assets/images/profile-icon.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import LoadingCreatePost from "./LoadingCreatePost";
 
-const CreatePost = ({ type, postId }) => {
+const CreatePost = () => {
   const { loggedUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { id: postId } = useParams();
+
+  const isEditPage = location.pathname.startsWith("/post/edit/");
 
   const [selectedExchange, setSelectedExchange] = useState(
     stockExchangeList[0]
@@ -104,7 +108,7 @@ const CreatePost = ({ type, postId }) => {
   );
 
   const getPostDetailsQuery = useQuery("getPostDetails", getPostDetailsFn, {
-    enabled: type === "edit" && postId !== !undefined,
+    enabled: isEditPage && postId !== !undefined,
     onSuccess: (res) => {
       setFormData((prev) => ({
         ...prev,
@@ -215,12 +219,10 @@ const CreatePost = ({ type, postId }) => {
   const formHandler = (e) => {
     e.preventDefault();
 
-    if (type === "edit") {
+    if (isEditPage) {
       updatePostMutation.mutate(formData);
-      console.log("formData edit", formData);
     } else {
       createPostMutation.mutate(formData);
-      console.log("formData create", formData);
     }
   };
 

@@ -3,7 +3,7 @@ import moment from "moment";
 import { AiFillDelete, AiOutlineLike } from "react-icons/ai";
 import { BiCommentDetail, BiShareAlt, BiSolidEditAlt } from "react-icons/bi";
 import { BsRepeat } from "react-icons/bs";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import ProfileImg from "../../../assets/images/profile-icon.png";
 import { useSelector } from "react-redux";
 import DeleteConfirmation from "../../Modals/DeleteConfirmation";
@@ -11,7 +11,6 @@ import { useState } from "react";
 import axiosInstance from "../../../axiosInstance";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ToastError, ToastSuccess } from "../../../ToastNotification";
-import EditPost from "../../Modals/EditPost";
 import SocialShareModal from "../../Modals/SocialShareModal";
 import Comments from "../Comments/Comments";
 
@@ -21,9 +20,9 @@ const PostCard = ({ data, handleCommentClick }) => {
   const { loggedUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
   const { singlePostId } = useParams();
+  const navigate = useNavigate();
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [openEditPostModal, setOpenEditPostModal] = useState(false);
   const [openSocialMediaShareModal, setOpenSocialMediaShareModal] =
     useState(false);
   const [postId, setPostId] = useState("");
@@ -35,11 +34,6 @@ const PostCard = ({ data, handleCommentClick }) => {
   const deleteModalFn = (id) => {
     setPostId(id);
     setOpenDeleteModal(true);
-  };
-
-  const editPostModalFn = (id) => {
-    setPostId(id);
-    setOpenEditPostModal(true);
   };
 
   const socialMediaShareModalFn = (id) => {
@@ -105,6 +99,7 @@ const PostCard = ({ data, handleCommentClick }) => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const getSinglePostDetailsQuery = useQuery(
     "getSinglePostDetails",
     getSinglePostDetailsFn,
@@ -153,7 +148,7 @@ const PostCard = ({ data, handleCommentClick }) => {
                   <BiSolidEditAlt
                     className=" cursor-pointer text-lg text-gray-500 hover:text-green-500 transition-all"
                     title="Edit Post"
-                    onClick={() => editPostModalFn(postData.id)}
+                    onClick={() => navigate(`/post/edit/${postData.id}`)}
                   />
                   <AiFillDelete
                     className=" cursor-pointer text-lg text-gray-500 hover:text-red-500 transition-all"
@@ -281,13 +276,6 @@ const PostCard = ({ data, handleCommentClick }) => {
           type="Post"
           openDeleteModal={openDeleteModal}
           setOpenDeleteModal={setOpenDeleteModal}
-          id={postId}
-        />
-
-        <EditPost
-          type="edit"
-          openEditPostModal={openEditPostModal}
-          setOpenEditPostModal={setOpenEditPostModal}
           id={postId}
         />
 

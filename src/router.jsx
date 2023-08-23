@@ -75,6 +75,10 @@ const router = createBrowserRouter([
         element: <CreatePost />,
       },
       {
+        path: "/post/edit/:id",
+        element: <CreatePost />,
+      },
+      {
         path: "/post/:singlePostId",
         element: <PostCard />,
       },

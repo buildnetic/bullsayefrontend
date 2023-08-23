@@ -27,6 +27,8 @@ const MainHeader = () => {
 
   const Dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearchResultBox, setShowSearchResultBox] = useState(false);
 
   const logoutHandler = async () => {
     setIsLoading(true);
@@ -59,6 +61,33 @@ const MainHeader = () => {
     "getUserDetailsHeader",
     getUserDetailsFn
   );
+
+  const getSerachResultsFn = async () => {
+    return await axiosInstance.get(`/search?name=${searchQuery}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
+  const getSerachResultsQuery = useQuery(
+    "getSerachResults",
+    getSerachResultsFn,
+    {
+      enabled: showSearchResultBox,
+      onSuccess: (res) => {
+        console.log(res);
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
+
+  const onChangeHandler = (e) => {
+    setSearchQuery(e.target.value);
+    setShowSearchResultBox(true);
+  };
 
   return (
     <>
@@ -140,14 +169,56 @@ const MainHeader = () => {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <div className="relative mr-2">
-                    <input
-                      type="text"
-                      required
-                      placeholder="Search by user"
-                      className="block w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
-                    />
-                    <AiOutlineSearch className="absolute right-2 top-2 text-xl text-gray-400" />
+                  <div className="relative">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        required
+                        placeholder="search by user name"
+                        className="block w-80 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
+                        onChange={onChangeHandler}
+                      />
+                      <AiOutlineSearch className="absolute right-2 top-2 text-xl text-gray-400" />
+                    </div>
+                    {showSearchResultBox && (
+                      <div className=" absolute top-10 left-0 right-0 w-full bg-white shadow-sm rounded-md">
+                        {getSerachResultsQuery.isLoading ? (
+                          <p className="text-sm text-gray-400 px-2 py-1">
+                            Loading...
+                          </p>
+                        ) : getSerachResultsQuery.isError ? (
+                          <p className="text-sm text-gray-400 px-2 py-1">
+                            {
+                              getSerachResultsQuery?.error?.response?.data
+                                ?.message
+                            }
+                          </p>
+                        ) : (
+                          getSerachResultsQuery?.data?.data?.data?.map(
+                            (elem, id) => (
+                              <NavLink
+                                key={id}
+                                to={`/profile/${elem.id}`}
+                                className="flex gap-4 items-center py-1 px-2 text-sm hover:bg-gray-100 rounded-md"
+                              >
+                                <img
+                                  className={`h-8 w-8 rounded-full object-cover border ${
+                                    !elem?.user_profile_image && "p-1.5"
+                                  }`}
+                                  alt="Profile Image"
+                                  src={
+                                    !elem?.user_profile_image
+                                      ? ProfileImg
+                                      : elem?.user_profile_image
+                                  }
+                                />
+                                {elem.name}
+                              </NavLink>
+                            )
+                          )
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   {/* Profile dropdown */}
