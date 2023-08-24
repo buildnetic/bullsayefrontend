@@ -17,9 +17,9 @@ import Notifications from "./pages/AuthenticatedUser/Notifications/Notifications
 import Edit from "./pages/AuthenticatedUser/Setting/Edit/Edit";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ViewSinglePost from "./pages/AuthenticatedUser/Post/ViewSinglePost";
 
 import Test from "./Test";
-import PostCard from "./components/AuthenticatedUser/PostCard/PostCard";
 
 const router = createBrowserRouter([
   {
@@ -79,8 +79,8 @@ const router = createBrowserRouter([
         element: <CreatePost />,
       },
       {
-        path: "/post/:singlePostId",
-        element: <PostCard />,
+        path: "/post/:id",
+        element: <ViewSinglePost />,
       },
       {
         path: "/profile/:id",
