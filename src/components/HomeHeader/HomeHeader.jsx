@@ -13,11 +13,13 @@ import axiosInstance from "../../axiosInstance";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ProfileImg from "../../assets/images/profile-icon.png";
+import { useQuery } from "react-query";
 
 const HomeHeader = () => {
   const Dispatch = useDispatch();
   const { loggedUser } = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
+  let [open, setOpen] = useState(false);
 
   const logoutHandler = async () => {
     setIsLoading(true);
@@ -45,7 +47,21 @@ const HomeHeader = () => {
     { name: "Help", link: "#help" },
   ];
 
-  let [open, setOpen] = useState(false);
+  const getUserDetailsFn = async () => {
+    return await axiosInstance.get(`/users/${loggedUser?.id}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser?.token}`,
+      },
+    });
+  };
+
+  const getUserDetailsQuery = useQuery(
+    "getUserDetailsHomeHeader",
+    getUserDetailsFn,
+    {
+      enabled: loggedUser !== null,
+    }
+  );
 
   return (
     <div className="shadow-md w-full fixed top-0 left-0 bg-white z-50">
@@ -91,12 +107,14 @@ const HomeHeader = () => {
                   <span className="sr-only">Open user menu</span>
                   <img
                     className={`h-8 w-8 rounded-full object-cover ${
-                      !loggedUser.user_profile_image && "p-1.5"
+                      !getUserDetailsQuery?.data?.data?.data
+                        .user_profile_image && "p-1.5"
                     }`}
                     src={
-                      !loggedUser.user_profile_image
+                      !getUserDetailsQuery?.data?.data?.data.user_profile_image
                         ? ProfileImg
-                        : loggedUser.user_profile_image
+                        : getUserDetailsQuery?.data?.data?.data
+                            .user_profile_image
                     }
                     alt="Profile Image"
                   />

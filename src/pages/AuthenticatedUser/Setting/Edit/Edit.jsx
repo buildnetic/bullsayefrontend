@@ -1,12 +1,14 @@
 import { useState } from "react";
 import axiosInstance from "../../../../axiosInstance";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ToastError, ToastSuccess } from "../../../../ToastNotification";
 import ProfileImg from "../../../../assets/images/profile-icon.png";
 import LoadingEditProfile from "./LoadingEditProfile";
+import { logout } from "../../../../redux/userSlice";
 
 const Edit = () => {
+  const Dispatch = useDispatch();
   const { loggedUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
 
@@ -79,10 +81,16 @@ const Edit = () => {
     );
   };
 
+  const deactivateAccFn = async () => {
+    return await axiosInstance.get("/user/deactivate", {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
   const getUserDetailsQuery = useQuery("getUserDetails", getUserDetailsFn, {
     onSuccess: (res) => {
-      console.log("res", res);
-
       setUserData((prev) => ({
         ...prev,
         name: res?.data?.data?.name !== null ? res?.data?.data?.name : "",
@@ -138,6 +146,18 @@ const Edit = () => {
     },
   });
 
+  const deactivateAccQuery = useQuery("deactivateAcc", deactivateAccFn, {
+    enabled: false,
+    onSuccess: (res) => {
+      console.log("res", res);
+      ToastSuccess(res?.data?.message);
+      Dispatch(logout());
+    },
+    onError: (err) => {
+      ToastError(err?.response?.data?.message);
+    },
+  });
+
   const updateUserHandler = (e) => {
     e.preventDefault();
     updateUserDetailsMutation.mutate();
@@ -153,6 +173,11 @@ const Edit = () => {
     ) {
       updateUserPasswordMutation.mutate();
     }
+  };
+
+  const deactivateAccHandler = (e) => {
+    e.preventDefault();
+    deactivateAccQuery.refetch();
   };
 
   return (
@@ -428,6 +453,16 @@ const Edit = () => {
               </button>
             </div>
           </form>
+        </div>
+
+        <div className="mt-5 text-end">
+          <button
+            type="button"
+            className={`rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 `}
+            onClick={deactivateAccHandler}
+          >
+            Deactivate Account
+          </button>
         </div>
       </div>
     </>
