@@ -2,7 +2,6 @@
 import SelectWithSearch from "../../../../../components/AuthenticatedUser/SelectWithSearch/SelectWithSearch";
 import { stockExchangeList } from "../../../../../data/stockExchangeList";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axiosInstance from "../../../../../axiosInstance";
 import { ToastError, ToastSuccess } from "../../../../../ToastNotification";
@@ -61,11 +60,10 @@ const CreatePost = () => {
   }
 
   const getCurrentPrice = async () => {
-    const res = await axios.get(
-      `/api/search.json?engine=google_finance&api_key=${
-        import.meta.env.VITE_APP_GOOGLE_FIN_TOKEN
-      }&q=${formData.stock_code}:${selectedExchange.code}`
-    );
+    const res = await axiosInstance.post("/stock", {
+      stock_code: formData.stock_code,
+      exchange_code: formData.exchange_code,
+    });
     return res;
   };
 
@@ -136,14 +134,14 @@ const CreatePost = () => {
   const getCurrentPriceQuery = useQuery("currentPrice", getCurrentPrice, {
     enabled: false,
     onSuccess: (res) => {
-      if (res?.data?.summary) {
+      if (res?.data?.data?.summary) {
         setFormData((prev) => ({
           ...prev,
-          stock_name: res?.data?.summary?.title,
+          stock_name: res?.data?.data?.summary?.title,
         }));
         setFormData((prev) => ({
           ...prev,
-          current_price: res?.data?.summary?.extracted_price,
+          current_price: res?.data?.data?.summary?.extracted_price,
         }));
         setStockCodeError(false);
       } else {
@@ -153,7 +151,6 @@ const CreatePost = () => {
           current_price: "",
         }));
         ToastError("Invalid Exchange or Stock code");
-        console.log(res);
       }
     },
     onError: () => {
