@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useQuery } from "react-query";
 import { FreeMode, Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,6 +10,7 @@ import {
   BsFillArrowUpCircleFill,
 } from "react-icons/bs";
 import LoadingMarketOverview from "./LoadingMarketOverview";
+import axiosInstance from "../../../../../axiosInstance";
 
 const MarketAnalysis = () => {
   const [markets, setMarkets] = useState({
@@ -22,11 +22,10 @@ const MarketAnalysis = () => {
   });
 
   const getMarketOverviewFn = async () => {
-    const res = await axios.get(
-      `/api/search.json?engine=google_finance&api_key=${
-        import.meta.env.VITE_APP_GOOGLE_FIN_TOKEN
-      }&q=INFY:NSE`
-    );
+    const res = await axiosInstance.post("/stock", {
+      stock_code: "infy",
+      exchange_code: "nse",
+    });
     return res;
   };
 
@@ -35,21 +34,17 @@ const MarketAnalysis = () => {
     getMarketOverviewFn,
     {
       onSuccess: (res) => {
-        console.log(res?.data?.markets);
-
         setMarkets((prev) => ({
           ...prev,
-          usa: res?.data?.markets?.us,
-          europe: res?.data?.markets?.europe,
-          asia: res?.data?.markets?.asia,
-          currencies: res?.data?.markets?.currencies,
-          crypto: res?.data?.markets?.crypto,
+          usa: res?.data?.data?.markets?.us,
+          europe: res?.data?.data?.markets?.europe,
+          asia: res?.data?.data?.markets?.asia,
+          currencies: res?.data?.data?.markets?.currencies,
+          crypto: res?.data?.data?.markets?.crypto,
         }));
       },
     }
   );
-
-  console.log(markets);
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 import Comments from "../../../components/AuthenticatedUser/Comments/Comments";
 import PostCard from "../../../components/AuthenticatedUser/PostCard/PostCard";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProfileLocked from "./ProfileLocked/ProfileLocked";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../../axiosInstance";
@@ -52,19 +52,20 @@ const Profile = () => {
           <div className="flex flex-row items-center gap-5">
             <img
               src={
-                !getUserDetailsQuery?.data?.data?.data?.user_profile_image
+                !getUserDetailsQuery?.data?.data?.data?.user?.user_profile_image
                   ? ProfileImg
-                  : getUserDetailsQuery?.data?.data?.data?.user_profile_image
+                  : getUserDetailsQuery?.data?.data?.data?.user
+                      ?.user_profile_image
               }
               alt="Profile Image"
-              className={`w-16 h-16 rounded-full text-xs border-2 border-gray-100 ${
-                !getUserDetailsQuery?.data?.data?.data?.user_profile_image &&
-                "p-1.5"
+              className={`w-14 h-14 rounded-full text-xs border-2 border-gray-100 ${
+                !getUserDetailsQuery?.data?.data?.data?.user
+                  ?.user_profile_image && "p-1.5"
               }`}
             />
             <div>
               <h3 className="text-lg font-bold capitalize">
-                {getUserDetailsQuery?.data?.data?.data?.name}
+                {getUserDetailsQuery?.data?.data?.data?.user?.name}
               </h3>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
                 Accuracy Index:{" "}
@@ -82,19 +83,26 @@ const Profile = () => {
           </div>
           <p
             className={`mt-2 text-md ${
-              !getUserDetailsQuery?.data?.data?.data?.about && "text-gray-400"
+              !getUserDetailsQuery?.data?.data?.data?.user?.about &&
+              "text-gray-400"
             }`}
           >
-            {getUserDetailsQuery?.data?.data?.data?.about
-              ? getUserDetailsQuery?.data?.data?.data?.about
+            {getUserDetailsQuery?.data?.data?.data?.user?.about
+              ? getUserDetailsQuery?.data?.data?.data?.user?.about
               : "You have not added your bio yet..."}
           </p>
           <div className="flex flex-row justify-around mt-2">
             <p className="text-[#8E8E8E]">
-              <span className="font-bold">4M</span> followers
+              <span className="font-bold">
+                {getUserDetailsQuery?.data?.data?.data?.user?.followers_count}
+              </span>{" "}
+              followers
             </p>
             <p className="text-[#8E8E8E]">
-              <span className="font-bold">456</span> following
+              <span className="font-bold">
+                {getUserDetailsQuery?.data?.data?.data?.user?.following_count}
+              </span>{" "}
+              following
             </p>
           </div>
 
