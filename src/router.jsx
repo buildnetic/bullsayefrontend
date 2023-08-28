@@ -20,6 +20,7 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ViewSinglePost from "./pages/AuthenticatedUser/Post/ViewSinglePost";
 
 import Test from "./Test";
+import Search from "./pages/AuthenticatedUser/Search";
 
 const router = createBrowserRouter([
   {
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
       {
         path: "/user/:id",
         element: <Profile />,
+      },
+      {
+        path: "/search",
+        element: <Search />,
       },
     ],
   },
