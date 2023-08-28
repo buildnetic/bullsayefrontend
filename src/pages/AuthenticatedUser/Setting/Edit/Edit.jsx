@@ -93,18 +93,29 @@ const Edit = () => {
     onSuccess: (res) => {
       setUserData((prev) => ({
         ...prev,
-        name: res?.data?.data?.name !== null ? res?.data?.data?.name : "",
-        email: res?.data?.data?.email !== null ? res?.data?.data?.email : "",
-        about: res?.data?.data?.about !== null ? res?.data?.data?.about : "",
+        name:
+          res?.data?.data?.user?.name !== null
+            ? res?.data?.data?.user?.name
+            : "",
+        email:
+          res?.data?.data?.user?.email !== null
+            ? res?.data?.data?.user?.email
+            : "",
+        about:
+          res?.data?.data?.user?.about !== null
+            ? res?.data?.data?.user?.about
+            : "",
         youtube_id:
-          res?.data?.data?.youtube_id !== null
-            ? res?.data?.data?.youtube_id
+          res?.data?.data?.user?.youtube_id !== null
+            ? res?.data?.data?.user?.youtube_id
             : "",
         tiktok_id:
-          res?.data?.data?.tiktok_id !== null ? res?.data?.data?.tiktok_id : "",
+          res?.data?.data?.user?.tiktok_id !== null
+            ? res?.data?.data?.user?.tiktok_id
+            : "",
         instagram_id:
-          res?.data?.data?.instagram_id !== null
-            ? res?.data?.data?.instagram_id
+          res?.data?.data?.user?.instagram_id !== null
+            ? res?.data?.data?.user?.instagram_id
             : "",
       }));
     },
@@ -207,9 +218,9 @@ const Edit = () => {
                         {!selectedImage && (
                           <img
                             src={
-                              getUserDetailsQuery?.data?.data?.data
+                              getUserDetailsQuery?.data?.data?.data?.user
                                 ?.user_profile_image !== null
-                                ? getUserDetailsQuery?.data?.data?.data
+                                ? getUserDetailsQuery?.data?.data?.data?.user
                                     ?.user_profile_image
                                 : ProfileImg
                             }
