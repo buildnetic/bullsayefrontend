@@ -107,13 +107,14 @@ const HomeHeader = () => {
                   <span className="sr-only">Open user menu</span>
                   <img
                     className={`h-8 w-8 rounded-full object-cover ${
-                      !getUserDetailsQuery?.data?.data?.data
+                      !getUserDetailsQuery?.data?.data?.data?.user
                         .user_profile_image && "p-1.5"
                     }`}
                     src={
-                      !getUserDetailsQuery?.data?.data?.data.user_profile_image
+                      !getUserDetailsQuery?.data?.data?.data?.user
+                        .user_profile_image
                         ? ProfileImg
-                        : getUserDetailsQuery?.data?.data?.data
+                        : getUserDetailsQuery?.data?.data?.data?.user
                             .user_profile_image
                     }
                     alt="Profile Image"

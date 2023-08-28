@@ -233,14 +233,15 @@ const CreatePost = () => {
         <div className="flex flex-row gap-4">
           <img
             src={
-              !getUserDetailsQuery?.data?.data?.data.user_profile_image
+              !getUserDetailsQuery?.data?.data?.data?.user?.user_profile_image
                 ? ProfileImg
-                : getUserDetailsQuery?.data?.data?.data.user_profile_image
+                : getUserDetailsQuery?.data?.data?.data?.user
+                    ?.user_profile_image
             }
             alt="Profile Image"
             className={`w-12 h-12 rounded-full border-2 border-gray-100 object-cover ${
-              !getUserDetailsQuery?.data?.data?.data.user_profile_image &&
-              "p-1.5"
+              !getUserDetailsQuery?.data?.data?.data?.user
+                ?.user_profile_image && "p-1.5"
             }`}
           />
           <div className="w-full mt-1">
