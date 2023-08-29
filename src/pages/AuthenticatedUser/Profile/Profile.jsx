@@ -89,7 +89,7 @@ const Profile = () => {
           >
             {getUserDetailsQuery?.data?.data?.data?.user?.about
               ? getUserDetailsQuery?.data?.data?.data?.user?.about
-              : "You have not added your bio yet..."}
+              : "not added your about yet..."}
           </p>
           <div className="flex flex-row justify-around mt-2">
             <p className="text-[#8E8E8E]">
@@ -111,11 +111,15 @@ const Profile = () => {
           <div className="flex flex-row justify-around mt-2">
             <div className="text-center">
               <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
-              <p className="text-c-green font-bold mt-0.5">20/50</p>
+              <p className="text-c-green font-bold mt-0.5">
+                0/{getUserDetailsQuery?.data?.data?.data?.buy_post_count}
+              </p>
             </div>
             <div className="text-center">
               <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
-              <p className="text-[#EF413E] font-bold mt-0.5">30/50</p>
+              <p className="text-[#EF413E] font-bold mt-0.5">
+                0/{getUserDetailsQuery?.data?.data?.data?.sell_post_count}
+              </p>
             </div>
           </div>
         </div>

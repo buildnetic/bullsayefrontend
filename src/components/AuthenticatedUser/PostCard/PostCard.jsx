@@ -55,6 +55,14 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
     return res;
   };
 
+  const reshareFn = async (id) => {
+    return await axiosInstance.post(`/reshare/vips/${id}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
   const likePostMutation = useMutation(likePostFn, {
     onSuccess: (res) => {
       ToastSuccess(res?.data?.message);
@@ -79,12 +87,27 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
     },
   });
 
+  const reshareMutation = useMutation(reshareFn, {
+    onSuccess: (res) => {
+      ToastSuccess(res?.data?.message);
+      console.log("res", res);
+    },
+    onError: (err) => {
+      ToastError(err?.response?.data?.message);
+      console.log("err", err);
+    },
+  });
+
   const likeDislikePostHandler = (data) => {
     if (checkLikedByUser(data.likes)) {
       disLikePostMutation.mutate(data.id);
     } else {
       likePostMutation.mutate(data.id);
     }
+  };
+
+  const reshareHandler = (id) => {
+    reshareMutation.mutate(id);
   };
 
   return (
@@ -229,7 +252,10 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
             <BiShareAlt className="text-lg" />
             Share
           </p>
-          <p className="text-sm flex items-center gap-1 text-gray-500 cursor-pointer hover:text-green-500 font-semibold transition-all">
+          <p
+            className="text-sm flex items-center gap-1 text-gray-500 cursor-pointer hover:text-green-500 font-semibold transition-all"
+            onClick={() => reshareHandler(data?.id)}
+          >
             <BsRepeat className="text-lg" />
             Reshare
           </p>
