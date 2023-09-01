@@ -1,7 +1,8 @@
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+/* eslint-disable react/prop-types */
 import { FaInstagram, FaLock, FaTiktok, FaYoutube } from "react-icons/fa";
+import ProfileImg from "../../../../assets/images/profile-icon.png";
 
-const ProfileLocked = () => {
+const ProfileLocked = ({ userDetails, isUserFollow, userFollowHandler }) => {
   return (
     <>
       <div className="mt-5 py-16 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.24)_0px_0px_6px] bg-white transition-shadow duration-300 ease-in-out">
@@ -13,20 +14,25 @@ const ProfileLocked = () => {
         </div>
 
         <h3 className="text-center text-xl font-bold mt-5">
-          To unlock the user you need to follow below social medias
+          To unlock the user you need to follow
         </h3>
         <div className="mt-10 flex flex-row justify-around ">
           <div>
-            <div className="flex justify-center items-center border-2 w-16 h-16 mx-auto rounded-full">
-              <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                alt=""
-                className="w-full rounded-full"
-              />
-            </div>
-            <p className="mt-3 text-center font-semibold">John Dev</p>
-            <button className="mt-2 text-center bg-gray-100 rounded-lg px-4 py-1.5 text-sm font-semibold">
-              Follow
+            <img
+              src={!userDetails?.image ? ProfileImg : userDetails?.image}
+              alt="Profile Image"
+              className={`w-16 h-16 rounded-full text-xs border-2 border-gray-100 ${
+                !userDetails?.image && "p-1.5"
+              }`}
+            />
+            <p className="mt-3 text-center font-semibold capitalize">
+              {userDetails?.name}
+            </p>
+            <button
+              className="mt-2 text-center bg-gray-100 hover:bg-gray-300 transition-all rounded-lg px-4 py-1.5 text-sm font-semibold"
+              onClick={userFollowHandler}
+            >
+              {isUserFollow ? "Unfollow" : "Follow"}
             </button>
           </div>
           <div>
@@ -34,9 +40,8 @@ const ProfileLocked = () => {
               <FaTiktok className="text-3xl text-white" />
             </div>
             <p className="mt-3 text-center font-semibold">Tiktok</p>
-            <button className="mt-2 text-center bg-green-100 rounded-lg px-4 py-1.5 text-sm font-semibold flex items-center gap-2">
-              Following
-              <AiOutlineLoading3Quarters className="animate-spin" />
+            <button className="mt-2 text-center bg-gray-100 hover:bg-gray-300 transition-all rounded-lg px-4 py-1.5 text-sm font-semibold">
+              Follow
             </button>
           </div>
           <div>
@@ -44,7 +49,7 @@ const ProfileLocked = () => {
               <FaYoutube className="text-3xl text-white" />
             </div>
             <p className="mt-3 text-center font-semibold">Youtube</p>
-            <button className="mt-2 text-center bg-gray-100 rounded-lg px-4 py-1.5 text-sm font-semibold">
+            <button className="mt-2 text-center bg-gray-100 hover:bg-gray-300 transition-all rounded-lg px-4 py-1.5 text-sm font-semibold">
               Follow
             </button>
           </div>
@@ -53,7 +58,7 @@ const ProfileLocked = () => {
               <FaInstagram className="text-3xl text-white" />
             </div>
             <p className="mt-3 text-center font-semibold">Instagram</p>
-            <button className="mt-2 text-center bg-gray-100 rounded-lg px-4 py-1.5 text-sm font-semibold">
+            <button className="mt-2 text-center bg-gray-100 hover:bg-gray-300 transition-all rounded-lg px-4 py-1.5 text-sm font-semibold">
               Follow
             </button>
           </div>

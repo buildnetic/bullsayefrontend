@@ -65,9 +65,9 @@ const Main = () => {
             ) : getAllPostQuery?.data?.data?.length === 0 ? (
               <p className="text-center text-gray-400">No posts yet...</p>
             ) : (
-              getAllPostQuery?.data?.data?.map((elem) => (
+              getAllPostQuery?.data?.data?.map((elem, id) => (
                 <div
-                  key={elem.id}
+                  key={id}
                   className="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out"
                 >
                   <PostCard

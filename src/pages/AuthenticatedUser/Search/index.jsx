@@ -58,6 +58,8 @@ const Search = () => {
     getSerachResultsQuery.refetch();
   }, [location]);
 
+  console.log("getSerachResultsQuery", getSerachResultsQuery);
+
   return (
     <>
       <div className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full">
@@ -77,17 +79,16 @@ const Search = () => {
         {getSerachResultsQuery?.data?.data?.data?.hashtag_results &&
           getSerachResultsQuery?.data?.data?.data?.hashtag_results?.map(
             (elem, id) => (
-              <>
+              <div key={id}>
                 <PostCard
                   data={elem}
                   handleCommentClick={handleCommentClick}
                   classes="my-5 p-6 px-8 overflow-hidden rounded-lg shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px] bg-white transition-shadow duration-300 ease-in-out"
-                  key={id}
                 />
                 {selectedShowCommentIds.includes(elem.id) && (
                   <Comments postId={elem.id} />
                 )}
-              </>
+              </div>
             )
           )}
 
@@ -142,21 +143,19 @@ const Search = () => {
                       elem.about
                     )}
                   </p>
-                  <a
-                    href="#"
-                    className="text-center mt-4 block rounded-lg border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-                  >
-                    Follow
-                  </a>
-                  <div className="my-5 w-full h-[2px] bg-[#D3DAE2]"></div>
+                  <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
                   <div className="flex flex-row justify-around mt-2">
                     <div className="text-center">
                       <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
-                      <p className="text-c-green font-bold mt-0.5">20/50</p>
+                      <p className="text-c-green font-bold mt-0.5">
+                        0/{elem.buy_post_count}
+                      </p>
                     </div>
                     <div className="text-center">
                       <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
-                      <p className="text-[#EF413E] font-bold mt-0.5">30/50</p>
+                      <p className="text-[#EF413E] font-bold mt-0.5">
+                        0/{elem.sell_post_count}
+                      </p>
                     </div>
                   </div>
                 </div>
