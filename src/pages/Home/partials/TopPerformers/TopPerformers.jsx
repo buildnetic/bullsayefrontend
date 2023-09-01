@@ -1,6 +1,19 @@
 import { NavLink } from "react-router-dom";
+import axiosInstance from "../../../../axiosInstance";
+import { useQuery } from "react-query";
 
 const TopPerformers = () => {
+  const getTopPerformersFn = async () => {
+    return await axiosInstance.get("/user/topPerformer");
+  };
+
+  const getTopPerformersQuery = useQuery(
+    "getTopPerformers",
+    getTopPerformersFn
+  );
+
+  console.log("getTopPerformersQuery", getTopPerformersQuery);
+
   return (
     <>
       <div id="topPerformers" className=" bg-gray-50">
@@ -25,7 +38,7 @@ const TopPerformers = () => {
               >
                 John Dev
               </NavLink>
-              <p className="text-center text-md text-[#8E8E8E] mt-1">
+              <p className="text-center text-sm text-[#8E8E8E] mt-1">
                 Accuracy Index:{" "}
                 <span className="text-c-green font-bold">
                   +3.10% (2 Months)
@@ -39,257 +52,17 @@ const TopPerformers = () => {
                   <span className="font-bold">456</span> following
                 </p>
               </div>
-              <p className="mt-2 text-md">
+              <p className="mt-2 text-sm">
                 Start Trading with one of the leading brokers you choose, easy
                 comparison!
               </p>
-              <a
+              {/* <a
                 href="#"
                 className="text-center mt-4 block rounded-lg border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
               >
                 Follow
-              </a>
-              <div className="my-5 w-full h-[2px] bg-[#D3DAE2]"></div>
-              <div className="flex flex-row justify-around mt-2">
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
-                  <p className="text-c-green font-bold mt-0.5">20/50</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
-                  <p className="text-[#EF413E] font-bold mt-0.5">30/50</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-6 px-8 overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-              <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                alt="Profile Icon"
-                className="w-20 rounded-full mx-auto"
-              />
-              <NavLink
-                to="/main/1"
-                className="block mt-1 text-md font-bold text-center"
-              >
-                John Dev
-              </NavLink>
-              <p className="text-center text-md text-[#8E8E8E] mt-1">
-                Accuracy Index:{" "}
-                <span className="text-c-green font-bold">
-                  +3.10% (2 Months)
-                </span>
-              </p>
-              <div className="flex flex-row justify-around mt-2">
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">4M</span> followers
-                </p>
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">456</span> following
-                </p>
-              </div>
-              <p className="mt-2 text-md">
-                Start Trading with one of the leading brokers you choose, easy
-                comparison!
-              </p>
-              <a
-                href="#"
-                className="text-center mt-4 block rounded-lg border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-              >
-                Follow
-              </a>
-              <div className="my-5 w-full h-[2px] bg-[#D3DAE2]"></div>
-              <div className="flex flex-row justify-around mt-2">
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
-                  <p className="text-c-green font-bold mt-0.5">20/50</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
-                  <p className="text-[#EF413E] font-bold mt-0.5">30/50</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-6 px-8 overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-              <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                alt="Profile Icon"
-                className="w-20 rounded-full mx-auto"
-              />
-              <NavLink
-                to="/main/1"
-                className="block mt-1 text-md font-bold text-center"
-              >
-                John Dev
-              </NavLink>
-              <p className="text-center text-md text-[#8E8E8E] mt-1">
-                Accuracy Index:{" "}
-                <span className="text-c-green font-bold">
-                  +3.10% (2 Months)
-                </span>
-              </p>
-              <div className="flex flex-row justify-around mt-2">
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">4M</span> followers
-                </p>
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">456</span> following
-                </p>
-              </div>
-              <p className="mt-2 text-md">
-                Start Trading with one of the leading brokers you choose, easy
-                comparison!
-              </p>
-              <a
-                href="#"
-                className="text-center mt-4 block rounded-lg border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-              >
-                Follow
-              </a>
-              <div className="my-5 w-full h-[2px] bg-[#D3DAE2]"></div>
-              <div className="flex flex-row justify-around mt-2">
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
-                  <p className="text-c-green font-bold mt-0.5">20/50</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
-                  <p className="text-[#EF413E] font-bold mt-0.5">30/50</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-6 px-8 overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-              <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                alt="Profile Icon"
-                className="w-20 rounded-full mx-auto"
-              />
-              <NavLink
-                to="/main/1"
-                className="block mt-1 text-md font-bold text-center"
-              >
-                John Dev
-              </NavLink>
-              <p className="text-center text-md text-[#8E8E8E] mt-1">
-                Accuracy Index:{" "}
-                <span className="text-c-green font-bold">
-                  +3.10% (2 Months)
-                </span>
-              </p>
-              <div className="flex flex-row justify-around mt-2">
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">4M</span> followers
-                </p>
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">456</span> following
-                </p>
-              </div>
-              <p className="mt-2 text-md">
-                Start Trading with one of the leading brokers you choose, easy
-                comparison!
-              </p>
-              <a
-                href="#"
-                className="text-center mt-4 block rounded-lg border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-              >
-                Follow
-              </a>
-              <div className="my-5 w-full h-[2px] bg-[#D3DAE2]"></div>
-              <div className="flex flex-row justify-around mt-2">
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
-                  <p className="text-c-green font-bold mt-0.5">20/50</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
-                  <p className="text-[#EF413E] font-bold mt-0.5">30/50</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-6 px-8 overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-              <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                alt="Profile Icon"
-                className="w-20 rounded-full mx-auto"
-              />
-              <NavLink
-                to="/main/1"
-                className="block mt-1 text-md font-bold text-center"
-              >
-                John Dev
-              </NavLink>
-              <p className="text-center text-md text-[#8E8E8E] mt-1">
-                Accuracy Index:{" "}
-                <span className="text-c-green font-bold">
-                  +3.10% (2 Months)
-                </span>
-              </p>
-              <div className="flex flex-row justify-around mt-2">
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">4M</span> followers
-                </p>
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">456</span> following
-                </p>
-              </div>
-              <p className="mt-2 text-md">
-                Start Trading with one of the leading brokers you choose, easy
-                comparison!
-              </p>
-              <a
-                href="#"
-                className="text-center mt-4 block rounded-lg border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-              >
-                Follow
-              </a>
-              <div className="my-5 w-full h-[2px] bg-[#D3DAE2]"></div>
-              <div className="flex flex-row justify-around mt-2">
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
-                  <p className="text-c-green font-bold mt-0.5">20/50</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
-                  <p className="text-[#EF413E] font-bold mt-0.5">30/50</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-6 px-8 overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-              <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-                alt="Profile Icon"
-                className="w-20 rounded-full mx-auto"
-              />
-              <NavLink
-                to="/main/1"
-                className="block mt-1 text-md font-bold text-center"
-              >
-                John Dev
-              </NavLink>
-              <p className="text-center text-md text-[#8E8E8E] mt-1">
-                Accuracy Index:{" "}
-                <span className="text-c-green font-bold">
-                  +3.10% (2 Months)
-                </span>
-              </p>
-              <div className="flex flex-row justify-around mt-2">
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">4M</span> followers
-                </p>
-                <p className="text-[#8E8E8E]">
-                  <span className="font-bold">456</span> following
-                </p>
-              </div>
-              <p className="mt-2 text-md">
-                Start Trading with one of the leading brokers you choose, easy
-                comparison!
-              </p>
-              <a
-                href="#"
-                className="text-center mt-4 block rounded-lg border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-              >
-                Follow
-              </a>
-              <div className="my-5 w-full h-[2px] bg-[#D3DAE2]"></div>
+              </a> */}
+              <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
               <div className="flex flex-row justify-around mt-2">
                 <div className="text-center">
                   <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
