@@ -194,32 +194,40 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
             <h3 className=" text-green-600 text-lg font-semibold">+12.24%</h3>
           </div>
           <div className="mt-3 grid grid-cols-12 gap-5">
-            <div className=" col-span-4">
+            <div className=" col-span-3">
               <h3
-                className="flex flex-col items-center gap-2 text-2xl font-bold capitalize"
+                className="flex flex-col items-center gap-2 text-xl font-bold capitalize"
                 title={data?.stock_name}
               >
                 {data?.stock_name.length > 12
                   ? data?.stock_name.substring(0, 12) + "..."
                   : data?.stock_name}
-                <span className="text-sm font-medium text-gray-600">
+                <span className="text-xs font-medium text-gray-600">
                   Stock Name
                 </span>
               </h3>
             </div>
-            <div className=" col-span-4">
-              <h3 className="flex flex-col items-center gap-2 text-2xl font-bold">
+            <div className=" col-span-3">
+              <h3 className="flex flex-col items-center gap-2 text-xl font-bold">
                 {data?.current_price}
-                <span className="text-sm font-medium text-gray-600">
-                  Current Price
+                <span className="text-xs font-medium text-gray-600">
+                  Posted at Current Price
                 </span>
               </h3>
             </div>
-            <div className=" col-span-4">
-              <h3 className="flex flex-col items-center gap-2 text-2xl font-bold">
+            <div className=" col-span-3">
+              <h3 className="flex flex-col items-center gap-2 text-xl font-bold">
                 {data?.target_price}
-                <span className="text-sm font-medium text-gray-600">
+                <span className="text-xs font-medium text-gray-600">
                   Target Price
+                </span>
+              </h3>
+            </div>
+            <div className=" col-span-3">
+              <h3 className="flex flex-col items-center gap-2 text-xl font-bold">
+                00
+                <span className="text-xs font-medium text-gray-600">
+                  Current Price
                 </span>
               </h3>
             </div>
