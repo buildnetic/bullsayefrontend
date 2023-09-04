@@ -129,7 +129,7 @@ const Edit = () => {
       ToastSuccess(res?.data?.message);
     },
     onError: (err) => {
-      ToastError(err?.response?.data?.message);
+      ToastError(err?.response?.data?.message || "Falied to update.");
       console.log("err", err);
     },
   });
