@@ -18,9 +18,10 @@ import Edit from "./pages/AuthenticatedUser/Setting/Edit/Edit";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ViewSinglePost from "./pages/AuthenticatedUser/Post/ViewSinglePost";
+import Search from "./pages/AuthenticatedUser/Search";
 
 import Test from "./Test";
-import Search from "./pages/AuthenticatedUser/Search";
+import Users from "./pages/AuthenticatedUser/Users";
 
 const router = createBrowserRouter([
   {
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
       {
         path: "/profile/:id",
         element: <Profile />,
+      },
+      {
+        path: "/users",
+        element: <Users />,
       },
       {
         path: "/setting",

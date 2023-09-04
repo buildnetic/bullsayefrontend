@@ -17,6 +17,7 @@ import axiosInstance from "../../axiosInstance";
 import { ToastError, ToastSuccess } from "../../ToastNotification";
 import ProfileImg from "../../assets/images/profile-icon.png";
 import { useQuery } from "react-query";
+import { FaUsers } from "react-icons/fa";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -124,6 +125,17 @@ const MainHeader = () => {
                         title="Profile"
                       >
                         <AiOutlineUser className="text-2xl" />
+                      </NavLink>
+                      <NavLink
+                        to="/users"
+                        className={({ isActive }) =>
+                          isActive
+                            ? "bg-c-green text-white rounded-md px-3 py-2 font-medium transition-all"
+                            : "text-gray-400 hover:bg-c-green hover:text-white rounded-md px-3 py-2 font-medium transition-all"
+                        }
+                        title="Users"
+                      >
+                        <FaUsers className="text-2xl" />
                       </NavLink>
                       <NavLink
                         to="/setting"

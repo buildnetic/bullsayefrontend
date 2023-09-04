@@ -114,7 +114,7 @@ const Search = () => {
                   />
                   <NavLink
                     to={`/profile/${elem.id}`}
-                    className="block mt-1 text-md font-bold text-center"
+                    className="block mt-1 text-md font-bold text-center capitalize"
                   >
                     {elem.name}
                   </NavLink>
