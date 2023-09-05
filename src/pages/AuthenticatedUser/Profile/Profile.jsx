@@ -9,6 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import ProfileImg from "../../../assets/images/profile-icon.png";
 import LoadingPostCard from "../../../components/AuthenticatedUser/PostCard/LoadingPostCard";
 import { ToastError, ToastSuccess } from "../../../ToastNotification";
+import FollowerFollowing from "../../../components/Modals/FollowerFollowing";
 
 const Profile = () => {
   const { loggedUser } = useSelector((state) => state.user);
@@ -17,6 +18,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const [selectedShowCommentIds, setShowCommentSelectedIds] = useState([]);
+  let [isFollowersOpen, setIsFollowersOpen] = useState(false);
 
   const handleCommentClick = (id) => {
     if (selectedShowCommentIds.includes(id)) {
@@ -114,6 +116,14 @@ const Profile = () => {
     getIsUserFollowQuery.refetch();
   }, [id]);
 
+  function closeModal() {
+    setIsFollowersOpen(false);
+  }
+
+  function openModal() {
+    setIsFollowersOpen(true);
+  }
+
   return (
     <>
       <div className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full">
@@ -169,18 +179,42 @@ const Profile = () => {
               : "not added your about yet..."}
           </p>
           <div className="flex flex-row justify-around mt-2">
-            <p className="text-[#8E8E8E]">
-              <span className="font-bold">
-                {getUserDetailsQuery?.data?.data?.data?.user?.followers_count}
-              </span>{" "}
-              followers
-            </p>
-            <p className="text-[#8E8E8E]">
-              <span className="font-bold">
-                {getUserDetailsQuery?.data?.data?.data?.user?.following_count}
-              </span>{" "}
-              following
-            </p>
+            <div>
+              <button
+                type="button"
+                onClick={openModal}
+                className="rounded-md bg-gray-200 bg-opacity-20 px-4 py-2 text-sm font-medium text-black hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+              >
+                <span className="font-bold">
+                  {getUserDetailsQuery?.data?.data?.data?.user?.followers_count}
+                </span>{" "}
+                followers
+              </button>
+
+              <FollowerFollowing
+                isFollowersOpen={isFollowersOpen}
+                closeModal={closeModal}
+                data={""}
+              />
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={openModal}
+                className="rounded-md bg-gray-200 bg-opacity-20 px-4 py-2 text-sm font-medium text-black hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+              >
+                <span className="font-bold">
+                  {getUserDetailsQuery?.data?.data?.data?.user?.following_count}
+                </span>{" "}
+                following
+              </button>
+
+              <FollowerFollowing
+                isFollowersOpen={isFollowersOpen}
+                closeModal={closeModal}
+                data={""}
+              />
+            </div>
           </div>
 
           <div className="my-5 w-full h-[1px] bg-[#D3DAE2]"></div>
