@@ -194,7 +194,7 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
             <h3 className=" text-green-600 text-lg font-semibold">+12.24%</h3>
           </div>
           <div className="mt-3 grid grid-cols-12 gap-5">
-            <div className=" col-span-3">
+            <div className="col-span-4">
               <h3
                 className="flex flex-col items-center gap-2 text-xl font-bold capitalize"
                 title={data?.stock_name}
@@ -207,7 +207,7 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
                 </span>
               </h3>
             </div>
-            <div className=" col-span-3">
+            <div className="col-span-4">
               <h3 className="flex flex-col items-center gap-2 text-xl font-bold">
                 {data?.current_price}
                 <span className="text-xs font-medium text-gray-600">
@@ -215,7 +215,7 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
                 </span>
               </h3>
             </div>
-            <div className=" col-span-3">
+            <div className="col-span-4">
               <h3 className="flex flex-col items-center gap-2 text-xl font-bold">
                 {data?.target_price}
                 <span className="text-xs font-medium text-gray-600">
@@ -223,14 +223,14 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
                 </span>
               </h3>
             </div>
-            <div className=" col-span-3">
+            {/* <div className=" col-span-3">
               <h3 className="flex flex-col items-center gap-2 text-xl font-bold">
                 00
                 <span className="text-xs font-medium text-gray-600">
                   Current Price
                 </span>
               </h3>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="my-5 w-full h-[1px] bg-[#D3DAE2]"></div>

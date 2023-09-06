@@ -19,9 +19,9 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import ViewSinglePost from "./pages/AuthenticatedUser/Post/ViewSinglePost";
 import Search from "./pages/AuthenticatedUser/Search";
+import Users from "./pages/AuthenticatedUser/Users";
 
 import Test from "./Test";
-import Users from "./pages/AuthenticatedUser/Users";
 
 const router = createBrowserRouter([
   {

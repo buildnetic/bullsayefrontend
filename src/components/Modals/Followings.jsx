@@ -4,10 +4,10 @@ import { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import ProfileImg from "../../assets/images/profile-icon.png";
 
-const FollowerFollowing = ({ isFollowersOpen, closeModal, data }) => {
+const Followings = ({ data, isOpen, closeModal }) => {
   return (
     <>
-      <Transition appear show={isFollowersOpen} as={Fragment}>
+      <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -37,28 +37,36 @@ const FollowerFollowing = ({ isFollowersOpen, closeModal, data }) => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Followers
+                    Followings
                   </Dialog.Title>
                   <div className="mt-2">
-                    <NavLink
-                      to={""}
-                      className="flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                    >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white sm:h-12 sm:w-12">
-                        <img
-                          className={`h-10 w-10 rounded-full object-cover ${
-                            !data.image && "p-1.5"
-                          }`}
-                          src={!data.image ? ProfileImg : data.image}
-                          alt="Profile Image"
-                        />
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-900">
-                          name
-                        </p>
-                      </div>
-                    </NavLink>
+                    {data?.map((elem, id) => (
+                      <NavLink
+                        key={id}
+                        to={`/profile/${elem.id}`}
+                        className="flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                        onClick={closeModal}
+                      >
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white sm:h-12 sm:w-12">
+                          <img
+                            className={`h-10 w-10 rounded-full object-cover border-2 border-gray-100 ${
+                              !elem.user_profile_image && "p-1.5"
+                            }`}
+                            src={
+                              !elem.user_profile_image
+                                ? ProfileImg
+                                : elem.user_profile_image
+                            }
+                            alt="Profile Image"
+                          />
+                        </div>
+                        <div className="ml-4">
+                          <p className="text-sm font-medium text-gray-900 capitalize">
+                            {elem.name}
+                          </p>
+                        </div>
+                      </NavLink>
+                    ))}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
@@ -70,4 +78,4 @@ const FollowerFollowing = ({ isFollowersOpen, closeModal, data }) => {
   );
 };
 
-export default FollowerFollowing;
+export default Followings;

@@ -9,7 +9,8 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import ProfileImg from "../../../assets/images/profile-icon.png";
 import LoadingPostCard from "../../../components/AuthenticatedUser/PostCard/LoadingPostCard";
 import { ToastError, ToastSuccess } from "../../../ToastNotification";
-import FollowerFollowing from "../../../components/Modals/FollowerFollowing";
+import Followers from "../../../components/Modals/Followers";
+import Followings from "../../../components/Modals/Followings";
 
 const Profile = () => {
   const { loggedUser } = useSelector((state) => state.user);
@@ -19,6 +20,7 @@ const Profile = () => {
 
   const [selectedShowCommentIds, setShowCommentSelectedIds] = useState([]);
   let [isFollowersOpen, setIsFollowersOpen] = useState(false);
+  let [isFollowingsOpen, setIsFollowingsOpen] = useState(false);
 
   const handleCommentClick = (id) => {
     if (selectedShowCommentIds.includes(id)) {
@@ -71,6 +73,22 @@ const Profile = () => {
     });
   };
 
+  const getFollowersFn = async () => {
+    return await axiosInstance.get(`/getFollowers/${id}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
+  const getFollowingsFn = async () => {
+    return await axiosInstance.get(`/getFollowing/${id}`, {
+      headers: {
+        Authorization: `Bearer ${loggedUser.token}`,
+      },
+    });
+  };
+
   const getUserDetailsQuery = useQuery("userDetails", getUserDetailsFn);
   const getUserPostsQuery = useQuery("userPosts", getUserPostsFn);
   const getIsUserFollowQuery = useQuery("isUserFollow", getIsUserFollowFn);
@@ -96,6 +114,9 @@ const Profile = () => {
     },
   });
 
+  const getFollowersQuery = useQuery("getFollowers", getFollowersFn);
+  const getFollowingsQuery = useQuery("getFollowings", getFollowingsFn);
+
   const followUnfollowHandler = (e) => {
     e.preventDefault();
 
@@ -114,14 +135,24 @@ const Profile = () => {
     getUserDetailsQuery.refetch();
     getUserPostsQuery.refetch();
     getIsUserFollowQuery.refetch();
+    getFollowersQuery.refetch();
+    getFollowingsQuery.refetch();
   }, [id]);
 
-  function closeModal() {
+  function closeFollowersModal() {
     setIsFollowersOpen(false);
   }
 
-  function openModal() {
+  function openFollowersModal() {
     setIsFollowersOpen(true);
+  }
+
+  function closeFollowingsModal() {
+    setIsFollowingsOpen(false);
+  }
+
+  function openFollowingsModal() {
+    setIsFollowingsOpen(true);
   }
 
   return (
@@ -182,7 +213,7 @@ const Profile = () => {
             <div>
               <button
                 type="button"
-                onClick={openModal}
+                onClick={openFollowersModal}
                 className="rounded-md bg-gray-200 bg-opacity-20 px-4 py-2 text-sm font-medium text-black hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
               >
                 <span className="font-bold">
@@ -191,16 +222,16 @@ const Profile = () => {
                 followers
               </button>
 
-              <FollowerFollowing
-                isFollowersOpen={isFollowersOpen}
-                closeModal={closeModal}
-                data={""}
+              <Followers
+                isOpen={isFollowersOpen}
+                closeModal={closeFollowersModal}
+                data={getFollowersQuery?.data?.data?.data}
               />
             </div>
             <div>
               <button
                 type="button"
-                onClick={openModal}
+                onClick={openFollowingsModal}
                 className="rounded-md bg-gray-200 bg-opacity-20 px-4 py-2 text-sm font-medium text-black hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
               >
                 <span className="font-bold">
@@ -209,10 +240,10 @@ const Profile = () => {
                 following
               </button>
 
-              <FollowerFollowing
-                isFollowersOpen={isFollowersOpen}
-                closeModal={closeModal}
-                data={""}
+              <Followings
+                isOpen={isFollowingsOpen}
+                closeModal={closeFollowingsModal}
+                data={getFollowingsQuery?.data?.data?.data}
               />
             </div>
           </div>
