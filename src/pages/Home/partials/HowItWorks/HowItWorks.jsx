@@ -16,7 +16,7 @@ const HowItWorks = () => {
     <>
       <div
         id="howItWorks"
-        className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full flex flex-col justify-center"
+        className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full flex flex-col justify-center overflow-hidden"
       >
         <motion.h2
           className="text-4xl mt-5 font-bold text-center text-c-green"

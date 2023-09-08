@@ -35,11 +35,11 @@ const Hero = () => {
 
   return (
     <>
-      <div className="bg-[url('../../../images/home/bg.png')] bg-cover bg-center h-[90vh] mt-12">
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-full flex flex-col justify-center relative">
+      <div className="bg-[url('../../../images/home/bg.png')] bg-cover bg-center min-h-screen pt-32 sm:pt-40 lg:pt-0 overflow-hidden">
+        <div className="min-h-screen mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-full flex flex-col justify-center relative">
           <div className="grid grid-cols-12 items-center">
             <motion.div
-              className=" col-span-6"
+              className="col-span-12 lg:col-span-6"
               variants={fadeInLeft}
               initial="hidden"
               whileInView="visible"
@@ -74,7 +74,7 @@ const Hero = () => {
                 </ul>
               </div>
             </motion.div>
-            <div className=" col-span-6">
+            <div className="col-span-12 lg:col-span-6">
               <img
                 src="../../../images/home/hero-img.png"
                 alt="Hero Image"

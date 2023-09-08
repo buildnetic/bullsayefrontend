@@ -6,11 +6,11 @@ import { fadeInLeft, fadeInRight } from "../../../../data/framerMotionHelper";
 const Help = () => {
   return (
     <>
-      <div id="help" className=" bg-gray-50">
+      <div id="help" className=" bg-gray-50 overflow-hidden">
         <div className="mx-auto max-w-7xl px-2 py-8 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
           <div className="grid grid-cols-12 gap-3 text-center items-center">
             <motion.div
-              className=" col-span-7"
+              className="col-span-12 md:col-span-7"
               variants={fadeInLeft}
               initial="hidden"
               whileInView="visible"
@@ -40,7 +40,7 @@ const Help = () => {
               </p>
             </motion.div>
             <motion.div
-              className=" col-span-5"
+              className="col-span-12 md:col-span-5"
               variants={fadeInRight}
               initial="hidden"
               whileInView="visible"

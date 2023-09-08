@@ -40,7 +40,7 @@ const Testimonials = () => {
           className="mySwiper home-testimonial mt-9"
         >
           <SwiperSlide className="bg-[url('../../../images/home/testimonial-bg.png')] bg-cover bg-top">
-            <div className="w-3/4 p-5 py-10 mx-auto">
+            <div className="w-full sm:w-3/4 p-5 py-10 mx-auto">
               <img
                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
                 alt="Profile Icon"
@@ -50,7 +50,7 @@ const Testimonials = () => {
                 Customer
               </span>
               <h3 className="text-md font-bold text-center">John Dev</h3>
-              <p className="mt-2 text-md">
+              <p className="mt-2 text-md text-justify sm:text-center">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ex
                 rem alias laborum temporibus, culpa laboriosam molestias
                 consectetur aperiam et non, labore, atque velit ad nesciunt.
@@ -62,7 +62,7 @@ const Testimonials = () => {
             </div>
           </SwiperSlide>
           <SwiperSlide className="bg-[url('../../../images/home/testimonial-bg.png')] bg-cover bg-top">
-            <div className="w-3/4 p-5 py-10 mx-auto">
+            <div className="w-full sm:w-3/4 p-5 py-10 mx-auto">
               <img
                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
                 alt="Profile Icon"
@@ -72,7 +72,7 @@ const Testimonials = () => {
                 Customer
               </span>
               <h3 className="text-md font-bold text-center">John Dev</h3>
-              <p className="mt-2 text-md">
+              <p className="mt-2 text-md text-justify sm:text-center">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ex
                 rem alias laborum temporibus, culpa laboriosam molestias
                 consectetur aperiam et non, labore, atque velit ad nesciunt.
@@ -84,7 +84,7 @@ const Testimonials = () => {
             </div>
           </SwiperSlide>
           <SwiperSlide className="bg-[url('../../../images/home/testimonial-bg.png')] bg-cover bg-top">
-            <div className="w-3/4 p-5 py-10 mx-auto">
+            <div className="w-full sm:w-3/4 p-5 py-10 mx-auto">
               <img
                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
                 alt="Profile Icon"
@@ -94,7 +94,7 @@ const Testimonials = () => {
                 Customer
               </span>
               <h3 className="text-md font-bold text-center">John Dev</h3>
-              <p className="mt-2 text-md">
+              <p className="mt-2 text-md text-justify sm:text-center">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet ex
                 rem alias laborum temporibus, culpa laboriosam molestias
                 consectetur aperiam et non, labore, atque velit ad nesciunt.

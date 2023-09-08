@@ -31,7 +31,7 @@ const TopPerformers = () => {
             What our customers say What our customers say What our customers say
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-9">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pt-9">
             {getTopPerformersQuery?.data?.data?.data?.map((elem, id) => (
               <motion.div
                 className="p-6 px-8 overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out"
