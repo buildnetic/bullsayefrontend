@@ -32,6 +32,7 @@ const Help = () => {
                 By subscribing you agree to our Terms & Conditions and Privacy &
                 Cookies Policy
               </p>
+
               <h2 className="text-xl mt-4">Need Help? +61-7596286</h2>
               <p className="text-md mt-3">
                 <span className="font-bold">Working Days / Hours:</span> Mon -
