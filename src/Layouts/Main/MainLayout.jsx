@@ -22,7 +22,7 @@ const MainLayout = () => {
   });
 
   if (!loggedUser) {
-    return <Navigate to="/" />;
+    return <Navigate to="/signin" />;
   }
 
   if (getUserDetailsQuery.isLoading) {

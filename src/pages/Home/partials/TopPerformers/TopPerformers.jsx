@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import axiosInstance from "../../../../axiosInstance";
 import { useQuery } from "react-query";
 import ProfileImg from "../../../../assets/images/profile-icon.png";
+import { motion } from "framer-motion";
+import { fadeInBottom, fadeInTop } from "../../../../data/framerMotionHelper";
 
 const TopPerformers = () => {
   const getTopPerformersFn = async () => {
@@ -17,18 +19,26 @@ const TopPerformers = () => {
     <>
       <div id="topPerformers" className=" bg-gray-50">
         <div className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
-          <h2 className="text-4xl mt-5 font-bold text-center text-c-green">
+          <motion.h2
+            className="text-4xl mt-5 font-bold text-center text-c-green"
+            variants={fadeInTop}
+            initial="hidden"
+            whileInView="visible"
+          >
             Top Performers
-          </h2>
-          <p className="mt-3 text-xl text-center">
+          </motion.h2>
+          <p className="mt-3 text-md text-gray-400 text-center">
             What our customers say What our customers say What our customers say
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-9">
             {getTopPerformersQuery?.data?.data?.data?.map((elem, id) => (
-              <div
+              <motion.div
                 className="p-6 px-8 overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out"
                 key={id}
+                variants={fadeInBottom}
+                initial="hidden"
+                whileInView="visible"
               >
                 <img
                   src={
@@ -43,7 +53,7 @@ const TopPerformers = () => {
                 />
                 <NavLink
                   to={`/profile/${elem.id}`}
-                  className="block mt-1 text-md font-bold text-center"
+                  className="block mt-1 text-md font-bold text-center capitalize"
                 >
                   {elem.name}
                 </NavLink>
@@ -93,7 +103,7 @@ const TopPerformers = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

@@ -91,7 +91,7 @@ const Main = () => {
             <h2 className="font-semibold text-gray-400 mb-3 text-xl ">
               Market Overview
             </h2>
-            <MarketOverview />
+            {/* <MarketOverview /> */}
             {/* Market Overview end */}
 
             {/* Top Performers start*/}

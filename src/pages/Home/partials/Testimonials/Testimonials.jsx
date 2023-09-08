@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "./style.css";
+import { motion } from "framer-motion";
+import { fadeInTop } from "../../../../data/framerMotionHelper";
 
 const Testimonials = () => {
   return (
@@ -11,10 +13,15 @@ const Testimonials = () => {
         id="testimonials"
         className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full flex flex-col justify-center"
       >
-        <h2 className="text-4xl mt-5 font-bold text-center text-c-green">
+        <motion.h2
+          className="text-4xl mt-5 font-bold text-center text-c-green"
+          variants={fadeInTop}
+          initial="hidden"
+          whileInView="visible"
+        >
           Testimonials
-        </h2>
-        <p className="mt-3 text-xl text-center">
+        </motion.h2>
+        <p className="mt-3 text-md text-gray-400 text-center">
           What our customers say What our customers say What our customers say
         </p>
         <Swiper

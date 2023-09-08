@@ -17,7 +17,7 @@ const ScrollToTop = () => {
     <>
       <div
         onClick={goToTop}
-        className="fixed right-8 bottom-8 bg-c-green w-12 h-12 flex flex-row justify-center items-center rounded-full shadow-xl cursor-pointer"
+        className="animate-bounce-slow fixed right-8 bottom-8 bg-c-green w-12 h-12 flex flex-row justify-center items-center rounded-full shadow-xl cursor-pointer"
       >
         <MdKeyboardDoubleArrowUp className="text-3xl text-white" />
       </div>
