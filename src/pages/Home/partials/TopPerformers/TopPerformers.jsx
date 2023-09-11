@@ -34,73 +34,86 @@ const TopPerformers = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 pt-9">
             {getTopPerformersQuery?.data?.data?.data?.map((elem, id) => (
               <motion.div
-                className="p-6 px-8 overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out"
+                className="group overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out"
                 key={id}
                 variants={fadeInBottom}
                 initial="hidden"
                 whileInView="visible"
               >
-                <img
-                  src={
-                    elem.user_profile_image
-                      ? elem.user_profile_image
-                      : ProfileImg
-                  }
-                  alt="Profile Icon"
-                  className={`w-16 h-16 rounded-full mx-auto border-2 border-gray-100 object-cover ${
-                    !elem.user_profile_image && "p-1.5"
-                  }`}
-                />
-                <NavLink
-                  to={`/profile/${elem.id}`}
-                  className="block mt-1 text-md font-bold text-center capitalize"
-                >
-                  {elem.name}
-                </NavLink>
-                <p className="text-center text-sm text-[#8E8E8E] mt-1">
-                  Accuracy Index:{" "}
-                  <span className="text-c-green font-bold">
-                    +3.10% (2 Months)
-                  </span>
-                </p>
-                <div className="flex flex-row justify-around mt-2">
-                  <p className="text-[#8E8E8E]">
-                    <span className="font-bold">{elem.followers_count}</span>{" "}
-                    followers
-                  </p>
-                  <p className="text-[#8E8E8E]">
-                    <span className="font-bold">{elem.following_count}</span>{" "}
-                    following
-                  </p>
+                <div className=" relative mb-5">
+                  <img
+                    src="https://img.freepik.com/free-vector/blue-gradient-blank-background-business_53876-120508.jpg?w=1380&t=st=1694410780~exp=1694411380~hmac=04752037fa08b8b5c4468de0b4caa829811d3383263836476226cd3b0b7d0a46"
+                    alt="Profile cover image"
+                    className=" w-full h-24 object-cover rounded-b-3xl"
+                  />
+                  <img
+                    src={
+                      elem.user_profile_image
+                        ? elem.user_profile_image
+                        : ProfileImg
+                    }
+                    alt="Profile Icon"
+                    className={` absolute top-2/3 left-[41%] z-10 w-[4.5rem] h-[4.5rem] rounded-full 
+                    mx-auto border-2 border-gray-100 object-cover 
+                    group-hover:scale-110 transition duration-500
+                    ${!elem.user_profile_image && "p-1.5 bg-white"}`}
+                  />
                 </div>
-                <p className="mt-2 text-sm">
-                  {elem.about ? (
-                    elem.about
-                  ) : (
-                    <span className=" text-gray-400">
-                      not added about yet...
-                    </span>
-                  )}
-                </p>
-                {/* <a
-                href="#"
-                className="text-center mt-4 block rounded-lg border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-              >
-                Follow
-              </a> */}
-                <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
-                <div className="flex flex-row justify-around mt-2">
-                  <div className="text-center">
-                    <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
-                    <p className="text-c-green font-bold mt-0.5">
-                      0/{elem.buy_post_count}
+
+                <div className="p-6 px-8">
+                  <NavLink
+                    to={`/profile/${elem.id}`}
+                    className="block mt-1 text-md font-bold text-center capitalize text-gray-800 hover:text-c-green transition-all"
+                  >
+                    {elem.name}
+                  </NavLink>
+                  <p className="text-center text-sm text-[#8E8E8E] mt-1">
+                    Accuracy Index:{" "}
+                    <span className="text-c-green font-bold">+3.10%</span>
+                  </p>
+                  <div className="flex flex-row justify-around mt-2">
+                    <p className="text-[#8E8E8E] text-center text-sm">
+                      <span className="font-bold block text-xl text-c-green">
+                        {elem.followers_count}
+                      </span>{" "}
+                      followers
+                    </p>
+                    <p className="text-[#8E8E8E] text-center text-sm">
+                      <span className="font-bold block text-xl text-c-green">
+                        {elem.following_count}
+                      </span>{" "}
+                      following
                     </p>
                   </div>
-                  <div className="text-center">
-                    <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
-                    <p className="text-[#EF413E] font-bold mt-0.5">
-                      0/{elem.sell_post_count}
-                    </p>
+                  <p className="mt-2 text-sm">
+                    {elem.about ? (
+                      elem.about
+                    ) : (
+                      <span className=" text-gray-400">
+                        not added about yet...
+                      </span>
+                    )}
+                  </p>
+                  <NavLink
+                    to={`/profile/${elem.id}`}
+                    className="text-center mt-3 block rounded-3xl border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
+                  >
+                    View Profile
+                  </NavLink>
+                  <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
+                  <div className="flex flex-row justify-around mt-2">
+                    <div className="text-center">
+                      <p className="text-c-green font-bold mb-0.5 text-md">
+                        0/{elem.buy_post_count}
+                      </p>
+                      <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-[#EF413E] font-bold mb-0.5 text-md">
+                        0/{elem.sell_post_count}
+                      </p>
+                      <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
