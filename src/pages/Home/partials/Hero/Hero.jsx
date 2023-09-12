@@ -66,7 +66,7 @@ const Hero = () => {
                   {socialMediaLinks.map((elem, id) => (
                     <li
                       key={id}
-                      className=" w-10 h-10 flex justify-center items-center rounded-full border-2 border-gray-200 text-xl text-blue-900 cursor-pointer hover:bg-green-600 hover:border-green-600 hover:text-white transition-all"
+                      className=" w-10 h-10 flex justify-center items-center rounded-full border-2 border-gray-200 text-xl text-blue-900 cursor-pointer bg-gray-100 hover:bg-green-600 hover:border-green-600 hover:text-white transition-all"
                     >
                       <NavLink to={elem.href}>
                         <elem.icon />
