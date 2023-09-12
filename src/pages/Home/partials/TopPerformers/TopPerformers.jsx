@@ -98,7 +98,7 @@ const TopPerformers = () => {
                     to={`/profile/${elem.id}`}
                     className="text-center mt-3 block rounded-3xl border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
                   >
-                    View Profile
+                    View Calls
                   </NavLink>
 
                   <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
