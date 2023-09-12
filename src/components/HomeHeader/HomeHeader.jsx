@@ -1,10 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Fragment } from "react";
-import {
-  Bars3BottomRightIcon,
-  XMarkIcon,
-  ChartBarIcon,
-} from "@heroicons/react/24/solid";
+import { Bars3BottomRightIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
@@ -14,12 +10,14 @@ import { ToastError, ToastSuccess } from "../../ToastNotification";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import ProfileImg from "../../assets/images/profile-icon.png";
 import { useQuery } from "react-query";
+import PrimaryButton from "../Buttons/PrimaryButton";
 
 const HomeHeader = () => {
   const Dispatch = useDispatch();
   const { loggedUser } = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   let [open, setOpen] = useState(false);
+  let [isNavSticky, setIsNavSticky] = useState(false);
 
   const logoutHandler = async () => {
     setIsLoading(true);
@@ -63,17 +61,37 @@ const HomeHeader = () => {
     }
   );
 
+  useEffect(() => {
+    const scrollHandler = () =>
+      window.pageYOffset > 50 ? setIsNavSticky(true) : setIsNavSticky(false);
+
+    window.addEventListener("scroll", scrollHandler);
+
+    return () => window.removeEventListener("scroll", scrollHandler);
+  }, []);
+
   return (
-    <div className="shadow-md w-full fixed top-0 left-0 bg-white z-50">
-      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
+    <div
+      className={`w-full fixed top-0 left-0 z-50 ${
+        isNavSticky ? "bg-white shadow-md" : "bg-transparent"
+      }`}
+    >
+      <div
+        className={`mx-auto max-w-7xl sm:px-6 lg:px-8 md:flex items-center justify-between py-4 md:px-10 px-7 ${
+          isNavSticky ? "bg-white" : "bg-transparent"
+        }`}
+      >
         {/* logo section */}
         <NavLink
           to="/"
           onClick={() => window.scrollTo(0, 0)}
           className="font-bold text-2xl cursor-pointer flex items-center gap-1"
         >
-          <ChartBarIcon className="w-7 h-7 text-c-green" />
-          <span>VIPANA</span>
+          <img
+            src="../../images/bullsaye-with-text.svg"
+            alt="BullSaye"
+            className=" w-48"
+          />
         </NavLink>
         {/* Menu button */}
         <div
@@ -85,7 +103,7 @@ const HomeHeader = () => {
 
         {/* menu links and signin and signup */}
         <ul
-          className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
+          className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
             open ? "top-12" : "top-[-490px]"
           }`}
         >
@@ -155,18 +173,18 @@ const HomeHeader = () => {
             </Menu>
           ) : (
             <>
-              <NavLink
+              <PrimaryButton
                 to="/signup"
-                className="md:ml-8 rounded-md border-c-green border-2 p-2 px-3 text-black hover:text-white hover:bg-c-green duration-75 text-sm font-medium"
-              >
-                Sign Up
-              </NavLink>
-              <NavLink
+                classes="md:ml-8 text-black bg-white p-2 px-3 text-sm font-medium border-c-green border-2 hover:text-white hover:border-green-500"
+                rounded="md"
+                title="Sign Up"
+              />
+              <PrimaryButton
                 to="/signin"
-                className="rounded-md border-c-green border-2 bg-c-green p-2 px-3 shadow-md hover:shadow-none ml-4 text-white duration-75 text-sm font-medium"
-              >
-                Sign In
-              </NavLink>
+                classes="text-white bg-c-green p-2 px-3 text-sm font-medium ml-4 border-c-green border-2 hover:border-green-500"
+                rounded="md"
+                title="Sign In"
+              />
             </>
           )}
         </ul>

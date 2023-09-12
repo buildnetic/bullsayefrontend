@@ -17,7 +17,7 @@ const TopPerformers = () => {
 
   return (
     <>
-      <div id="topPerformers" className=" bg-gray-50">
+      <div id="topPerformers" className="">
         <div className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
           <motion.h2
             className="text-4xl mt-5 font-bold text-center text-c-green"
@@ -100,6 +100,7 @@ const TopPerformers = () => {
                   >
                     View Profile
                   </NavLink>
+
                   <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
                   <div className="flex flex-row justify-around mt-2">
                     <div className="text-center">

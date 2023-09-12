@@ -6,7 +6,7 @@ import { fadeInLeft, fadeInRight } from "../../../../data/framerMotionHelper";
 const Help = () => {
   return (
     <>
-      <div id="help" className=" bg-gray-50 overflow-hidden">
+      <div id="help" className="overflow-hidden">
         <div className="mx-auto max-w-7xl px-2 py-8 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
           <div className="grid grid-cols-12 gap-3 text-center items-center">
             <motion.div
