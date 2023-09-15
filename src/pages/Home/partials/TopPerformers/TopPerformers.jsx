@@ -102,18 +102,21 @@ const TopPerformers = () => {
                   </NavLink>
 
                   <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
+                  <p className="text-center text-sm text-gray-500 font-semibold">
+                    Accuracy
+                  </p>
                   <div className="flex flex-row justify-around mt-2">
                     <div className="text-center">
                       <p className="text-c-green font-bold mb-0.5 text-md">
                         0/{elem.buy_post_count}
                       </p>
-                      <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
+                      <p className="text-[#8E8E8E] text-sm">Buying</p>
                     </div>
                     <div className="text-center">
                       <p className="text-[#EF413E] font-bold mb-0.5 text-md">
                         0/{elem.sell_post_count}
                       </p>
-                      <p className="text-[#8E8E8E] text-sm">Selling Accuracy</p>
+                      <p className="text-[#8E8E8E] text-sm">Selling</p>
                     </div>
                   </div>
                 </div>
