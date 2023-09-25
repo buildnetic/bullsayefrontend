@@ -26,50 +26,10 @@ import Test from "./Test";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <GuestLayout />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-    ],
-  },
-  {
-    path: "/",
-    element: <SimpleLayout />,
-    children: [
-      {
-        path: "signin",
-        element: <SignIn />,
-      },
-      {
-        path: "signup",
-        element: <SignUp />,
-      },
-      {
-        path: "verify",
-        element: <Otp />,
-      },
-      {
-        path: "forgot-password",
-        element: <ForgotPassword />,
-      },
-      {
-        path: "reset-password",
-        element: <ResetPassword />,
-      },
-      {
-        path: "/test",
-        element: <Test />,
-      },
-    ],
-  },
-  {
-    path: "/",
     element: <MainLayout />,
     children: [
       {
-        path: "/main",
+        path: "/",
         element: <Main />,
       },
       {
@@ -111,6 +71,46 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <Search />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <GuestLayout />,
+    children: [
+      {
+        path: "/home",
+        element: <Home />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <SimpleLayout />,
+    children: [
+      {
+        path: "signin",
+        element: <SignIn />,
+      },
+      {
+        path: "signup",
+        element: <SignUp />,
+      },
+      {
+        path: "verify",
+        element: <Otp />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword />,
+      },
+      {
+        path: "/test",
+        element: <Test />,
       },
     ],
   },

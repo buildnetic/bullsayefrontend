@@ -25,7 +25,7 @@ const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   if (loggedUser) {
-    return <Navigate to="/main" />;
+    return <Navigate to="/" />;
   }
 
   const onChangeHandler = (e) => {
