@@ -41,8 +41,6 @@ const HomeHeader = () => {
   let Links = [
     { name: "How It Works", link: "#howItWorks" },
     { name: "Performers", link: "#topPerformers" },
-    { name: "Testimonials", link: "#testimonials" },
-    { name: "Help", link: "#help" },
   ];
 
   const getUserDetailsFn = async () => {
