@@ -34,7 +34,7 @@ const TopPerformers = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 pt-9">
             {getTopPerformersQuery?.data?.data?.data?.map((elem, id) => (
               <motion.div
-                className="group overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out"
+                className="overflow-hidden rounded-lg shadow-md bg-white hover:shadow-2xl transition-shadow duration-500 ease-in-out"
                 key={id}
                 variants={fadeInBottom}
                 initial="hidden"
@@ -55,7 +55,6 @@ const TopPerformers = () => {
                     alt="Profile Icon"
                     className={` absolute top-2/3 left-[41%] z-10 w-[4.5rem] h-[4.5rem] rounded-full 
                     mx-auto border-2 border-gray-100 object-cover 
-                    group-hover:scale-110 transition duration-500
                     ${!elem.user_profile_image && "p-1.5 bg-white"}`}
                   />
                 </div>
