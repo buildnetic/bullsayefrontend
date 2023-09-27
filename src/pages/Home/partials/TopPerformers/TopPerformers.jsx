@@ -4,6 +4,13 @@ import { useQuery } from "react-query";
 import ProfileImg from "../../../../assets/images/profile-icon.png";
 import { motion } from "framer-motion";
 import { fadeInBottom, fadeInTop } from "../../../../data/framerMotionHelper";
+import {
+  BiLogoFacebook,
+  BiLogoInstagram,
+  BiLogoLinkedin,
+  BiLogoTwitter,
+  BiLogoYoutube,
+} from "react-icons/bi";
 
 const TopPerformers = () => {
   const getTopPerformersFn = async () => {
@@ -14,6 +21,34 @@ const TopPerformers = () => {
     "getTopPerformers",
     getTopPerformersFn
   );
+
+  const socialMediaLinks = [
+    {
+      icon: BiLogoFacebook,
+      href: "/facebook",
+      bg: "#4267B2",
+    },
+    {
+      icon: BiLogoLinkedin,
+      href: "/linkedin",
+      bg: "#0072b1",
+    },
+    {
+      icon: BiLogoInstagram,
+      href: "/instagram",
+      bg: "#E1306C",
+    },
+    {
+      icon: BiLogoYoutube,
+      href: "/youtube",
+      bg: "#CD201F",
+    },
+    {
+      icon: BiLogoTwitter,
+      href: "/twitter",
+      bg: "#26a7de ",
+    },
+  ];
 
   return (
     <>
@@ -34,17 +69,17 @@ const TopPerformers = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 pt-9">
             {getTopPerformersQuery?.data?.data?.data?.map((elem, id) => (
               <motion.div
-                className="overflow-hidden rounded-lg shadow-md bg-white hover:shadow-2xl transition-shadow duration-500 ease-in-out"
+                className="group relative overflow-hidden rounded-lg shadow-md bg-white hover:shadow-2xl transition-shadow duration-500 ease-in-out"
                 key={id}
                 variants={fadeInBottom}
                 initial="hidden"
                 whileInView="visible"
               >
-                <div className=" relative mb-5">
+                <div className=" relative mb-6">
                   <img
-                    src="https://img.freepik.com/free-vector/blue-gradient-blank-background-business_53876-120508.jpg?w=1380&t=st=1694410780~exp=1694411380~hmac=04752037fa08b8b5c4468de0b4caa829811d3383263836476226cd3b0b7d0a46"
+                    src="https://friendkit.cssninja.io/assets/img/demo/bg/4.png"
                     alt="Profile cover image"
-                    className=" w-full h-24 object-cover rounded-b-3xl"
+                    className=" w-full h-24 object-cover rounded-b-3xl opacity-90"
                   />
                   <img
                     src={
@@ -53,8 +88,8 @@ const TopPerformers = () => {
                         : ProfileImg
                     }
                     alt="Profile Icon"
-                    className={` absolute top-2/3 left-[41%] z-10 w-[4.5rem] h-[4.5rem] rounded-full 
-                    mx-auto border-2 border-gray-100 object-cover 
+                    className={` absolute top-2/3 left-[39%] z-10 w-20 h-20 rounded-full 
+                    mx-auto border-4 border-white object-cover 
                     ${!elem.user_profile_image && "p-1.5 bg-white"}`}
                   />
                 </div>
@@ -84,7 +119,14 @@ const TopPerformers = () => {
                       following
                     </p>
                   </div>
-                  <p className="mt-2 text-sm">
+
+                  <NavLink
+                    to={`/profile/${elem.id}`}
+                    className="text-center mt-3 block rounded-3xl border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
+                  >
+                    View Calls
+                  </NavLink>
+                  <p className="mt-3 text-sm">
                     {elem.about ? (
                       elem.about
                     ) : (
@@ -93,12 +135,6 @@ const TopPerformers = () => {
                       </span>
                     )}
                   </p>
-                  <NavLink
-                    to={`/profile/${elem.id}`}
-                    className="text-center mt-3 block rounded-3xl border-c-green border-2 bg-c-green p-2 px-4 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
-                  >
-                    View Calls
-                  </NavLink>
 
                   <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
                   <p className="text-center text-sm text-gray-500 font-semibold">
@@ -119,6 +155,27 @@ const TopPerformers = () => {
                     </div>
                   </div>
                 </div>
+
+                <motion.div
+                  className="absolute bottom-0 left-0 right-0 bg-gray-100 px-8 py-7 rounded-t-3xl shadow-xl hidden group-hover:block"
+                  variants={fadeInBottom}
+                  initial="hidden"
+                  whileInView="visible"
+                >
+                  <ul className="flex justify-between gap-3">
+                    {socialMediaLinks.map((elem, id) => (
+                      <li
+                        key={id}
+                        className={`w-10 h-10 flex justify-center items-center rounded-full text-xl text-white cursor-pointer hover:text-white transition-all`}
+                        style={{ backgroundColor: elem.bg }}
+                      >
+                        <NavLink to={elem.href}>
+                          <elem.icon />
+                        </NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
               </motion.div>
             ))}
           </div>
