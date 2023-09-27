@@ -11,8 +11,13 @@ import {
   BiLogoTwitter,
   BiLogoYoutube,
 } from "react-icons/bi";
+import { BsInfoCircle } from "react-icons/bs";
+import Info from "../../../../components/Modals/Info";
+import { useState } from "react";
 
 const TopPerformers = () => {
+  const [open, setOpen] = useState(false);
+
   const getTopPerformersFn = async () => {
     return await axiosInstance.get("/user/topPerformer");
   };
@@ -108,9 +113,13 @@ const TopPerformers = () => {
                   >
                     {elem.name}
                   </NavLink>
-                  <p className="text-center text-sm text-[#8E8E8E] mt-1">
+                  <p className="flex items-center justify-center gap-1 text-sm text-[#8E8E8E] mt-1">
                     Accuracy Index:{" "}
                     <span className="text-c-green font-bold">+3.10%</span>
+                    <BsInfoCircle
+                      onClick={() => setOpen(true)}
+                      className=" cursor-pointer text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
+                    />
                   </p>
                   <div className="flex flex-row justify-around mt-2">
                     <p className="text-[#8E8E8E] text-center text-sm">
@@ -188,6 +197,14 @@ const TopPerformers = () => {
           </div>
         </div>
       </div>
+
+      <Info
+        open={open}
+        setOpen={setOpen}
+        infoDetails={
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque id quidem illum quasi assumenda suscipit"
+        }
+      />
     </>
   );
 };
