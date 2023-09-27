@@ -52,8 +52,8 @@ const TopPerformers = () => {
 
   return (
     <>
-      <div id="topPerformers" className="">
-        <div className="mx-auto max-w-7xl px-2 py-16 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+      <div id="topPerformers" className="overflow-hidden">
+        <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
           <motion.h2
             className="text-4xl mt-5 font-bold text-center text-c-green"
             variants={fadeInTop}
@@ -66,32 +66,39 @@ const TopPerformers = () => {
             What our customers say What our customers say What our customers say
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 pt-9">
+          <div className="grid grid-cols-12 gap-y-10 sm:gap-10 md:gap-16 pt-9">
             {getTopPerformersQuery?.data?.data?.data?.map((elem, id) => (
               <motion.div
-                className="group relative overflow-hidden rounded-lg shadow-md bg-white hover:shadow-2xl transition-shadow duration-500 ease-in-out"
+                className="col-span-12 lg:col-span-4 sm:col-span-6 xs:col-span-12 group relative overflow-hidden rounded-lg shadow-md bg-white hover:shadow-2xl transition-shadow duration-500 ease-in-out"
                 key={id}
                 variants={fadeInBottom}
                 initial="hidden"
                 whileInView="visible"
               >
                 <div className=" relative mb-6">
-                  <img
-                    src="https://friendkit.cssninja.io/assets/img/demo/bg/4.png"
-                    alt="Profile cover image"
-                    className=" w-full h-24 object-cover rounded-b-3xl opacity-90"
-                  />
-                  <img
-                    src={
-                      elem.user_profile_image
-                        ? elem.user_profile_image
-                        : ProfileImg
-                    }
-                    alt="Profile Icon"
-                    className={` absolute top-2/3 left-[39%] z-10 w-20 h-20 rounded-full 
-                    mx-auto border-4 border-white object-cover 
-                    ${!elem.user_profile_image && "p-1.5 bg-white"}`}
-                  />
+                  <div className=" w-full h-24 object-cover rounded-b-3xl opacity-90 overflow-hidden">
+                    <img
+                      src="https://friendkit.cssninja.io/assets/img/demo/bg/4.png"
+                      alt="Profile cover image"
+                      className="w-full h-full object-cover rounded-b-3xl opacity-90 group-hover:scale-110 transition duration-700 ease-in-out"
+                    />
+                  </div>
+                  <div
+                    className="absolute top-2/3 lg:left-[38%] md:left-[38%] left-[39%] z-10 w-20 h-20 rounded-full 
+                    mx-auto border-4 border-white overflow-hidden"
+                  >
+                    <img
+                      src={
+                        elem.user_profile_image
+                          ? elem.user_profile_image
+                          : ProfileImg
+                      }
+                      alt="Profile Icon"
+                      className={`rounded-full h-full group-hover:scale-125 transition duration-700 ease-in-out  ${
+                        !elem.user_profile_image && "p-1.5 bg-white"
+                      }`}
+                    />
+                  </div>
                 </div>
 
                 <div className="p-6 px-8">
@@ -157,7 +164,7 @@ const TopPerformers = () => {
                 </div>
 
                 <motion.div
-                  className="absolute bottom-0 left-0 right-0 bg-gray-100 px-8 py-7 rounded-t-3xl shadow-xl hidden group-hover:block"
+                  className="absolute bottom-0 left-0 right-0 backdrop-blur-sm p-8 py-9 rounded-t-3xl border-2 border-b-0 border-gray-100 hidden group-hover:block"
                   variants={fadeInBottom}
                   initial="hidden"
                   whileInView="visible"
