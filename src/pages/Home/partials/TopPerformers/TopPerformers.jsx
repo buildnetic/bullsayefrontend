@@ -24,6 +24,107 @@ const TopPerformers = () => {
   const [achievedCallType, setAchievedCallType] = useState("");
   const [achievedCallData, setAchievedCallData] = useState([]);
 
+  const buyingAchieveData = [
+    {
+      stock_name: "Infosys",
+      stock_code: "INFY",
+      exchange_code: "NSE",
+      current_price: "₹ 1050",
+      target_price: "₹ 1200",
+      achieved_in: "8 days",
+    },
+    {
+      stock_name: "TATA",
+      stock_code: "TATA",
+      exchange_code: "NSE",
+      current_price: "₹ 800",
+      target_price: "₹ 850",
+      achieved_in: "3 days",
+    },
+    {
+      stock_name: "Apple",
+      stock_code: "AAPL",
+      exchange_code: "NASDAQ",
+      current_price: "$ 200",
+      target_price: "$ 300",
+      achieved_in: "6 days",
+    },
+    {
+      stock_name: "Infosys",
+      stock_code: "INFY",
+      exchange_code: "NSE",
+      current_price: "₹ 1050",
+      target_price: "₹ 1200",
+      achieved_in: "8 days",
+    },
+    {
+      stock_name: "TATA",
+      stock_code: "TATA",
+      exchange_code: "NSE",
+      current_price: "₹ 800",
+      target_price: "₹ 850",
+      achieved_in: "3 days",
+    },
+    {
+      stock_name: "Apple",
+      stock_code: "AAPL",
+      exchange_code: "NASDAQ",
+      current_price: "$ 200",
+      target_price: "$ 300",
+      achieved_in: "6 days",
+    },
+  ];
+  const sellingAchieveData = [
+    {
+      stock_name: "Apple",
+      stock_code: "AAPL",
+      exchange_code: "NASDAQ",
+      current_price: "$ 200",
+      target_price: "$ 100",
+      achieved_in: "6 days",
+    },
+    {
+      stock_name: "TATA",
+      stock_code: "TATA",
+      exchange_code: "NSE",
+      current_price: "₹ 800",
+      target_price: "₹ 650",
+      achieved_in: "3 days",
+    },
+    {
+      stock_name: "Infosys",
+      stock_code: "INFY",
+      exchange_code: "NSE",
+      current_price: "₹ 1050",
+      target_price: "₹ 900",
+      achieved_in: "7 days",
+    },
+    {
+      stock_name: "Apple",
+      stock_code: "AAPL",
+      exchange_code: "NASDAQ",
+      current_price: "$ 200",
+      target_price: "$ 100",
+      achieved_in: "6 days",
+    },
+    {
+      stock_name: "TATA",
+      stock_code: "TATA",
+      exchange_code: "NSE",
+      current_price: "₹ 800",
+      target_price: "₹ 650",
+      achieved_in: "3 days",
+    },
+    {
+      stock_name: "Infosys",
+      stock_code: "INFY",
+      exchange_code: "NSE",
+      current_price: "₹ 1050",
+      target_price: "₹ 900",
+      achieved_in: "7 days",
+    },
+  ];
+
   const getTopPerformersFn = async () => {
     return await axiosInstance.get("/user/topPerformer");
   };
@@ -64,7 +165,8 @@ const TopPerformers = () => {
   const achievedCallsHandler = (type, data) => {
     setAchievedCallOpen(true);
     setAchievedCallType(type);
-    // setAchievedCallData(data)
+
+    setAchievedCallData(data);
   };
 
   return (
@@ -83,17 +185,17 @@ const TopPerformers = () => {
             What our customers say What our customers say What our customers say
           </p>
 
-          <div className="grid grid-cols-12 gap-y-10 sm:gap-10 md:gap-12 pt-9">
+          <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 max-[640px]:grid-cols-2 gap-5 md:gap-10 pt-9">
             {getTopPerformersQuery?.data?.data?.data?.map((elem, id) => (
               <motion.div
-                className="col-span-12 lg:col-span-3 sm:col-span-6 xs:col-span-12 group relative overflow-hidden rounded-lg shadow-md bg-white hover:shadow-2xl transition-shadow duration-500 ease-in-out"
+                className="group relative overflow-hidden rounded-lg shadow-md bg-white hover:shadow-2xl transition-shadow duration-500 ease-in-out"
                 key={id}
                 variants={fadeInBottom}
                 initial="hidden"
                 whileInView="visible"
               >
                 <div className=" relative mb-3">
-                  <div className=" w-full h-20 object-cover rounded-b-3xl opacity-90 overflow-hidden">
+                  <div className=" w-full max-[450px]:h-14 h-20 object-cover rounded-b-3xl opacity-90 overflow-hidden">
                     <img
                       src="https://friendkit.cssninja.io/assets/img/demo/bg/4.png"
                       alt="Profile cover image"
@@ -101,7 +203,7 @@ const TopPerformers = () => {
                     />
                   </div>
                   <div
-                    className="absolute top-3/4 lg:left-[38%] md:left-[38%] left-[39%] z-10 w-14 h-14 rounded-full 
+                    className="absolute top-3/4 max-[450px]:top-2/3 lg:left-[38%] md:left-[38%] left-[35%] z-10 w-14 h-14 rounded-full 
                     mx-auto border-4 border-white overflow-hidden"
                   >
                     <img
@@ -125,13 +227,15 @@ const TopPerformers = () => {
                   >
                     {elem.name}
                   </NavLink>
-                  <p className="flex items-center justify-center gap-1 text-xs text-[#8E8E8E] mt-0.5">
+                  <p className="flex max-[450px]:flex-col items-center justify-center gap-1 text-xs text-[#8E8E8E] mt-0.5">
                     Accuracy Index:{" "}
-                    <span className="text-c-green font-bold">+3.10%</span>
-                    <BsInfoCircle
-                      onClick={() => setAccuracyInfoOpen(true)}
-                      className=" cursor-pointer text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
-                    />
+                    <div className="flex items-center gap-1">
+                      <span className="text-c-green font-bold">+3.10%</span>
+                      <BsInfoCircle
+                        onClick={() => setAccuracyInfoOpen(true)}
+                        className=" cursor-pointer text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
+                      />
+                    </div>
                   </p>
                   <div className="flex flex-row justify-around mt-2">
                     <p className="text-[#8E8E8E] text-center text-xs">
@@ -164,7 +268,9 @@ const TopPerformers = () => {
                     <div className="text-center">
                       <p
                         className="text-c-green font-bold mb-0.5 text-md cursor-pointer"
-                        onClick={() => achievedCallsHandler("Buying", elem)}
+                        onClick={() =>
+                          achievedCallsHandler("Buying", buyingAchieveData)
+                        }
                       >
                         0/{elem.buy_post_count}
                       </p>
@@ -179,7 +285,9 @@ const TopPerformers = () => {
                     <div className="text-center">
                       <p
                         className="text-[#EF413E] font-bold mb-0.5 text-md cursor-pointer"
-                        onClick={() => achievedCallsHandler("Selling", elem)}
+                        onClick={() =>
+                          achievedCallsHandler("Selling", sellingAchieveData)
+                        }
                       >
                         0/{elem.sell_post_count}
                       </p>
