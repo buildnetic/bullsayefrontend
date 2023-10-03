@@ -185,17 +185,17 @@ const TopPerformers = () => {
             What our customers say What our customers say What our customers say
           </p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 max-[640px]:grid-cols-2 gap-5 md:gap-10 pt-9">
+          <div className="grid grid-cols-12 gap-y-10 sm:gap-10 md:gap-12 pt-9">
             {getTopPerformersQuery?.data?.data?.data?.map((elem, id) => (
               <motion.div
-                className="group relative overflow-hidden rounded-lg shadow-md bg-white hover:shadow-2xl transition-shadow duration-500 ease-in-out"
+                className="col-span-12 lg:col-span-3 sm:col-span-6 xs:col-span-12 group relative overflow-hidden rounded-lg shadow-md bg-white hover:shadow-2xl transition-shadow duration-500 ease-in-out"
                 key={id}
                 variants={fadeInBottom}
                 initial="hidden"
                 whileInView="visible"
               >
                 <div className=" relative mb-3">
-                  <div className=" w-full max-[450px]:h-14 h-20 object-cover rounded-b-3xl opacity-90 overflow-hidden">
+                  <div className=" w-full h-20 object-cover rounded-b-3xl opacity-90 overflow-hidden">
                     <img
                       src="https://friendkit.cssninja.io/assets/img/demo/bg/4.png"
                       alt="Profile cover image"
@@ -203,7 +203,7 @@ const TopPerformers = () => {
                     />
                   </div>
                   <div
-                    className="absolute top-3/4 max-[450px]:top-2/3 lg:left-[38%] md:left-[38%] left-[35%] z-10 w-14 h-14 rounded-full 
+                    className="absolute top-3/4 lg:left-[38%] md:left-[38%] left-[39%] z-10 w-14 h-14 rounded-full 
                     mx-auto border-4 border-white overflow-hidden"
                   >
                     <img
@@ -227,15 +227,13 @@ const TopPerformers = () => {
                   >
                     {elem.name}
                   </NavLink>
-                  <p className="flex max-[450px]:flex-col items-center justify-center gap-1 text-xs text-[#8E8E8E] mt-0.5">
+                  <p className="flex items-center justify-center gap-1 text-xs text-[#8E8E8E] mt-0.5">
                     Accuracy Index:{" "}
-                    <div className="flex items-center gap-1">
-                      <span className="text-c-green font-bold">+3.10%</span>
-                      <BsInfoCircle
-                        onClick={() => setAccuracyInfoOpen(true)}
-                        className=" cursor-pointer text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
-                      />
-                    </div>
+                    <span className="text-c-green font-bold">+3.10%</span>
+                    <BsInfoCircle
+                      onClick={() => setAccuracyInfoOpen(true)}
+                      className=" cursor-pointer text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
+                    />
                   </p>
                   <div className="flex flex-row justify-around mt-2">
                     <p className="text-[#8E8E8E] text-center text-xs">
