@@ -194,18 +194,15 @@ const TopPerformers = () => {
                 initial="hidden"
                 whileInView="visible"
               >
-                <div className=" relative mb-3">
-                  <div className=" w-full h-20 object-cover rounded-b-3xl opacity-90 overflow-hidden">
+                <div className="relative mb-3 flex justify-center">
+                  <div className="w-full h-20 object-cover rounded-b-3xl opacity-90 overflow-hidden">
                     <img
                       src="https://friendkit.cssninja.io/assets/img/demo/bg/4.png"
                       alt="Profile cover image"
                       className="w-full h-full object-cover rounded-b-3xl opacity-90 group-hover:scale-110 transition duration-700 ease-in-out"
                     />
                   </div>
-                  <div
-                    className="absolute top-3/4 lg:left-[38%] md:left-[38%] left-[39%] z-10 w-14 h-14 rounded-full 
-                    mx-auto border-4 border-white overflow-hidden"
-                  >
+                  <div className="absolute top-3/4 z-10 w-14 h-14 rounded-full border-4 border-white overflow-hidden">
                     <img
                       src={
                         elem.user_profile_image
