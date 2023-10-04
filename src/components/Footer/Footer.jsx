@@ -44,6 +44,21 @@ const Footer = () => {
     },
   ];
 
+  const companyLinks = [
+    {
+      name: "Careers",
+      href: "/",
+    },
+    {
+      name: "Update",
+      href: "/",
+    },
+    {
+      name: "Announce",
+      href: "/",
+    },
+  ];
+
   const socialMediaLinks = [
     {
       icon: BiLogoFacebook,
@@ -97,8 +112,8 @@ const Footer = () => {
                   pariatur
                 </p>
               </div>
-              <div className="col-span-12 md:col-span-3">
-                <h2 className="text-2xl font-bold mb-2">Quick Links</h2>
+              <div className="col-span-12 md:col-span-2">
+                <h2 className="text-xl font-semibold mb-2">Quick Links</h2>
                 {quickLinks.map((elem) => (
                   <NavLink
                     to={elem.href}
@@ -109,9 +124,21 @@ const Footer = () => {
                   </NavLink>
                 ))}
               </div>
-              <div className="col-span-12 md:col-span-3">
-                <h2 className="text-2xl font-bold mb-2">Support</h2>
+              <div className="col-span-12 md:col-span-2">
+                <h2 className="text-xl font-semibold mb-2">Support</h2>
                 {supportLinks.map((elem) => (
+                  <NavLink
+                    to={elem.href}
+                    className="mt-1 hover:text-gray-200 transition-all block text-sm"
+                    key={elem.name}
+                  >
+                    {elem.name}
+                  </NavLink>
+                ))}
+              </div>
+              <div className="col-span-12 md:col-span-2">
+                <h2 className="text-xl font-semibold mb-2">Company</h2>
+                {companyLinks.map((elem) => (
                   <NavLink
                     to={elem.href}
                     className="mt-1 hover:text-gray-200 transition-all block text-sm"

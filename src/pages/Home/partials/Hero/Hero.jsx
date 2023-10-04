@@ -37,7 +37,7 @@ const Hero = () => {
 
   return (
     <>
-      <div className="mt-28 overflow-hidden">
+      <div className="mt-24 overflow-hidden">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 h-full flex flex-col justify-center relative">
           <div className="grid grid-cols-12 items-center">
             <motion.div
