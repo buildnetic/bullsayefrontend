@@ -46,7 +46,7 @@ const Hero = () => {
               initial="hidden"
               whileInView="visible"
             >
-              <h1 className="text-5xl md:text-6xl font-extrabold leading-[4rem] md:leading-[5rem] lg:leading-[6rem] text-gray-800">
+              <h1 className="text-5xl md:text-6xl font-semibold leading-[4rem] md:leading-[5rem] lg:leading-[6rem] text-gray-800">
                 <span className=" text-green-500">Buying</span> &{" "}
                 <span className=" text-red-500">Selling</span> <br /> Calls from
                 Expert
