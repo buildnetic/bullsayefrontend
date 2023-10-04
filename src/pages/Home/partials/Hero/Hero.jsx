@@ -52,13 +52,6 @@ const Hero = () => {
                 Expert
               </h1>
 
-              {/* <PrimaryButton
-                to="/main"
-                classes="text-white bg-c-green px-8 py-3 font-medium mt-7"
-                rounded="lg"
-                title="Start Investing"
-              /> */}
-
               <div className="mt-8">
                 <p className="text-md font-semibold text-gray-500">Follow Us</p>
                 <ul className="mt-3 flex gap-3">
