@@ -234,13 +234,13 @@ const TopPerformers = () => {
                   </p>
                   <div className="flex flex-row justify-around mt-2">
                     <p className="text-[#8E8E8E] text-center text-xs">
-                      <span className="font-bold block text-lg text-c-green">
+                      <span className="font-bold block text-lg text-gray-600">
                         {elem.followers_count}
                       </span>{" "}
                       followers
                     </p>
                     <p className="text-[#8E8E8E] text-center text-xs">
-                      <span className="font-bold block text-lg text-c-green">
+                      <span className="font-bold block text-lg text-gray-600">
                         {elem.following_count}
                       </span>{" "}
                       following
@@ -262,7 +262,8 @@ const TopPerformers = () => {
                   <div className="flex flex-row justify-around mt-2">
                     <div className="text-center">
                       <p
-                        className="text-c-green font-bold mb-0.5 text-md cursor-pointer"
+                        className="text-green-500 font-bold mb-0.5 text-md cursor-pointer hover:text-green-700 transition"
+                        title="click to view all achieved buying calls"
                         onClick={() =>
                           achievedCallsHandler("Buying", buyingAchieveData)
                         }
@@ -279,7 +280,8 @@ const TopPerformers = () => {
                     </div>
                     <div className="text-center">
                       <p
-                        className="text-[#EF413E] font-bold mb-0.5 text-md cursor-pointer"
+                        className="text-red-500 font-bold mb-0.5 text-md cursor-pointer hover:text-red-800 transition"
+                        title="click to view all achieved selling calls"
                         onClick={() =>
                           achievedCallsHandler("Selling", sellingAchieveData)
                         }
