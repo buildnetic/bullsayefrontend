@@ -9,7 +9,10 @@ import { useSelector } from "react-redux";
 import ProfileImg from "../../../../../assets/images/profile-icon.png";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import LoadingCreatePost from "./LoadingCreatePost";
-import StockSearch from "../../../../../components/AuthenticatedUser/StockSearch/StockSearch";
+import StockSearchList from "../../../../../components/StockSearchList/StockSearchList";
+import Calender from "../../../../../components/Calender/Calender";
+import { BsCalendar3, BsInfoCircle } from "react-icons/bs";
+import Info from "../../../../../components/Modals/Info";
 
 const CreatePost = () => {
   const { loggedUser } = useSelector((state) => state.user);
@@ -17,6 +20,12 @@ const CreatePost = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id: postId } = useParams();
+
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${loggedUser.token}`,
+    },
+  };
 
   const isEditPage = location.pathname.startsWith("/post/edit/");
 
@@ -35,6 +44,24 @@ const CreatePost = () => {
     target_price: "",
     hashtags: [],
   });
+
+  const [searchListQueryData, setSearchListQueryData] = useState({
+    country_code: "",
+    stock_name: "",
+  });
+
+  // for calender start
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [calenderInfoOpen, setCalenderInfoOpen] = useState(false);
+  const [openCalender, setOpenCalender] = useState(false);
+
+  // Callback function to update the selected date
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate);
+  };
+
+  console.log("from home", selectedDate);
+  // for calender end
 
   useEffect(() => {
     setFormData((prev) => ({ ...prev, exchange_code: selectedExchange.code }));
@@ -69,36 +96,27 @@ const CreatePost = () => {
   };
 
   const createPost = async () => {
-    axiosInstance.defaults.headers[
-      "Authorization"
-    ] = `Bearer ${loggedUser.token}`;
-    const res = await axiosInstance.post("/create/vips", formData);
-    delete axiosInstance.defaults.headers["Authorization"];
+    const res = await axiosInstance.post("/create/vips", formData, headers);
     return res;
   };
 
   const getPostDetailsFn = async () => {
-    return await axiosInstance.get(`/vips/${postId}`, {
-      headers: {
-        Authorization: `Bearer ${loggedUser.token}`,
-      },
-    });
+    return await axiosInstance.get(`/vips/${postId}`, headers);
   };
 
   const updatePostFn = async () => {
-    return await axiosInstance.put(`/update/vips/${postId}`, formData, {
-      headers: {
-        Authorization: `Bearer ${loggedUser.token}`,
-      },
-    });
+    return await axiosInstance.put(`/update/vips/${postId}`, formData, headers);
   };
 
   const getUserDetailsFn = async () => {
-    return await axiosInstance.get(`/users/${loggedUser.id}`, {
-      headers: {
-        Authorization: `Bearer ${loggedUser.token}`,
-      },
-    });
+    return await axiosInstance.get(`/users/${loggedUser.id}`, headers);
+  };
+
+  const getStockSearchListFn = async () => {
+    return await axiosInstance.get(
+      `/stocks/search?stock_name=${searchListQueryData.stock_name}&country_code=${searchListQueryData.country_code}`,
+      headers
+    );
   };
 
   const getUserDetailsQuery = useQuery(
@@ -158,6 +176,11 @@ const CreatePost = () => {
       ToastError("Error");
     },
   });
+
+  const getStockSearchListQuery = useQuery(
+    "getStockSearchList",
+    getStockSearchListFn
+  );
 
   const createPostMutation = useMutation(createPost, {
     onSuccess: (res) => {
@@ -263,9 +286,14 @@ const CreatePost = () => {
               </div>
               <div className=" col-span-6">
                 <select
-                  name="type"
-                  value={formData.type}
-                  onChange={onChangeHandler}
+                  name="country_code"
+                  value={searchListQueryData.country_code}
+                  onChange={(e) =>
+                    setSearchListQueryData((prev) => ({
+                      ...prev,
+                      country_code: e.target.value,
+                    }))
+                  }
                   className="w-full rounded-md text-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
                 >
                   <option value="" disabled>
@@ -282,14 +310,27 @@ const CreatePost = () => {
                 classes="col-span-12"
               /> */}
 
-              {/* <StockSearch
-                datas={stockExchangeList}
-                selected={selectedExchange}
-                setSelected={setSelectedExchange}
-                classes="col-span-12"
-              /> */}
+              <div className="col-span-12 relative">
+                <input
+                  type="text"
+                  name="stock_name"
+                  value={searchListQueryData.stock_name}
+                  onChange={(e) =>
+                    setSearchListQueryData((prev) => ({
+                      ...prev,
+                      stock_name: e.target.value,
+                    }))
+                  }
+                  placeholder="search stock"
+                  className="w-full rounded-md text-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
+                />
 
-              <input
+                {/* <StockSearchList
+                  stockList={getStockSearchListQuery?.data?.data?.data}
+                /> */}
+              </div>
+
+              {/* <input
                 type="text"
                 name="stock_code"
                 required
@@ -302,7 +343,8 @@ const CreatePost = () => {
                 onChange={onChangeHandler}
                 title="Stock Code"
                 value={formData.stock_code}
-              />
+              /> */}
+
               <button
                 type="button"
                 disabled={
@@ -317,6 +359,7 @@ const CreatePost = () => {
                   ? "Getting Price..."
                   : "Get Current Price"}
               </button>
+
               <div className="col-span-5">
                 <span
                   className=" px-3 cursor-not-allowed flex items-center rounded-md text-sm h-full border-0  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6 bg-gray-100"
@@ -329,6 +372,7 @@ const CreatePost = () => {
                     : formData.current_price}
                 </span>
               </div>
+
               <input
                 type="text"
                 name="target_price"
@@ -338,14 +382,39 @@ const CreatePost = () => {
                 onChange={onChangeHandler}
                 value={formData.target_price}
               />
+
               <input
                 type="text"
                 name="hashtags"
                 placeholder="#hashtags #vipana"
-                className="col-span-8 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
+                className="col-span-7 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
                 onChange={onChangeHandler}
                 value={formData.hashtags.join(" ")}
               />
+
+              <div className=" col-span-5 text-sm relative border items-center shadow-sm rounded-md px-2">
+                <div className="h-full flex justify-between items-center ">
+                  <p
+                    className="text-gray-700 cursor-pointer"
+                    onClick={() => setOpenCalender(!openCalender)}
+                  >
+                    <BsCalendar3 className=" inline-block mr-2" />
+                    Will Achieve till:{" "}
+                    {selectedDate && selectedDate?.toLocaleDateString("en-GB")}
+                  </p>
+                  <BsInfoCircle
+                    onClick={() => setCalenderInfoOpen(true)}
+                    className="text-xs cursor-pointer text-gray-500 hover:text-gray-800 transition duration-200 ease-in-out"
+                  />
+                </div>
+
+                {openCalender && (
+                  <div className=" absolute left-0 right-0">
+                    <Calender onDateChange={handleDateChange} />
+                  </div>
+                )}
+              </div>
+
               <textarea
                 name="description"
                 id="message"
@@ -367,6 +436,14 @@ const CreatePost = () => {
           </div>
         </div>
       )}
+
+      <Info
+        open={calenderInfoOpen}
+        setOpen={setCalenderInfoOpen}
+        infoDetails={
+          "You can not select todays date, date must be after todays date"
+        }
+      />
     </>
   );
 };
