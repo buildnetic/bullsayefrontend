@@ -34,7 +34,7 @@ const SignIn = () => {
       Dispatch(login(res?.data?.user));
       ToastSuccess(res?.data?.message);
       setIsLoading(false);
-      navigate("/main");
+      navigate("/");
     } catch (error) {
       setError(error?.response?.data?.message);
       ToastError(error?.response?.data?.message);

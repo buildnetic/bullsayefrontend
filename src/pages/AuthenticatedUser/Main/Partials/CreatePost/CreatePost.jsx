@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import ProfileImg from "../../../../../assets/images/profile-icon.png";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import LoadingCreatePost from "./LoadingCreatePost";
+import StockSearch from "../../../../../components/AuthenticatedUser/StockSearch/StockSearch";
 
 const CreatePost = () => {
   const { loggedUser } = useSelector((state) => state.user);
@@ -173,7 +174,7 @@ const CreatePost = () => {
         hashtags: [],
       }));
       queryClient.invalidateQueries("getAllPost");
-      navigate("/main");
+      navigate("/");
     },
     onError: (error) => {
       ToastError(error?.response?.data?.message);
@@ -196,7 +197,7 @@ const CreatePost = () => {
         hashtags: [],
       }));
       queryClient.invalidateQueries("getAllPost");
-      navigate("/main");
+      navigate("/");
     },
     onError: (error) => {
       ToastError(error?.response?.data?.message);
@@ -246,7 +247,7 @@ const CreatePost = () => {
           />
           <div className="w-full mt-1">
             <div className="grid grid-cols-12 gap-5">
-              <div className=" col-span-12">
+              <div className=" col-span-6">
                 <select
                   name="type"
                   value={formData.type}
@@ -260,12 +261,34 @@ const CreatePost = () => {
                   <option value="sell">Sell</option>
                 </select>
               </div>
-              <SelectWithSearch
+              <div className=" col-span-6">
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={onChangeHandler}
+                  className="w-full rounded-md text-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
+                >
+                  <option value="" disabled>
+                    Country
+                  </option>
+                  <option value="IN">India</option>
+                  <option value="USA">USA</option>
+                </select>
+              </div>
+              {/* <SelectWithSearch
                 datas={stockExchangeList}
                 selected={selectedExchange}
                 setSelected={setSelectedExchange}
                 classes="col-span-12"
-              />
+              /> */}
+
+              {/* <StockSearch
+                datas={stockExchangeList}
+                selected={selectedExchange}
+                setSelected={setSelectedExchange}
+                classes="col-span-12"
+              /> */}
+
               <input
                 type="text"
                 name="stock_code"

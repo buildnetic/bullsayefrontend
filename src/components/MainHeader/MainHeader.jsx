@@ -240,7 +240,7 @@ const MainHeader = () => {
             <Disclosure.Panel className="sm:hidden">
               <div className="space-y-1 px-2 pb-3 pt-2">
                 <NavLink
-                  to="/main"
+                  to="/"
                   className={({ isActive }) =>
                     isActive
                       ? "bg-c-green text-white rounded-md px-3 py-2 text-base font-medium flex flex-row gap-3"

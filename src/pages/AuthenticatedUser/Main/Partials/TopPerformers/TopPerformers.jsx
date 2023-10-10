@@ -49,7 +49,7 @@ const TopPerformers = () => {
               />
               <NavLink
                 to={`/profile/${elem.id}`}
-                className="mt-1 text-[15px] font-semibold text-center capitalize"
+                className="mt-1 text-[15px] font-semibold text-center block capitalize"
               >
                 {elem.name}
               </NavLink>
