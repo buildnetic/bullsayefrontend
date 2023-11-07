@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-import { stockExchangeList } from "../../../../../data/stockExchangeList";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axiosInstance from "../../../../../axiosInstance";
@@ -58,10 +56,8 @@ const CreatePost = () => {
   });
   const [stockSearchList, setStockSearchList] = useState(null);
   const [showStockList, setShowStockList] = useState(false);
-  const [selectedStock, setSelectedStock] = useState("");
 
   const selectStockHandler = (stock) => {
-    setSelectedStock(stock);
     setSearchListQueryData((prev) => ({
       ...prev,
       stock_name: stock.stock_name,
@@ -87,23 +83,6 @@ const CreatePost = () => {
     }
   };
 
-  function findStockExchangeIndexByCode(code) {
-    for (let i = 0; i < stockExchangeList.length; i++) {
-      if (stockExchangeList[i].code === code) {
-        return i; // Return the index of the matching element
-      }
-    }
-    return -1; // Code not found
-  }
-
-  const getCurrentPrice = async () => {
-    const res = await axiosInstance.post("/stock", {
-      stock_code: formData.stock_code,
-      exchange_code: formData.exchange_code,
-    });
-    return res;
-  };
-
   const createPost = async () => {
     const res = await axiosInstance.post(
       "/create/vips",
@@ -118,7 +97,11 @@ const CreatePost = () => {
   };
 
   const updatePostFn = async () => {
-    return await axiosInstance.put(`/update/vips/${postId}`, formData, headers);
+    return await axiosInstance.put(
+      `/update/vips/${postId}`,
+      { ...formData, expiry_date: moment(selectedDate).format("YYYY/MM/DD") },
+      headers
+    );
   };
 
   const getUserDetailsFn = async () => {
@@ -173,35 +156,16 @@ const CreatePost = () => {
         target_price: res?.data?.data?.target_price,
         hashtags: JSON.parse(res?.data?.data?.hashtags),
       }));
+      setSearchListQueryData((prev) => ({
+        ...prev,
+        stock_name: res?.data?.data?.stock_name,
+      }));
+      setSelectedDate(res?.data?.data?.expiry_date);
+
+      console.log("res", res?.data?.data);
     },
     onError: (err) => {
       console.log("err", err);
-    },
-  });
-
-  const getCurrentPriceQuery = useQuery("currentPrice", getCurrentPrice, {
-    enabled: false,
-    onSuccess: (res) => {
-      if (res?.data?.data?.summary) {
-        setFormData((prev) => ({
-          ...prev,
-          stock_name: res?.data?.data?.summary?.title,
-        }));
-        setFormData((prev) => ({
-          ...prev,
-          current_price: res?.data?.data?.summary?.extracted_price,
-        }));
-      } else {
-        setFormData((prev) => ({ ...prev, stock_name: "" }));
-        setFormData((prev) => ({
-          ...prev,
-          current_price: "",
-        }));
-        ToastError("Invalid Exchange or Stock code");
-      }
-    },
-    onError: () => {
-      ToastError("Error");
     },
   });
 
@@ -403,14 +367,7 @@ const CreatePost = () => {
                   className=" px-3 cursor-not-allowed flex items-center rounded-md text-sm h-full border-0  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6 bg-gray-100"
                   title={formData.stock_name}
                 >
-                  Current Price:{" "}
-                  {formData.current_price && selectedStock.country_code === "IN"
-                    ? `₹ ${formData.current_price}`
-                    : formData.country_code === "US"
-                    ? `$ ${formData.current_price}`
-                    : `${formData.country_code || ""} ${
-                        formData.current_price || ""
-                      }`}
+                  Current Price: {formData.current_price}
                 </span>
               </div>
 
@@ -441,7 +398,8 @@ const CreatePost = () => {
                   >
                     <BsCalendar3 className=" inline-block mr-2" />
                     Will Achieve till:{" "}
-                    {selectedDate && selectedDate?.toLocaleDateString("en-GB")}
+                    {/* {selectedDate && selectedDate?.toLocaleDateString("en-GB")} */}
+                    {selectedDate && moment(selectedDate).format("YYYY/MM/DD")}
                   </p>
                   <BsInfoCircle
                     onClick={() => setCalenderInfoOpen(true)}
