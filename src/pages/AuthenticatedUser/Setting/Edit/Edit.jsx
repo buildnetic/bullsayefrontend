@@ -1,14 +1,12 @@
 import { useState } from "react";
 import axiosInstance from "../../../../axiosInstance";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ToastError, ToastSuccess } from "../../../../ToastNotification";
 import ProfileImg from "../../../../assets/images/profile-icon.png";
 import LoadingEditProfile from "./LoadingEditProfile";
-import { logout } from "../../../../redux/userSlice";
 
 const Edit = () => {
-  const Dispatch = useDispatch();
   const { loggedUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
 
@@ -18,9 +16,6 @@ const Edit = () => {
     name: "",
     email: "",
     about: "",
-    youtube_id: "",
-    tiktok_id: "",
-    instagram_id: "",
 
     current_password: "",
     new_password: "",
@@ -52,9 +47,6 @@ const Edit = () => {
     formData.append("name", userData.name);
     formData.append("email", userData.email);
     formData.append("about", userData.about);
-    formData.append("youtube_id", userData.youtube_id);
-    formData.append("tiktok_id", userData.tiktok_id);
-    formData.append("instagram_id", userData.instagram_id);
     formData.append("user_profile_image", selectedImage);
 
     return await axiosInstance.post(`/users/update`, formData, {
@@ -81,14 +73,6 @@ const Edit = () => {
     );
   };
 
-  const deactivateAccFn = async () => {
-    return await axiosInstance.get("/user/deactivate", {
-      headers: {
-        Authorization: `Bearer ${loggedUser.token}`,
-      },
-    });
-  };
-
   const getUserDetailsQuery = useQuery("getUserDetails", getUserDetailsFn, {
     onSuccess: (res) => {
       setUserData((prev) => ({
@@ -104,18 +88,6 @@ const Edit = () => {
         about:
           res?.data?.data?.user?.about !== null
             ? res?.data?.data?.user?.about
-            : "",
-        youtube_id:
-          res?.data?.data?.user?.youtube_id !== null
-            ? res?.data?.data?.user?.youtube_id
-            : "",
-        tiktok_id:
-          res?.data?.data?.user?.tiktok_id !== null
-            ? res?.data?.data?.user?.tiktok_id
-            : "",
-        instagram_id:
-          res?.data?.data?.user?.instagram_id !== null
-            ? res?.data?.data?.user?.instagram_id
             : "",
       }));
     },
@@ -157,18 +129,6 @@ const Edit = () => {
     },
   });
 
-  const deactivateAccQuery = useQuery("deactivateAcc", deactivateAccFn, {
-    enabled: false,
-    onSuccess: (res) => {
-      console.log("res", res);
-      ToastSuccess(res?.data?.message);
-      Dispatch(logout());
-    },
-    onError: (err) => {
-      ToastError(err?.response?.data?.message);
-    },
-  });
-
   const updateUserHandler = (e) => {
     e.preventDefault();
     updateUserDetailsMutation.mutate();
@@ -184,11 +144,6 @@ const Edit = () => {
     ) {
       updateUserPasswordMutation.mutate();
     }
-  };
-
-  const deactivateAccHandler = (e) => {
-    e.preventDefault();
-    deactivateAccQuery.refetch();
   };
 
   return (
@@ -308,75 +263,15 @@ const Edit = () => {
                           value={userData.about}
                         />
                       </div>
-                      <p className="mt-3 text-sm leading-6 text-gray-600">
+                      <p className="text-sm leading-6 text-gray-600">
                         Write a few sentences about yourself.
                       </p>
-                    </div>
-
-                    <div className="sm:col-span-3">
-                      <label
-                        htmlFor="Youtube"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Youtube Id
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="youtube"
-                          name="youtube_id"
-                          type="text"
-                          autoComplete="youtube"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green sm:text-sm sm:leading-6"
-                          onChange={onChangeHandler}
-                          value={userData.youtube_id}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-3">
-                      <label
-                        htmlFor="tiktok"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Tiktok Id
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="tiktok"
-                          name="tiktok_id"
-                          type="text"
-                          autoComplete="tiktok"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green sm:text-sm sm:leading-6"
-                          onChange={onChangeHandler}
-                          value={userData.tiktok_id}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="sm:col-span-3">
-                      <label
-                        htmlFor="instagram"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Instagram Id
-                      </label>
-                      <div className="mt-2">
-                        <input
-                          id="instagram"
-                          name="instagram_id"
-                          type="text"
-                          autoComplete="instagram"
-                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green sm:text-sm sm:leading-6"
-                          onChange={onChangeHandler}
-                          value={userData.instagram_id}
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 flex items-center justify-end gap-x-6">
+              <div className="mt-2 flex items-center justify-end gap-x-6">
                 <button
                   type="button"
                   className="rounded-md bg-c-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-c-green-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
@@ -464,16 +359,6 @@ const Edit = () => {
               </button>
             </div>
           </form>
-        </div>
-
-        <div className="mt-5 text-end">
-          <button
-            type="button"
-            className={`rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 `}
-            onClick={deactivateAccHandler}
-          >
-            Deactivate Account
-          </button>
         </div>
       </div>
     </>

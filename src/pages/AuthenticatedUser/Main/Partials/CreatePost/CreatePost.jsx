@@ -119,7 +119,6 @@ const CreatePost = () => {
         );
         setStockSearchList(res?.data?.data);
         setShowStockList(true);
-        // console.log("res", res?.data?.data);
       } catch (error) {
         console.log("error", error);
       }
@@ -429,7 +428,7 @@ const CreatePost = () => {
                 onClick={formHandler}
                 className=" col-span-12 rounded-md h-full w-full border-c-green border-2 bg-c-green p-2 shadow-md hover:shadow-none text-white duration-75 text-sm font-medium"
               >
-                Post
+                {isEditPage ? "Update" : "Post"}
               </button>
             </div>
           </div>

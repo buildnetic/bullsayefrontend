@@ -148,17 +148,6 @@ const MainHeader = () => {
                       >
                         <AiTwotoneSetting className="text-2xl" />
                       </NavLink>
-                      <NavLink
-                        to="/notifications"
-                        className={({ isActive }) =>
-                          isActive
-                            ? "bg-c-green text-white rounded-md px-3 py-2 font-medium transition-all"
-                            : "text-gray-400 hover:bg-c-green hover:text-white rounded-md px-3 py-2 font-medium transition-all"
-                        }
-                        title="Notifications"
-                      >
-                        <MdNotifications className="text-2xl" />
-                      </NavLink>
                     </div>
                   </div>
                 </div>

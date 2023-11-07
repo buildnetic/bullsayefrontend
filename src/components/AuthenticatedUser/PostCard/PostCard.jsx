@@ -2,7 +2,6 @@
 import moment from "moment";
 import { AiFillDelete, AiOutlineLike } from "react-icons/ai";
 import { BiCommentDetail, BiShareAlt, BiSolidEditAlt } from "react-icons/bi";
-import { BsRepeat } from "react-icons/bs";
 import { NavLink, useNavigate } from "react-router-dom";
 import ProfileImg from "../../../assets/images/profile-icon.png";
 import { useSelector } from "react-redux";
@@ -55,14 +54,6 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
     return res;
   };
 
-  const reshareFn = async (id) => {
-    return await axiosInstance.post(`/reshare/vips/${id}`, {
-      headers: {
-        Authorization: `Bearer ${loggedUser.token}`,
-      },
-    });
-  };
-
   const likePostMutation = useMutation(likePostFn, {
     onSuccess: (res) => {
       ToastSuccess(res?.data?.message);
@@ -87,27 +78,12 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
     },
   });
 
-  const reshareMutation = useMutation(reshareFn, {
-    onSuccess: (res) => {
-      ToastSuccess(res?.data?.message);
-      console.log("res", res);
-    },
-    onError: (err) => {
-      ToastError(err?.response?.data?.message);
-      console.log("err", err);
-    },
-  });
-
   const likeDislikePostHandler = (data) => {
     if (checkLikedByUser(data.likes)) {
       disLikePostMutation.mutate(data.id);
     } else {
       likePostMutation.mutate(data.id);
     }
-  };
-
-  const reshareHandler = (id) => {
-    reshareMutation.mutate(id);
   };
 
   return (
@@ -191,7 +167,7 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
             >
               {data?.type === "sell" ? "Selling" : "Buying"} Call
             </h3>
-            <h3 className=" text-green-600 text-lg font-semibold">+12.24%</h3>
+            {/* <h3 className=" text-green-600 text-lg font-semibold">+12.24%</h3> */}
           </div>
           <div className="mt-3 grid grid-cols-12 gap-5">
             <div className="col-span-4">
@@ -223,14 +199,6 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
                 </span>
               </h3>
             </div>
-            {/* <div className=" col-span-3">
-              <h3 className="flex flex-col items-center gap-2 text-xl font-bold">
-                00
-                <span className="text-xs font-medium text-gray-600">
-                  Current Price
-                </span>
-              </h3>
-            </div> */}
           </div>
         </div>
         <div className="my-5 w-full h-[1px] bg-[#D3DAE2]"></div>
@@ -259,13 +227,6 @@ const PostCard = ({ data, handleCommentClick, classes }) => {
           >
             <BiShareAlt className="text-lg" />
             Share
-          </p>
-          <p
-            className="text-sm flex items-center gap-1 text-gray-500 cursor-pointer hover:text-green-500 font-semibold transition-all"
-            onClick={() => reshareHandler(data?.id)}
-          >
-            <BsRepeat className="text-lg" />
-            Reshare
           </p>
         </div>
 
