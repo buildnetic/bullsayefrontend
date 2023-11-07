@@ -33,17 +33,17 @@ const MainLayout = () => {
     );
   }
 
-  if (getUserDetailsQuery?.data?.data?.data?.user?.is_verified === 0) {
-    return (
-      <>
-        <VerifyEmail
-          email={getUserDetailsQuery?.data?.data?.data?.user?.email}
-        />
-      </>
-    );
-  }
+  // if (getUserDetailsQuery?.data?.data?.data?.user?.is_verified === 0) {
+  //   return (
+  //     <>
+  //       <VerifyEmail
+  //         email={getUserDetailsQuery?.data?.data?.data?.user?.email}
+  //       />
+  //     </>
+  //   );
+  // }
 
-  if (getUserDetailsQuery?.data?.data?.data?.user?.is_verified === 1) {
+  if (getUserDetailsQuery?.data?.data?.data?.user?.is_verified === 0) {
     return (
       <>
         <ScrollToTop />

@@ -45,7 +45,7 @@ const Main = () => {
               <CreatePost />
             </div>
 
-            <div className="my-5 w-full h-[1px] bg-[#D3DAE2] shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px]"></div>
+            <div className="my-5 w-full h-[1px] bg-[#D3DAE2] shadow-[rgba(0,_0,_0,_0.2)_0px_0px_3px]" />
 
             {getAllPostQuery.isLoading ? (
               Array(4)

@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import SelectWithSearch from "../../../../../components/AuthenticatedUser/SelectWithSearch/SelectWithSearch";
 import { stockExchangeList } from "../../../../../data/stockExchangeList";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -9,10 +8,10 @@ import { useSelector } from "react-redux";
 import ProfileImg from "../../../../../assets/images/profile-icon.png";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import LoadingCreatePost from "./LoadingCreatePost";
-import StockSearchList from "../../../../../components/StockSearchList/StockSearchList";
 import Calender from "../../../../../components/Calender/Calender";
 import { BsCalendar3, BsInfoCircle } from "react-icons/bs";
 import Info from "../../../../../components/Modals/Info";
+import moment from "moment";
 
 const CreatePost = () => {
   const { loggedUser } = useSelector((state) => state.user);
@@ -29,27 +28,6 @@ const CreatePost = () => {
 
   const isEditPage = location.pathname.startsWith("/post/edit/");
 
-  const [selectedExchange, setSelectedExchange] = useState(
-    stockExchangeList[0]
-  );
-
-  const [stockCodeError, setStockCodeError] = useState(false);
-  const [formData, setFormData] = useState({
-    type: "",
-    description: "",
-    exchange_code: selectedExchange.code || "",
-    stock_code: "",
-    stock_name: "",
-    current_price: "",
-    target_price: "",
-    hashtags: [],
-  });
-
-  const [searchListQueryData, setSearchListQueryData] = useState({
-    country_code: "",
-    stock_name: "",
-  });
-
   // for calender start
   const [selectedDate, setSelectedDate] = useState(null);
   const [calenderInfoOpen, setCalenderInfoOpen] = useState(false);
@@ -60,12 +38,43 @@ const CreatePost = () => {
     setSelectedDate(newDate);
   };
 
-  console.log("from home", selectedDate);
   // for calender end
 
-  useEffect(() => {
-    setFormData((prev) => ({ ...prev, exchange_code: selectedExchange.code }));
-  }, [selectedExchange]);
+  const [formData, setFormData] = useState({
+    type: "",
+    description: "",
+    exchange_code: "",
+    stock_code: "",
+    stock_name: "",
+    current_price: "",
+    target_price: "",
+    hashtags: [],
+    expiry_date: "",
+  });
+
+  const [searchListQueryData, setSearchListQueryData] = useState({
+    country_code: "",
+    stock_name: "",
+  });
+  const [stockSearchList, setStockSearchList] = useState(null);
+  const [showStockList, setShowStockList] = useState(false);
+  const [selectedStock, setSelectedStock] = useState("");
+
+  const selectStockHandler = (stock) => {
+    setSelectedStock(stock);
+    setSearchListQueryData((prev) => ({
+      ...prev,
+      stock_name: stock.stock_name,
+    }));
+    setFormData((prev) => ({
+      ...prev,
+      stock_code: stock.symbol,
+      stock_name: stock.stock_name,
+      current_price: stock.current_price,
+      exchange_code: stock.exchange_short_name,
+    }));
+    setShowStockList(false);
+  };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -96,7 +105,11 @@ const CreatePost = () => {
   };
 
   const createPost = async () => {
-    const res = await axiosInstance.post("/create/vips", formData, headers);
+    const res = await axiosInstance.post(
+      "/create/vips",
+      { ...formData, expiry_date: moment(selectedDate).format("YYYY/MM/DD") },
+      headers
+    );
     return res;
   };
 
@@ -112,12 +125,34 @@ const CreatePost = () => {
     return await axiosInstance.get(`/users/${loggedUser.id}`, headers);
   };
 
-  const getStockSearchListFn = async () => {
-    return await axiosInstance.get(
-      `/stocks/search?stock_name=${searchListQueryData.stock_name}&country_code=${searchListQueryData.country_code}`,
-      headers
-    );
-  };
+  useEffect(() => {
+    const getStockSearchListFn = async (name, country) => {
+      try {
+        const res = await axiosInstance.get(
+          `/stocks/search?stock_name=${name || null}&country_code=${
+            country || null
+          }`,
+          headers
+        );
+        setStockSearchList(res?.data?.data);
+        setShowStockList(true);
+        // console.log("res", res?.data?.data);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    const stockListTimer = setTimeout(() => {
+      searchListQueryData.stock_name &&
+        searchListQueryData.country_code &&
+        getStockSearchListFn(
+          searchListQueryData.stock_name,
+          searchListQueryData.country_code
+        );
+    }, 800);
+
+    return () => clearTimeout(stockListTimer);
+  }, [searchListQueryData.stock_name, searchListQueryData.country_code]);
 
   const getUserDetailsQuery = useQuery(
     "getUserDetailsCreatePostComp",
@@ -138,12 +173,6 @@ const CreatePost = () => {
         target_price: res?.data?.data?.target_price,
         hashtags: JSON.parse(res?.data?.data?.hashtags),
       }));
-
-      setSelectedExchange(
-        stockExchangeList[
-          findStockExchangeIndexByCode(res?.data?.data?.exchange_code)
-        ]
-      );
     },
     onError: (err) => {
       console.log("err", err);
@@ -162,7 +191,6 @@ const CreatePost = () => {
           ...prev,
           current_price: res?.data?.data?.summary?.extracted_price,
         }));
-        setStockCodeError(false);
       } else {
         setFormData((prev) => ({ ...prev, stock_name: "" }));
         setFormData((prev) => ({
@@ -177,11 +205,6 @@ const CreatePost = () => {
     },
   });
 
-  const getStockSearchListQuery = useQuery(
-    "getStockSearchList",
-    getStockSearchListFn
-  );
-
   const createPostMutation = useMutation(createPost, {
     onSuccess: (res) => {
       ToastSuccess(res?.data?.message);
@@ -189,13 +212,19 @@ const CreatePost = () => {
         ...prev,
         type: "",
         description: "",
-        exchange_code: selectedExchange.code || "",
+        exchange_code: "",
         stock_code: "",
         stock_name: "",
         current_price: "",
         target_price: "",
         hashtags: [],
       }));
+      setSearchListQueryData((prev) => ({
+        ...prev,
+        country_code: "",
+        stock_name: "",
+      }));
+      setSelectedDate(null);
       queryClient.invalidateQueries("getAllPost");
       navigate("/");
     },
@@ -212,7 +241,7 @@ const CreatePost = () => {
         ...prev,
         type: "",
         description: "",
-        exchange_code: selectedExchange.code || "",
+        exchange_code: "",
         stock_code: "",
         stock_name: "",
         current_price: "",
@@ -227,15 +256,6 @@ const CreatePost = () => {
       console.log("error", error);
     },
   });
-
-  const currentPriceHandler = async (e) => {
-    e.preventDefault();
-    if (formData.stock_code) {
-      getCurrentPriceQuery.refetch();
-    } else {
-      setStockCodeError(true);
-    }
-  };
 
   const formHandler = (e) => {
     e.preventDefault();
@@ -280,7 +300,7 @@ const CreatePost = () => {
                   <option value="" disabled>
                     Select call type
                   </option>
-                  <option value="buy">Buy</option>
+                  <option value="call">Buy</option>
                   <option value="sell">Sell</option>
                 </select>
               </div>
@@ -303,12 +323,6 @@ const CreatePost = () => {
                   <option value="USA">USA</option>
                 </select>
               </div>
-              {/* <SelectWithSearch
-                datas={stockExchangeList}
-                selected={selectedExchange}
-                setSelected={setSelectedExchange}
-                classes="col-span-12"
-              /> */}
 
               <div className="col-span-12 relative">
                 <input
@@ -322,54 +336,81 @@ const CreatePost = () => {
                     }))
                   }
                   placeholder="search stock"
-                  className="w-full rounded-md text-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
+                  className={`w-full rounded-md text-sm border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6 ${
+                    !searchListQueryData.country_code &&
+                    "cursor-not-allowed bg-gray-100"
+                  }`}
+                  disabled={!searchListQueryData.country_code}
+                  title={
+                    !searchListQueryData.country_code
+                      ? "Select country first"
+                      : "Search stocks"
+                  }
+                  onClick={() => setShowStockList(true)}
                 />
 
-                {/* <StockSearchList
-                  stockList={getStockSearchListQuery?.data?.data?.data}
-                /> */}
+                {showStockList && stockSearchList && (
+                  <ul
+                    role="list"
+                    className="absolute left-0 right-0 bg-white max-h-60 overflow-y-scroll border border-t-0 px-2 py-2 rounded-b-md shadow-sm divide-y divide-gray-100 col-span-12 z-30"
+                  >
+                    {stockSearchList?.length === 0 && (
+                      <li className="flex justify-between gap-x-6 py-3 items-center">
+                        <div className="flex min-w-0 gap-x-4">
+                          <div className="min-w-0 flex-auto">
+                            <p className="text-sm font-semibold leading-6 text-gray-900">
+                              No results
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    )}
+
+                    {stockSearchList?.map((elem, id) => (
+                      <li
+                        key={id}
+                        className="flex justify-between gap-x-6 p-3 rounded-md items-center cursor-pointer hover:bg-gray-200"
+                        onClick={() => selectStockHandler(elem)}
+                      >
+                        <div className="flex min-w-0 gap-x-4">
+                          <div className="min-w-0 flex-auto">
+                            <p className="text-sm font-semibold leading-6 text-gray-900">
+                              {elem.stock_name}
+                            </p>
+                            <p className="mt-1 text-xs text-gray-500">
+                              {elem.symbol} : {elem.exchange_short_name}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                          <p className="text-sm font-semibold leading-6 text-gray-900">
+                            {elem.country_code === "IN"
+                              ? "₹"
+                              : elem.country_code === "US"
+                              ? "$"
+                              : elem.country_code}{" "}
+                            {elem.current_price}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
 
-              {/* <input
-                type="text"
-                name="stock_code"
-                required
-                placeholder="Stock Code"
-                className={
-                  stockCodeError
-                    ? "col-span-4 block rounded-md border-red-600 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:text-sm sm:leading-6"
-                    : "col-span-4 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
-                }
-                onChange={onChangeHandler}
-                title="Stock Code"
-                value={formData.stock_code}
-              /> */}
-
-              <button
-                type="button"
-                disabled={
-                  getCurrentPriceQuery.isLoading ||
-                  getCurrentPriceQuery.isRefetching
-                }
-                onClick={currentPriceHandler}
-                className=" col-span-3 rounded-md w-full border-gray-300 border-2 bg-gray-300 shadow-sm hover:shadow-none text-gray-900 duration-75 text-sm font-medium"
-              >
-                {getCurrentPriceQuery.isLoading ||
-                getCurrentPriceQuery.isRefetching
-                  ? "Getting Price..."
-                  : "Get Current Price"}
-              </button>
-
-              <div className="col-span-5">
+              <div className="col-span-6">
                 <span
                   className=" px-3 cursor-not-allowed flex items-center rounded-md text-sm h-full border-0  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6 bg-gray-100"
                   title={formData.stock_name}
                 >
                   Current Price:{" "}
-                  {getCurrentPriceQuery.isLoading ||
-                  getCurrentPriceQuery.isRefetching
-                    ? "Fetching..."
-                    : formData.current_price}
+                  {formData.current_price && selectedStock.country_code === "IN"
+                    ? `₹ ${formData.current_price}`
+                    : formData.country_code === "US"
+                    ? `$ ${formData.current_price}`
+                    : `${formData.country_code || ""} ${
+                        formData.current_price || ""
+                      }`}
                 </span>
               </div>
 
@@ -378,7 +419,7 @@ const CreatePost = () => {
                 name="target_price"
                 required
                 placeholder="Target Price"
-                className=" col-span-4 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
+                className=" col-span-6 block rounded-md text-sm h-full border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-c-green-dark sm:leading-6"
                 onChange={onChangeHandler}
                 value={formData.target_price}
               />
