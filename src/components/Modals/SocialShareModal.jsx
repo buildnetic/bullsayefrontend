@@ -69,7 +69,7 @@ export default function SocialShareModal({
                   <div className="my-4 relative">
                     <input
                       id="linkInput"
-                      className="text-sm border p-3 rounded-sm shadow-sm bg-gray-100 overflow-hidden w-full outline-none"
+                      className="text-xs sm:text-sm border p-1 sm:p-3 rounded-sm shadow-sm bg-gray-100 overflow-hidden w-full outline-none"
                       value={`${originPath}/post/${id}`}
                       readOnly
                     />
@@ -77,28 +77,28 @@ export default function SocialShareModal({
                       onClick={copyToClipboard}
                       className="absolute top-0 right-0 text-xs h-full flex items-center justify-center px-3 bg-gray-300 rounded-r-sm cursor-pointer hover:bg-gray-400 transition-all"
                     >
-                      {copied ? "Copied!" : "Copy"}
+                      {copied ? "copied!" : "copy"}
                     </span>
                   </div>
                   <div className="flex items-center justify-between mt-5">
                     <FacebookShareButton url={`${originPath}/post/${id}`}>
-                      <div className="bg-[#3B5998] text-white w-12 h-12 p-1 rounded-full outline-none flex justify-center items-center">
-                        <FaFacebookF size={20} />
+                      <div className="bg-[#3B5998] text-white w-8 h-8 sm:w-12 sm:h-12 p-1 rounded-full outline-none flex justify-center items-center">
+                        <FaFacebookF className="text-md sm:text-lg" />
                       </div>
                     </FacebookShareButton>
                     <WhatsappShareButton url={`${originPath}/post/${id}`}>
-                      <div className="bg-[#25D366] text-white w-12 h-12 p-1 rounded-full outline-none flex justify-center items-center">
-                        <BsWhatsapp size={20} />
+                      <div className="bg-[#25D366] text-white w-8 h-8 sm:w-12 sm:h-12 p-1 rounded-full outline-none flex justify-center items-center">
+                        <BsWhatsapp className="text-md sm:text-lg" />
                       </div>
                     </WhatsappShareButton>
                     <LinkedinShareButton url={`${originPath}/post/${id}`}>
-                      <div className="bg-[#007FB1] text-white w-12 h-12 p-1 rounded-full outline-none flex justify-center items-center">
-                        <FaLinkedinIn size={20} />
+                      <div className="bg-[#007FB1] text-white w-8 h-8 sm:w-12 sm:h-12 p-1 rounded-full outline-none flex justify-center items-center">
+                        <FaLinkedinIn className="text-md sm:text-lg" />
                       </div>
                     </LinkedinShareButton>
                     <TwitterShareButton url={`${originPath}/post/${id}`}>
-                      <div className="bg-[#00ACED] text-white w-12 h-12 p-1 rounded-full outline-none flex justify-center items-center">
-                        <BsTwitter size={20} />
+                      <div className="bg-[#00ACED] text-white w-8 h-8 sm:w-12 sm:h-12 p-1 rounded-full outline-none flex justify-center items-center">
+                        <BsTwitter className="text-md sm:text-lg" />
                       </div>
                     </TwitterShareButton>
                   </div>
