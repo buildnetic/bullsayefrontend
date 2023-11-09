@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-const Calender = ({ onDateChange }) => {
+const Calender = ({ onDateChange, setOpenCalender }) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -20,12 +20,14 @@ const Calender = ({ onDateChange }) => {
     onDateChange(value);
   }, [onDateChange, value]);
 
-  // Format the date as DD/MM/YYYY
-  const formattedDate = value.toLocaleDateString("en-GB");
-
   return (
     <>
-      <Calendar onChange={handleDateChange} value={value} minDate={tomorrow} />
+      <Calendar
+        onChange={handleDateChange}
+        value={value}
+        minDate={tomorrow}
+        onClickDay={() => setOpenCalender(false)}
+      />
     </>
   );
 };

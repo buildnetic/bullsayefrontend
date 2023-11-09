@@ -283,7 +283,6 @@ const CreatePost = () => {
                     Country
                   </option>
                   <option value="IN">India</option>
-                  <option value="USA">USA</option>
                 </select>
               </div>
 
@@ -397,7 +396,6 @@ const CreatePost = () => {
                   >
                     <BsCalendar3 className=" inline-block mr-2" />
                     Will Achieve till:{" "}
-                    {/* {selectedDate && selectedDate?.toLocaleDateString("en-GB")} */}
                     {selectedDate && moment(selectedDate).format("YYYY/MM/DD")}
                   </p>
                   <BsInfoCircle
@@ -408,7 +406,10 @@ const CreatePost = () => {
 
                 {openCalender && (
                   <div className=" absolute left-0 right-0">
-                    <Calender onDateChange={handleDateChange} />
+                    <Calender
+                      onDateChange={handleDateChange}
+                      setOpenCalender={setOpenCalender}
+                    />
                   </div>
                 )}
               </div>

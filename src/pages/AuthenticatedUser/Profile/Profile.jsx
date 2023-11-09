@@ -127,7 +127,7 @@ const Profile = () => {
         userFollowMutation.mutate();
       }
     } else {
-      navigate("/setting/edit");
+      navigate("/setting");
     }
   };
 
