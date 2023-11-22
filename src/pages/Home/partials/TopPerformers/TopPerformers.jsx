@@ -322,6 +322,12 @@ const TopPerformers = () => {
               </motion.div>
             ))}
           </div>
+
+          {getTopPerformersQuery?.data?.data?.data?.length === 0 && (
+            <p className="text-gray-400 text-center">
+              There are NO Top Performers
+            </p>
+          )}
         </div>
       </div>
 
