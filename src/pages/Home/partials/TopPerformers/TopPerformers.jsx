@@ -225,8 +225,8 @@ const TopPerformers = () => {
                     {elem.name}
                   </NavLink>
                   <p className="flex items-center justify-center gap-1 text-xs text-[#8E8E8E] mt-0.5">
-                    Accuracy Index:{" "}
-                    <span className="text-c-green font-bold">+3.10%</span>
+                    Rank:{" "}
+                    <span className="text-c-green font-bold">{elem.rank}</span>
                     <BsInfoCircle
                       onClick={() => setAccuracyInfoOpen(true)}
                       className=" cursor-pointer text-gray-400 hover:text-gray-600 transition duration-200 ease-in-out"
@@ -257,9 +257,9 @@ const TopPerformers = () => {
                     )}
                   </p>
 
-                  <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
+                  {/* <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div> */}
 
-                  <div className="flex flex-row justify-around mt-2">
+                  {/* <div className="flex flex-row justify-around mt-2">
                     <div className="text-center">
                       <p
                         className="text-green-500 font-bold mb-0.5 text-md cursor-pointer hover:text-green-700 transition"
@@ -296,7 +296,7 @@ const TopPerformers = () => {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <motion.div

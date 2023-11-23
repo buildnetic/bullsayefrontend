@@ -54,9 +54,9 @@ const TopPerformers = () => {
                 {elem.name}
               </NavLink>
               <p className="text-center text-xs text-[#8E8E8E] mt-1">
-                Accuracy Index: <br />
-                <span className="text-c-green text-sm font-semibold">
-                  +3.10% (2 Months)
+                Rank:
+                <span className="text-c-green text-sm font-semibold ml-1">
+                  {elem.rank}
                 </span>
               </p>
               <div className="flex flex-row justify-around mt-2">
@@ -75,7 +75,7 @@ const TopPerformers = () => {
               >
                 Follow
               </a> */}
-              <div className="my-2 w-full h-[2px] bg-[#D3DAE2]"></div>
+              {/* <div className="my-2 w-full h-[2px] bg-[#D3DAE2]"></div>
               <div className="flex flex-row justify-around mt-2">
                 <div className="text-center">
                   <p className="text-[#8E8E8E] text-xs">Buying Accuracy</p>
@@ -89,7 +89,7 @@ const TopPerformers = () => {
                     0/{elem.sell_post_count}
                   </p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </SwiperSlide>
         ))}

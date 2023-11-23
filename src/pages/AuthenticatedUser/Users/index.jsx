@@ -45,10 +45,8 @@ const Users = () => {
                 {elem.user.name}
               </NavLink>
               <p className="text-center text-md text-[#8E8E8E] mt-1">
-                Accuracy Index:{" "}
-                <span className="text-c-green font-bold">
-                  +3.10% (2 Months)
-                </span>
+                Rank:{" "}
+                <span className="text-c-green font-bold">{elem.user.rank}</span>
               </p>
               <div className="flex flex-row justify-around mt-2">
                 <p className="text-[#8E8E8E]">
@@ -69,7 +67,7 @@ const Users = () => {
                   elem.user.about
                 )}
               </p>
-              <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
+              {/* <div className="my-3 w-full h-[2px] bg-[#D3DAE2]"></div>
               <div className="flex flex-row justify-around mt-2">
                 <div className="text-center">
                   <p className="text-[#8E8E8E] text-sm">Buying Accuracy</p>
@@ -83,7 +81,7 @@ const Users = () => {
                     0/{elem.sell_post_count}
                   </p>
                 </div>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
