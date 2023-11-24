@@ -5,10 +5,12 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { ToastError, ToastSuccess } from "../../../../ToastNotification";
 import ProfileImg from "../../../../assets/images/profile-icon.png";
 import LoadingEditProfile from "./LoadingEditProfile";
+import { useNavigate } from "react-router-dom";
 
 const Edit = () => {
   const { loggedUser } = useSelector((state) => state.user);
   const queryClient = useQueryClient();
+  const Navigate = useNavigate();
 
   const [selectedImage, setSelectedImage] = useState("");
   const [selectedImageUrl, setSelectedImageUrl] = useState("");
@@ -98,7 +100,8 @@ const Edit = () => {
       queryClient.invalidateQueries("getUserDetails");
       queryClient.invalidateQueries("getUserDetailsHeader");
       queryClient.invalidateQueries("getUserDetailsCreatePostComp");
-      ToastSuccess(res?.data?.message);
+      ToastSuccess(res?.data?.message || "User updated successfully");
+      Navigate("/");
     },
     onError: (err) => {
       ToastError(err?.response?.data?.message || "Falied to update.");
